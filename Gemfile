@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in lotus-helpers.gemspec
-gemspec
+gemspec 
+
+gem 'pry'
+gem 'minitest-reporters'

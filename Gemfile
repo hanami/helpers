@@ -1,4 +1,11 @@
 source 'https://rubygems.org'
-
-# Specify your gem's dependencies in lotus-helpers.gemspec
 gemspec
+
+
+unless ENV['TRAVIS']
+  gem 'byebug', require: false, platforms: :mri if RUBY_VERSION >= '2.1.0'
+  gem 'yard',   require: false
+end
+
+gem 'simplecov', require: false
+gem 'coveralls', require: false

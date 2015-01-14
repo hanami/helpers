@@ -1,9 +1,9 @@
-require 'lotus/helpers/html_helper/self_closing_html_node'
+require 'lotus/helpers/html_helper/empty_html_node'
 
 module Lotus
   module Helpers
     module HtmlHelper
-      class HtmlNode < SelfClosingHtmlNode
+      class HtmlNode < EmptyHtmlNode
         def initialize(builder, name, content, attributes)
           @builder    = builder
           @name       = name

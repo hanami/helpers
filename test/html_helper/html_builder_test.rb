@@ -6,8 +6,15 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
   end
 
   ##############################################################################
-  # CLOSING TAGS                                                               #
+  # TAGS                                                                       #
   ##############################################################################
+
+  describe 'unknown tag' do
+    it 'generates it' do
+      result = @builder.custom('Foo', id: 'content').to_s
+      result.must_equal %(<custom id="content">Foo</custom>)
+    end
+  end
 
   describe '<a>' do
     it 'generates a link' do
@@ -52,8 +59,15 @@ CONTENT
   end
 
   ##############################################################################
-  # SELF-CLOSING TAGS                                                          #
+  # EMPTY TAGS                                                                 #
   ##############################################################################
+
+  describe 'empty tag' do
+    it 'generates it' do
+      result = @builder.empty(:xr, id: 'foo').to_s
+      result.must_equal %(<xr id="foo">)
+    end
+  end
 
   describe '<img>' do
     it 'generates an image' do

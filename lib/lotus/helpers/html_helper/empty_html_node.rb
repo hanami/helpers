@@ -1,7 +1,7 @@
 module Lotus
   module Helpers
     module HtmlHelper
-      class SelfClosingHtmlNode
+      class EmptyHtmlNode
         def initialize(name, attributes)
           @name       = name
           @attributes = attributes

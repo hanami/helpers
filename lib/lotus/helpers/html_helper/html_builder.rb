@@ -1,11 +1,11 @@
-require 'lotus/helpers/html_helper/self_closing_html_node'
+require 'lotus/helpers/html_helper/empty_html_node'
 require 'lotus/helpers/html_helper/html_node'
 
 module Lotus
   module Helpers
     module HtmlHelper
       class HtmlBuilder < BasicObject
-        CLOSING_TAGS = [
+        CONTENT_TAGS = [
           'a',
           'abbr',
           'address',
@@ -77,9 +77,32 @@ module Lotus
           'math',
           'table',
           'caption',
+          'colgroup',
+          'tbody',
+          'thead',
+          'tfoot',
+          'tr',
+          'td',
+          'th',
+          'form',
+          'fieldset',
+          'legend',
+          'label',
+          'button',
+          'select',
+          'datalist',
+          'optgroup',
+          'option',
+          'textarea',
+          'output',
+          'progress',
+          'meter',
+          'details',
+          'summary',
+          'menu',
         ].freeze
 
-        SELF_CLOSING_TAGS = [
+        EMPTY_TAGS = [
           'base',
           'link',
           'meta',
@@ -92,9 +115,13 @@ module Lotus
           'source',
           'track',
           'area',
+          'col',
+          'input',
+          'keygen',
+          'menuitem',
         ].freeze
 
-        CLOSING_TAGS.each do |tag|
+        CONTENT_TAGS.each do |tag|
           class_eval %{
             def #{ tag }(content = nil, attributes = nil, &blk)
               HtmlNode.new(self, :#{ tag }, blk || content, attributes || content)
@@ -102,12 +129,16 @@ module Lotus
           }
         end
 
-        SELF_CLOSING_TAGS.each do |tag|
+        EMPTY_TAGS.each do |tag|
           class_eval %{
             def #{ tag }(attributes = nil)
-              SelfClosingHtmlNode.new(:#{ tag }, attributes)
+              EmptyHtmlNode.new(:#{ tag }, attributes)
             end
           }
+        end
+
+        def empty(name, attributes = nil)
+          EmptyHtmlNode.new(name, attributes)
         end
 
         def method_missing(m, *args, &blk)

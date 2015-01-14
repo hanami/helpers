@@ -11,7 +11,7 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
 
   describe 'unknown tag' do
     it 'generates it' do
-      result = @builder.custom('Foo', id: 'content').to_s
+      result = @builder.tag(:custom, 'Foo', id: 'content').to_s
       result.must_equal %(<custom id="content">Foo</custom>)
     end
   end
@@ -98,7 +98,7 @@ CONTENT
 
   describe 'empty tag' do
     it 'generates it' do
-      result = @builder.empty(:xr, id: 'foo').to_s
+      result = @builder.empty_tag(:xr, id: 'foo').to_s
       result.must_equal %(<xr id="foo">)
     end
   end

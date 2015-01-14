@@ -29,6 +29,10 @@ describe Lotus::Helpers::HtmlHelper do
     @view.div_with_block_content_with_nested_calls.to_s.must_equal %(<div>\n<span>hello</span>\n</div>)
   end
 
+  it 'returns a tag with block content with multiple nested calls' do
+    @view.div_with_block_content_and_multiple_nested_calls.to_s.must_equal %(<form action="/users" method="POST">\n<div>\n<label for="user-first-name">First name</label>\n<input type="text" id="user-first-name" name="user[first_name]" value="L">\n</div>\n<input type="submit" value="Save changes">\n</form>)
+  end
+
   it 'returns a tag with attribute' do
     @view.div_with_attr.to_s.must_equal %(<div id="container"></div>)
   end
@@ -47,5 +51,13 @@ describe Lotus::Helpers::HtmlHelper do
 
   it 'returns a tag with block content as string and attributes' do
     @view.div_with_block_content_as_string_and_attrs.to_s.must_equal %(<div id="sidebar" class="blue">\nbonjour\n</div>)
+  end
+
+  it 'returns a custom tag' do
+    @view.custom_tag.to_s.must_equal %(<custom id="next">Foo</custom>)
+  end
+
+  it 'returns a custom empty tag' do
+    @view.custom_empty_tag.to_s.must_equal %(<xr id="next">)
   end
 end

@@ -4,7 +4,7 @@ require 'lotus/helpers/html_helper/html_node'
 module Lotus
   module Helpers
     module HtmlHelper
-      class HtmlBuilder < BasicObject
+      class HtmlBuilder #< BasicObject
         CONTENT_TAGS = [
           'a',
           'abbr',
@@ -124,7 +124,8 @@ module Lotus
         CONTENT_TAGS.each do |tag|
           class_eval %{
             def #{ tag }(content = nil, attributes = nil, &blk)
-              HtmlNode.new(self, :#{ tag }, blk || content, attributes || content)
+              @nodes << HtmlNode.new(:#{ tag }, blk || content, attributes || content)
+              self
             end
           }
         end
@@ -132,20 +133,32 @@ module Lotus
         EMPTY_TAGS.each do |tag|
           class_eval %{
             def #{ tag }(attributes = nil)
-              EmptyHtmlNode.new(:#{ tag }, attributes)
+              @nodes << EmptyHtmlNode.new(:#{ tag }, attributes)
+              self
             end
           }
         end
 
-        def empty(name, attributes = nil)
-          EmptyHtmlNode.new(name, attributes)
+        def initialize
+          @nodes = []
         end
 
-        def method_missing(m, *args, &blk)
-          content    = args.shift
-          attributes = args.last
+        def to_s
+          @nodes.map(&:to_s).join("\n")
+        end
 
-          HtmlNode.new(self, m, blk || content, attributes || content)
+        def nested?
+          @nodes.any?
+        end
+
+        def tag(name, content = nil, attributes = nil, &blk)
+          @nodes << HtmlNode.new(name, blk || content, attributes || content)
+          self
+        end
+
+        def empty_tag(name, attributes = nil)
+          @nodes << EmptyHtmlNode.new(name, attributes)
+          self
         end
       end
     end

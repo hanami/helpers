@@ -48,6 +48,49 @@ $ gem install lotus-helpers
 
 TODO: Write usage instructions here
 
+## Design
+
+All the Lotus helpers will be modules to include.
+
+They inject **private** methods.
+The reason is simple: this will prevent those facilities to leak on the outside.
+
+We want to encourage developers to use meaningful and simple methods in their templates.
+
+### Bad style example
+
+```ruby
+class ProductView
+  include Lotus::Helpers::CurrencyFormatter
+end
+```
+
+```erb
+<%= format_currency product.price %>
+```
+
+This increases the cluttering of the template markup.
+Test the price that will be printed is hard.
+
+### Good style example
+
+```ruby
+class ProductView
+  include Lotus::Helpers::CurrencyFormatter
+
+  def formatted_price
+    format_currency product.price
+  end
+end
+```
+
+```erb
+<%= formatted_price %>
+```
+
+This simplifies the markup.
+Test the price that will be printed is easy by introspecting `ProductView#formatted_price`.
+
 ## Versioning
 
 __Lotus::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)

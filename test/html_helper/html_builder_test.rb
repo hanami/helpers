@@ -32,7 +32,7 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
         img(src: '/images/logo.png')
       end.to_s
 
-      result.must_equal %(<a href="http://lotusrb.org"><img src="/images/logo.png"></a>)
+      result.must_equal %(<a href="http://lotusrb.org">\n<img src="/images/logo.png">\n</a>)
     end
   end
 
@@ -58,6 +58,40 @@ CONTENT
     end
   end
 
+  describe '<script>' do
+    it 'generates a script tag with a link to a javascript' do
+      result = @builder.script(src: '/assets/application.js').to_s
+      result.must_equal %(<script src="/assets/application.js"></script>)
+    end
+
+    it 'generates a script tag with javascript code' do
+      result = @builder.script { %(alert("hello")) }.to_s
+      result.must_equal %(<script>\nalert("hello")\n</script>)
+    end
+  end
+
+  describe '<template>' do
+    it 'generates a template tag' do
+      result = @builder.template(id: 'product') do
+        div 'Computer'
+      end.to_s
+
+      result.must_equal %(<template id="product">\n<div>Computer</div>\n</template>)
+    end
+
+    it 'generates a script tag with javascript code' do
+      result = @builder.script { %(alert("hello")) }.to_s
+      result.must_equal %(<script>\nalert("hello")\n</script>)
+    end
+  end
+
+  describe '<title>' do
+    it 'generates a title' do
+      result = @builder.title('Welcome to Foo').to_s
+      result.must_equal %(<title>Welcome to Foo</title>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################
@@ -78,6 +112,30 @@ CONTENT
     it 'generates an image with size' do
       result = @builder.img(src: '/images/logo.png', height: 128, width: 128).to_s
       result.must_equal %(<img src="/images/logo.png" height="128" width="128">)
+    end
+  end
+
+  describe '<link>' do
+    it 'generates a link to a stylesheet' do
+      result = @builder.link(href: '/assets/application.css', rel: 'stylesheet').to_s
+      result.must_equal %(<link href="/assets/application.css" rel="stylesheet">)
+    end
+  end
+
+  describe '<meta>' do
+    it 'generates HTML4 content type' do
+      result = @builder.meta(http_equiv: 'Content-Type', content: 'text/html; charset=utf-8').to_s
+      result.must_equal %(<meta http-equiv="Content-Type" content="text/html; charset=utf-8">)
+    end
+
+    it 'generates HTML5 content type' do
+      result = @builder.meta(charset: 'utf-8').to_s
+      result.must_equal %(<meta charset="utf-8">)
+    end
+
+    it 'generates a page refresh' do
+      result = @builder.meta(http_equiv: 'refresh', content: '23;url=http://lotusrb.org').to_s
+      result.must_equal %(<meta http-equiv="refresh" content="23;url=http://lotusrb.org">)
     end
   end
 end

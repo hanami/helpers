@@ -20,7 +20,7 @@ module Lotus
         def content
           case @content
           when Proc
-            @builder.instance_exec(&@content)
+            "\n#{ @builder.instance_exec(&@content) }\n"
           else
             @content
           end

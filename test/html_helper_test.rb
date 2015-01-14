@@ -18,7 +18,7 @@ describe Lotus::Helpers::HtmlHelper do
   end
 
   it 'returns a tag with block content as string' do
-    @view.div_with_block_content_as_string.to_s.must_equal %(<div>hola</div>)
+    @view.div_with_block_content_as_string.to_s.must_equal %(<div>\nhola\n</div>)
   end
 
   it 'returns a tag with block content as tag helper' do
@@ -26,7 +26,7 @@ describe Lotus::Helpers::HtmlHelper do
   end
 
   it 'returns a tag with block content with nested calls' do
-    @view.div_with_block_content_with_nested_calls.to_s.must_equal %(<div><span>hello</span></div>)
+    @view.div_with_block_content_with_nested_calls.to_s.must_equal %(<div>\n<span>hello</span>\n</div>)
   end
 
   it 'returns a tag with attribute' do
@@ -46,6 +46,6 @@ describe Lotus::Helpers::HtmlHelper do
   end
 
   it 'returns a tag with block content as string and attributes' do
-    @view.div_with_block_content_as_string_and_attrs.to_s.must_equal %(<div id="sidebar" class="blue">bonjour</div>)
+    @view.div_with_block_content_as_string_and_attrs.to_s.must_equal %(<div id="sidebar" class="blue">\nbonjour\n</div>)
   end
 end

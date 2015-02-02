@@ -45,13 +45,15 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
 
   describe '<addr>' do
     it 'generates an address' do
-      content = <<-CONTENT
+      content = Lotus::Utils::Escape::SafeString.new(
+<<-CONTENT
 Mozilla Foundation<br>
 1981 Landings Drive<br>
 Building K<br>
 Mountain View, CA 94043-0801<br>
 USA
 CONTENT
+)
 
       result = @builder.address(content).to_s
       result.must_equal %(<address>#{ content }</address>)
@@ -65,7 +67,7 @@ CONTENT
     end
 
     it 'generates a script tag with javascript code' do
-      result = @builder.script { %(alert("hello")) }.to_s
+      result = @builder.script { Lotus::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
       result.must_equal %(<script>\nalert("hello")\n</script>)
     end
   end
@@ -80,7 +82,7 @@ CONTENT
     end
 
     it 'generates a script tag with javascript code' do
-      result = @builder.script { %(alert("hello")) }.to_s
+      result = @builder.script { Lotus::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
       result.must_equal %(<script>\nalert("hello")\n</script>)
     end
   end

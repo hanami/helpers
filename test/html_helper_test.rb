@@ -60,4 +60,20 @@ describe Lotus::Helpers::HtmlHelper do
   it 'returns a custom empty tag' do
     @view.custom_empty_tag.to_s.must_equal %(<xr id="next">)
   end
+
+  it 'autoescapes string contents' do
+    @view.evil_string_content.to_s.must_equal %(<div>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>)
+  end
+
+  it 'autoescapes block contents' do
+    @view.evil_block_content.to_s.must_equal %(<div>\n&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;\n</div>)
+  end
+
+  it 'autoescapes nested helpers contents' do
+    @view.evil_tag_helper.to_s.must_equal %(<div><p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p></div>)
+  end
+
+  it 'autoescapes nested blocks' do
+    @view.evil_nested_block_content.to_s.must_equal %(<div>\n<p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p>\n</div>)
+  end
 end

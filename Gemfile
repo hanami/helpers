@@ -3,9 +3,11 @@ gemspec
 
 
 unless ENV['TRAVIS']
-  gem 'byebug', require: false, platforms: :mri if RUBY_VERSION >= '2.1.0'
+  gem 'byebug', require: false, platforms: :mri
   gem 'yard',   require: false
 end
+
+gem 'lotus-utils', github: 'lotus/utils', branch: 'html-escape' # FIXME set the proper branch
 
 gem 'simplecov', require: false
 gem 'coveralls', require: false

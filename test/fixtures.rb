@@ -66,4 +66,22 @@ class HtmlView
   def custom_empty_tag
     html.empty_tag(:xr, id: 'next')
   end
+
+  def evil_string_content
+    html.div("<script>alert('xss')</script>")
+  end
+
+  def evil_block_content
+    html.div { "<script>alert('xss')</script>" }
+  end
+
+  def evil_tag_helper
+    html.div(html.p("<script>alert('xss')</script>"))
+  end
+
+  def evil_nested_block_content
+    html.div do
+      p "<script>alert('xss')</script>"
+    end
+  end
 end

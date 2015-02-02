@@ -1,4 +1,3 @@
-# require 'delegate'
 require 'lotus/helpers/html_helper/empty_html_node'
 
 module Lotus
@@ -26,10 +25,10 @@ module Lotus
             if @builder.nested?
               "\n#{ @builder }\n"
             else
-              "\n#{ result }\n"
+              "\n#{ Utils::Escape.html(result) }\n"
             end
           else
-            @content
+            Utils::Escape.html(@content)
           end
         end
 

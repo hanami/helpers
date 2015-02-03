@@ -49,9 +49,6 @@ class HtmlView
     html.div(id: 'content', class: 'filled')
   end
 
-  # FIXME add more cases from:
-  # https://html.spec.whatwg.org/multipage/syntax.html#before-attribute-name-state
-
   def div_with_string_content_and_attrs
     html.div('ciao', id: 'greeting', class: 'blink')
   end

@@ -41,8 +41,8 @@ class HtmlView
     html.div(id: 'container')
   end
 
-  def div_with_undescore_attr
-    html.div('data_where' => 'up')
+  def div_with_data_attr
+    html.div('data-where': 'up')
   end
 
   def div_with_attrs

@@ -208,7 +208,7 @@ module Lotus
         #   #  <p>hello</p>
         #   #</custom>
         #
-        #   html.tag(:custom, 'hello', id: 'foo', 'data_xyz' => 'bar') # => <custom id="foo" data-xyz="bar">hello</custom>
+        #   html.tag(:custom, 'hello', id: 'foo', 'data-xyz': 'bar') # => <custom id="foo" data-xyz="bar">hello</custom>
         #
         #   html.tag(:custom, id: 'foo') { 'hello' }
         #   # =>
@@ -237,7 +237,7 @@ module Lotus
         #
         #   html.empty_tag(:xr, id: 'foo') # => <xr id="foo">
         #
-        #   html.empty_tag(:xr, id: 'foo', 'data_xyz' => 'bar') # => <xr id="foo" data-xyz="bar">
+        #   html.empty_tag(:xr, id: 'foo', 'data-xyz': 'bar') # => <xr id="foo" data-xyz="bar">
         def empty_tag(name, attributes = nil)
           @nodes << EmptyHtmlNode.new(name, attributes)
           self

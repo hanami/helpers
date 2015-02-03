@@ -12,24 +12,6 @@ module Lotus
         # @api private
         ATTRIBUTES_SEPARATOR = ' '.freeze
 
-        # Attributes escape
-        # This is for data-* attributes.
-        #
-        # @since x.x.x
-        # @api private
-        ATTRIBUTES_ESCAPE = {
-          '_' => '-'
-        }.freeze
-
-        # Attributes escape
-        # This is for data-* attributes.
-        #
-        # @since x.x.x
-        # @api private
-        #
-        # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode::ATTRIBUTES_ESCAPE
-        ATTRIBUTES_ESCAPE_PATTERN = Regexp.union(*ATTRIBUTES_ESCAPE.keys)
-
         # Initialize a new empty HTML node
         #
         # @param name [Symbol,String] the name of the tag
@@ -65,8 +47,8 @@ module Lotus
           return if @attributes.nil?
           result = [nil]
 
-          @attributes.each do |attr, value|
-            result << %(#{ attr.to_s.gsub(ATTRIBUTES_ESCAPE_PATTERN){|c| ATTRIBUTES_ESCAPE[c] } }="#{ value }")
+          @attributes.each do |name, value|
+            result << %(#{ name }="#{ value }")
           end
 
           result.join(ATTRIBUTES_SEPARATOR)

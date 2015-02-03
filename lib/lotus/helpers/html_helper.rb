@@ -56,7 +56,7 @@ module Lotus
     #   #</div>
     #
     #   # 6
-    #   html.div('hello', id: 'el', 'data_x' => 'y') # => <div id="el" data-x="y">hello</div>
+    #   html.div('hello', id: 'el', 'data-x': 'y') # => <div id="el" data-x="y">hello</div>
     #
     #   # 7
     #   html.div(id: 'yay') { 'hello' }

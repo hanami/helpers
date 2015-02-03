@@ -37,8 +37,8 @@ describe Lotus::Helpers::HtmlHelper do
     @view.div_with_attr.to_s.must_equal %(<div id="container"></div>)
   end
 
-  it 'returns a tag with undescore attribute' do
-    @view.div_with_undescore_attr.to_s.must_equal %(<div data-where="up"></div>)
+  it 'returns a tag with data attribute' do
+    @view.div_with_data_attr.to_s.must_equal %(<div data-where="up"></div>)
   end
 
   it 'returns a tag with attributes' do

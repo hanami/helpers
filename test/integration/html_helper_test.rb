@@ -10,7 +10,7 @@ describe 'Html helper' do
     @actual.must_match("<div>\n<h1>The Work of Art in the Age of Mechanical Reproduction</h1>\n</div>")
   end
 
-  it 'raises error when a referencing a local variable' do
+  it 'raises an error when referencing an unknown local variable' do
     -> {
       Books::Error.render(format: :html, book: @book)
     }.must_raise NoMethodError

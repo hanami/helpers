@@ -173,7 +173,7 @@ module Lotus
           @nodes = []
         end
 
-        # Defines a custom tag
+        # Define a custom tag
         #
         # @param name [Symbol,String] the name of the tag
         # @param content [String,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content

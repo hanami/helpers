@@ -19,3 +19,6 @@ end
 require 'minitest/autorun'
 $:.unshift 'lib'
 require 'lotus/helpers'
+require_relative './fixtures'
+
+Lotus::View.load!

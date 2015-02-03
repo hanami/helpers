@@ -163,6 +163,15 @@ module Lotus
           @nodes << EmptyHtmlNode.new(name, attributes)
           self
         end
+
+        def resolve(&blk)
+          @context = blk.binding.receiver
+          instance_exec(&blk)
+        end
+
+        def method_missing(m, *args, &blk)
+          @context.__send__(m, *args, &blk)
+        end
       end
     end
   end

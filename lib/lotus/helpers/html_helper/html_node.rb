@@ -20,7 +20,7 @@ module Lotus
         def content
           case @content
           when Proc
-            result = @builder.instance_exec(&@content)
+            result = @builder.resolve(&@content)
 
             if @builder.nested?
               "\n#{ @builder }\n"

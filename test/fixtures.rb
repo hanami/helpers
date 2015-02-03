@@ -1,3 +1,4 @@
+require 'lotus/view'
 require 'lotus/helpers/html_helper'
 
 class HtmlView
@@ -85,3 +86,36 @@ class HtmlView
     end
   end
 end
+
+Book = Struct.new(:title)
+
+module Books
+  class Show
+    include Lotus::View
+    include Lotus::Helpers
+    root __dir__ + '/fixtures/templates'
+
+    def title_widget
+      html.div do
+        h1 book.title
+      end
+    end
+  end
+
+  class Error
+    include Lotus::View
+    include Lotus::Helpers
+    root __dir__ + '/fixtures/templates'
+
+    def error_widget
+      html.div do
+        unknown_local_variable
+      end
+    end
+
+    def render
+      error_widget.to_s
+    end
+  end
+end
+

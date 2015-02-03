@@ -1,7 +1,11 @@
-require "lotus/helpers/version"
+require 'lotus/helpers/version'
 
 module Lotus
   module Helpers
-    # Your code goes here...
+    def self.included(base)
+      base.class_eval do
+        include Lotus::Helpers::HtmlHelper
+      end
+    end
   end
 end

@@ -7,7 +7,7 @@ unless ENV['TRAVIS']
   gem 'yard',   require: false
 end
 
-gem 'lotus-utils', github: 'lotus/utils', branch: 'html-escape' # FIXME set the proper branch
+gem 'lotus-utils', github: 'lotus/utils', branch: 'master' # FIXME use a stable branch
 gem 'lotus-view',  github: 'lotus/view',  branch: '0.3.x'
 
 gem 'simplecov', require: false

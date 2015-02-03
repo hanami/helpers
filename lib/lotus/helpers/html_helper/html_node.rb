@@ -3,7 +3,20 @@ require 'lotus/helpers/html_helper/empty_html_node'
 module Lotus
   module Helpers
     module HtmlHelper
+      # HTML node
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode
       class HtmlNode < EmptyHtmlNode
+        # Initialize a new HTML node
+        #
+        # @param name [Symbol,String] the name of the tag
+        # @param content [String,Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
+        # @param attributes [Hash,NilClass] the optional tag attributes
+        #
+        # @return [Lotus::Helpers::HtmlHelper::HtmlNode]
         def initialize(name, content, attributes)
           @builder = HtmlBuilder.new
           @name    = name
@@ -17,6 +30,25 @@ module Lotus
                      end
         end
 
+        # Resolve and return the output
+        #
+        # @return [String] the output
+        #
+        # @since x.x.x
+        # @api private
+        #
+        # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode#to_s
+        def to_s
+          %(#{ super }#{ content }</#{ @name }>)
+        end
+
+        private
+        # Resolve the (nested) content
+        #
+        # @return [String] the content
+        #
+        # @since x.x.x
+        # @api private
         def content
           case @content
           when Proc
@@ -30,10 +62,6 @@ module Lotus
           else
             Utils::Escape.html(@content)
           end
-        end
-
-        def to_s
-          %(#{ super }#{ content }</#{ @name }>)
         end
       end
     end

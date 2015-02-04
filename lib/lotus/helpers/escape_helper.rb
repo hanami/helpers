@@ -7,36 +7,18 @@ module Lotus
     # You can include this module inside your view and 
     # the view will have access all methods.
     #
-    # Features:
-    #   * Auto escape html (1)
-    #   * Auto escape html attributes (2)
-    #   * Auto escape urls (3)
-    #   * Mark strings as safe strings (4)
+    # By including <tt>Lotus::Helpers::EscapeHelper</tt> it will inject private
+    # methods as markup escape utilities.
     #
     # @since x.x.x
-    #
-    # @see Lotus::Helpers::EscapeHelper#escape_html
-    # @see Lotus::Helpers::EscapeHelper#escape_html_attribute
-    # @see Lotus::Helpers::EscapeHelper#escape_url
-    # @see Lotus::Helpers::EscapeHelper#raw
-    #
-    # @example Usage
-    #   # 1
-    #   escape_html "<script>alert('xss')</script>" # => &lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;
-    #
-    #   # 2
-    #   <a title='#{escape_html_attribute('<script>alert(\'xss\')</script>')}'>link</a> 
-    #     # => <a title='&lt;script&gt;alert&#x28;&#x27;xss&#x27;&#x29;&lt;&#x2f;script&gt;'>link</a>
-    #
-    #   # 3
-    #   escape_url "javascript:alert('xss')" #=> ""
-    #
-    #   # 4
-    #   raw "<div>I'm a raw string</div>"        # => <div>I'm a raw string</div>
-    #   raw("<div>I'm a raw string</div>").class # => Lotus::Utils::Escape::SafeString
     module EscapeHelper
       private
-      # Escape html string
+      # Escape the given HTML tag content.
+      #
+      # This should be used only for untrusted contents: user input.
+      #
+      # This should be used only for tag contents.
+      # To escape tag attributes please use <tt>Lotus::Helpers::EscapeHelper#escape_html_attribute</tt>.
       #
       # @param input [String] the input
       #
@@ -44,14 +26,65 @@ module Lotus
       #
       # @since x.x.x
       #
-      # @see Lotus::Utils::Escape.html
+      # @see Lotus::Helpers::EscapeHelper#escape_html_attribute
+      #
+      # @example Basic usage
+      #   require 'lotus/helpers/escape_helper'
+      #
+      #   class MyView
+      #     include Lotus::Helpers::EscapeHelper
+      #
+      #     def good_content
+      #       h "hello"
+      #     end
+      #
+      #     def evil_content
+      #       h "<script>alert('xss')</script>"
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #
+      #   view.good_content
+      #     # => "hello"
+      #
+      #   view.evil_content
+      #     # => "&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;"
+      #
+      # @example With HTML builder
+      #   #
+      #   # CONTENTS ARE AUTOMATICALLY ESCAPED
+      #   #
+      #   require 'lotus/helpers'
+      #
+      #   class MyView
+      #     include Lotus::Helpers
+      #
+      #     def evil_content
+      #       html.div do
+      #         "<script>alert('xss')</script>"
+      #       end
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #   view.evil_content
+      #     # => "<div>\n&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>"
       def escape_html(input)
         Utils::Escape.html(input)
       end
 
+      # @since x.x.x
       alias_method :h, :escape_html
 
-      # Escape html attribute string
+      # Escape the given HTML tag attribute.
+      #
+      # This MUST be used for escaping HTML tag attributes.
+      #
+      # This should be used only for untrusted contents: user input.
+      #
+      # This can also be used to escape tag contents, but it's slower.
+      # For this purpose use <tt>Lotus::Helpers::EscapeHelper#escape_html</tt>.
       #
       # @param input [String] the input
       #
@@ -59,17 +92,81 @@ module Lotus
       #
       # @since x.x.x
       #
-      # @see Lotus::Utils::Escape.html_attribute
+      # @see Lotus::Helpers::EscapeHelper#escape_html
+      #
+      # @example Basic usage
+      #   require 'lotus/helpers/escape_helper'
+      #
+      #   class MyView
+      #     include Lotus::Helpers::EscapeHelper
+      #
+      #     def good_attribute
+      #       attribute = "small"
+      #
+      #       %(<span class="#{ ha(attribute) }">hello</span>
+      #     end
+      #
+      #     def evil_attribute
+      #       attribute = %(" onclick="javascript:alert('xss')" id=")
+      #
+      #       %(<span class="#{ ha(attribute) }">hello</span>
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #
+      #   view.good_attribute
+      #     # => %(<span class="small">hello</span>)
+      #
+      #   view.evil_attribute
+      #     # => %(<span class="&quot;&#x20;onclick&#x3d;&quot;javascript&#x3a;alert&#x28;&#x27;xss&#x27;&#x29;&quot;&#x20;id&#x3d;&quot;">hello</span>
+      #
+      # @example With HTML builder
+      #   #
+      #   # ATTRIBUTES AREN'T AUTOMATICALLY ESCAPED
+      #   #
+      #   require 'lotus/helpers'
+      #
+      #   class MyView
+      #     include Lotus::Helpers
+      #
+      #     def evil_attribute
+      #       user_input_attribute = %(" onclick="javascript:alert('xss')" id=")
+      #
+      #       html.span id: 'greet', class: ha(user_input_attribute) do
+      #         "hello"
+      #       end
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #   view.evil_attribute
+      #     # => %(<span class="&quot;&#x20;onclick&#x3d;&quot;javascript&#x3a;alert&#x28;&#x27;xss&#x27;&#x29;&quot;&#x20;id&#x3d;&quot;">hello</span>
       def escape_html_attribute(input)
         Utils::Escape.html_attribute(input)
       end
 
+      # @since x.x.x
       alias_method :ha, :escape_html_attribute
 
-      # Escape an url
+      # Escape an URL to be used in HTML attributes
+      #
+      # This allows only URLs with whitelisted schemes to pass the filter.
+      # Everything else is stripped.
+      #
+      # Default schemes are:
+      #
+      #   * http
+      #   * https
+      #   * mailto
+      #
+      # If you want to allow a different set of schemes, you should pass it as
+      # second argument.
+      #
+      # This should be used only for untrusted contents: user input.
       #
       # @param input [String] the input
-      # @param schemes [Array<String>] an array of whitelisted schemes
+      # @param schemes [Array<String>] an optional array of whitelisted schemes
       #
       # @return [String] the escaped string
       #
@@ -77,21 +174,95 @@ module Lotus
       #
       # @see Lotus::Utils::Escape.url
       # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
+      #
+      # @example Basic usage
+      #   require 'lotus/helpers/escape_helper'
+      #
+      #   class MyView
+      #     include Lotus::Helpers::EscapeHelper
+      #
+      #     def good_url
+      #       url = "http://lotusrb.org"
+      #
+      #       %(<a href="#{ u(url) }">Lotus</a>
+      #     end
+      #
+      #     def evil_url
+      #       url = "javascript:alert('xss')"
+      #
+      #       %(<a href="#{ u(url) }">Evil</a>
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #
+      #   view.good_url
+      #     # => %(<a href="http://lotusrb.org">Lotus</a>)
+      #
+      #   view.evil_url
+      #     # => %(<a href="">Evil</a>)
+      #
+      # @example Custom schemes
+      #   require 'lotus/helpers/escape_helper'
+      #
+      #   class MyView
+      #     include Lotus::Helpers::EscapeHelper
+      #
+      #     def ftp_link
+      #       schemes = ['ftp', 'ftps']
+      #       url     = 'ftps://ftp.example.org'
+      #
+      #       %(<a href="#{ u(url, schemes) }">FTP</a>
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #
+      #   view.ftp_link
+      #     # => %(<a href="ftps://ftp.example.org">FTP</a>)
       def escape_url(input, schemes = Utils::Escape::DEFAULT_URL_SCHEMES)
         Utils::Escape.url(input, schemes)
       end
 
+      # @since x.x.x
       alias_method :u, :escape_url
 
-      # Mark safe a string
+      # Bypass escape.
+      #
+      # Please notice that this can be really dangerous.
+      # Use at your own peril.
       #
       # @param input [String] the input
       #
-      # @return [String] the string marked as safe string
+      # @return [Lotus::Utils::Escape::SafeString] the string marked as safe string
       #
       # @since x.x.x
       #
-      # @see Lotus::Utils::Escape.raw
+      # @example
+      #   require 'lotus/helpers/escape_helper'
+      #
+      #   class MyView
+      #     include Lotus::Helpers::EscapeHelper
+      #
+      #     def good_content
+      #       raw "<p>hello</p>"
+      #     end
+      #
+      #     def evil_content
+      #       raw "<script>alert('xss')</script>"
+      #     end
+      #   end
+      #
+      #   view = MyView.new
+      #
+      #   view.good_content
+      #     # => "<p>hello</p>"
+      #
+      #   #
+      #   # !!! WE HAVE OPENED OUR APPLICATION TO AN XSS ATTACK !!!
+      #   #
+      #   view.evil_content
+      #     # => "<script>alert('xss')</script>"
       def raw(input)
         Utils::Escape::SafeString.new(input)
       end

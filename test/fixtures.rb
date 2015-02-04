@@ -1,5 +1,6 @@
 require 'lotus/view'
 require 'lotus/helpers/html_helper'
+require 'lotus/helpers/escape_helper'
 
 class HtmlView
   include Lotus::Helpers::HtmlHelper
@@ -81,6 +82,51 @@ class HtmlView
     html.div do
       p "<script>alert('xss')</script>"
     end
+  end
+end
+
+
+class EscapeView
+  include Lotus::Helpers::EscapeHelper
+
+  def good_string
+    escape_html "this is a good string"
+  end
+
+  def evil_string
+    escape_html "<script>alert('xss')</script>"
+  end
+
+  def good_attributes_string
+    "<a title='#{escape_html_attribute('foo')}'>link</a>"
+  end
+
+  def evil_attributes_string
+    "<a title='#{escape_html_attribute('<script>alert(\'xss\')</script>')}'>link</a>"
+  end
+
+  def good_url_string
+    escape_url "http://lotusrb.org"
+  end
+
+  def evil_url_string
+    escape_url "javascript:alert('xss')"
+  end
+
+  def raw_string
+    raw "<div>I'm a raw string</div>"
+  end
+
+  def html_string_alias
+    h "this is a good string"
+  end
+
+  def html_attribute_string_alias
+    "<a title='#{ha('foo')}'>link</a>"
+  end
+
+  def url_string_alias
+    u "http://lotusrb.org"
   end
 end
 

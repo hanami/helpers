@@ -1,5 +1,6 @@
 require 'lotus/helpers/version'
 require 'lotus/helpers/html_helper'
+require 'lotus/helpers/escape_helper'
 
 module Lotus
   # View helpers for Ruby applications
@@ -17,6 +18,7 @@ module Lotus
     def self.included(base)
       base.class_eval do
         include Lotus::Helpers::HtmlHelper
+        include Lotus::Helpers::EscapeHelper
       end
     end
   end

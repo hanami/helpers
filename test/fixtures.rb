@@ -126,17 +126,26 @@ class EscapeView
   end
 
   def url_string_alias
-    u "http://lotusrb.org"
+    hu "http://lotusrb.org"
   end
 end
 
 Book = Struct.new(:title)
+User = Struct.new(:name, :website, :snippet)
+
+module TestView
+  def self.included(view)
+    view.class_eval do
+      include Lotus::View
+      include Lotus::Helpers
+      root __dir__ + '/fixtures/templates'
+    end
+  end
+end
 
 module Books
   class Show
-    include Lotus::View
-    include Lotus::Helpers
-    root __dir__ + '/fixtures/templates'
+    include TestView
 
     def title_widget
       html.div do
@@ -146,9 +155,7 @@ module Books
   end
 
   class Error
-    include Lotus::View
-    include Lotus::Helpers
-    root __dir__ + '/fixtures/templates'
+    include TestView
 
     def error_widget
       html.div do
@@ -162,3 +169,24 @@ module Books
   end
 end
 
+module Users
+  class Show
+    include TestView
+
+    def title
+      html.h1(user.name)
+    end
+
+    def details
+      html.div(id: 'details') do
+        ul do
+          li do
+            a('website', href: hu(user.website), title: "#{ ha(user.name) }'s website")
+          end
+
+          li raw(user.snippet)
+        end
+      end
+    end
+  end
+end

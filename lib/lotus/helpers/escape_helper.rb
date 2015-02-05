@@ -184,13 +184,13 @@ module Lotus
       #     def good_url
       #       url = "http://lotusrb.org"
       #
-      #       %(<a href="#{ u(url) }">Lotus</a>
+      #       %(<a href="#{ hu(url) }">Lotus</a>
       #     end
       #
       #     def evil_url
       #       url = "javascript:alert('xss')"
       #
-      #       %(<a href="#{ u(url) }">Evil</a>
+      #       %(<a href="#{ hu(url) }">Evil</a>
       #     end
       #   end
       #
@@ -212,7 +212,7 @@ module Lotus
       #       schemes = ['ftp', 'ftps']
       #       url     = 'ftps://ftp.example.org'
       #
-      #       %(<a href="#{ u(url, schemes) }">FTP</a>
+      #       %(<a href="#{ hu(url, schemes) }">FTP</a>
       #     end
       #   end
       #
@@ -225,7 +225,7 @@ module Lotus
       end
 
       # @since x.x.x
-      alias_method :u, :escape_url
+      alias_method :hu, :escape_url
 
       # Bypass escape.
       #

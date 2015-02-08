@@ -4,3 +4,10 @@ cache: bundler
 script: 'bundle exec rake test:coverage --trace'
 rvm:
   - 2.2
+  - jruby-head
+  - rbx-2
+
+matrix:
+  allow_failures:
+    - rvm: jruby-head
+    - rvm: rbx-2

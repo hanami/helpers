@@ -1,6 +1,7 @@
 require 'lotus/view'
 require 'lotus/helpers/html_helper'
 require 'lotus/helpers/escape_helper'
+require 'lotus/helpers/numbers'
 
 class HtmlView
   include Lotus::Helpers::HtmlHelper
@@ -89,6 +90,61 @@ class HtmlView
   end
 end
 
+class NumbersView
+  include Lotus::Helpers::Numbers
+
+  def single_digit
+    format_number 1
+  end
+
+  def thousand_digits
+    format_number 1_000
+  end
+
+  def million_digits
+    format_number 1_000_000
+  end
+
+  def zero_point_one
+    format_number 0.1
+  end
+
+  def precision_default_format
+    format_number 3.141592
+  end
+
+  def precision_format
+    format_number 3.141592, precision: 4
+  end
+
+  def mixed_digits
+    format_number 5002.007, precision: 3
+  end
+
+  def euro_format
+    format_number 1234.12, delimiter: '.', separator: ','
+  end
+
+  def pass_nil
+    format_number nil
+  end
+
+  def pass_non_numeric
+    format_number '10'
+  end
+
+  def big_decimal
+    format_number BigDecimal.new("0.0001"), precision: 4
+  end
+
+  def complex
+    format_number Complex(1)
+  end
+
+  def rational
+    format_number Rational(1)
+  end
+end
 
 class EscapeView
   include Lotus::Helpers::EscapeHelper

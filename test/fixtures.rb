@@ -190,3 +190,35 @@ module Users
     end
   end
 end
+
+module FullStack
+  class Routes
+    def self.path(name)
+      "/#{ name }"
+    end
+  end
+
+  module Views
+    module Dashboard
+      class Index
+        include TestView
+        root __dir__ + '/fixtures/templates/full_stack'
+        template 'dashboard/index'
+
+        def routing_helper_path
+          routes.path(:dashboard)
+        end
+      end
+    end
+  end
+end
+
+class ViewWithoutRoutingHelper
+  include TestView
+  root __dir__ + '/fixtures/templates/full_stack'
+  template 'dashboard/index'
+
+  def routing_helper_path
+    routes.path(:dashboard)
+  end
+end

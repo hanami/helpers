@@ -17,6 +17,7 @@ module Lotus
         private
 
         DELIMITED_REGEX = /(\d)(?=(\d\d\d)+(?!\d))/
+        DEFAULT_SEPARATOR = '.'
 
         attr_accessor :number, :delimiter, :separator, :precision
 
@@ -36,8 +37,7 @@ module Lotus
         end
 
         def split_number
-          type_check!
-          rounded_number.to_s.split('.')
+          to_str.split(DEFAULT_SEPARATOR)
         end
 
         def rounded_number
@@ -50,20 +50,21 @@ module Lotus
           end
         end
 
-        def type_check!
-          if nil_or_non_numeric
+        def to_f
+          case rounded_number
+          when NilClass
             raise TypeError
-          elsif rational_complex_or_decimal
-            self.number = Lotus::Utils::Kernel.Float(number)
+          when String
+            raise TypeError
+          when Fixnum
+            number
+          else
+            Utils::Kernel.Float(rounded_number)
           end
         end
 
-        def nil_or_non_numeric
-          (number == nil) || (!number.is_a? Numeric)
-        end
-
-        def rational_complex_or_decimal
-          (number.is_a? Rational) || (number.is_a? Complex) || (number.is_a? BigDecimal)
+        def to_str
+          to_f.to_s
         end
 
       end

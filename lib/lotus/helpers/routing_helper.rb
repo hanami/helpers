@@ -2,7 +2,7 @@ module Lotus
   module Helpers
     # Routing helper for full stack Lotus web applications.
     #
-    # For a given application called <tt>Web::Application</tt>, at the runtime
+    # For a given application called <tt>Web::Application</tt>, at runtime
     # Lotus creates a routes factory called <tt>Web::Routes</tt>.
     #
     # By including this module in a view, it makes that factory avaliable as

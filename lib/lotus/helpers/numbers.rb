@@ -47,8 +47,8 @@ module Lotus
       #
       #   view.euros
       #     # => "1.256,95"
-      def format_number(number, delimiter: ',', separator: '.', precision: nil)
-        number_parser = NumberFormatter.new(number, delimiter, separator, precision)
+      def format_number(number, options = {})
+        number_parser = NumberFormatter.new(number, options)
         number_parser.parse
       end
     end

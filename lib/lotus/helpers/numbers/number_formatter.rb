@@ -21,11 +21,11 @@ module Lotus
 
         attr_accessor :number, :delimiter, :separator, :precision
 
-        def initialize(number, delimiter, separator, precision)
+        def initialize(number, options)
           @number = number
-          @delimiter = delimiter
-          @separator = separator
-          @precision = precision
+          @delimiter = options.fetch(:delimiter, ',')
+          @separator = options.fetch(:separator, '.')
+          @precision = options.fetch(:precision, nil)
         end
 
         def parts

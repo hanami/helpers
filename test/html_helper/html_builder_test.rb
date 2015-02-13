@@ -126,7 +126,9 @@ CONTENT
 
   describe '<meta>' do
     it 'generates HTML4 content type' do
-      result = @builder.meta('http-equiv': 'Content-Type', content: 'text/html; charset=utf-8').to_s
+      # RUBY_VERSION >= 2.2
+      # result = @builder.meta('http-equiv': 'Content-Type', content: 'text/html; charset=utf-8').to_s
+      result = @builder.meta(:'http-equiv' => 'Content-Type', content: 'text/html; charset=utf-8').to_s
       result.must_equal %(<meta http-equiv="Content-Type" content="text/html; charset=utf-8">)
     end
 
@@ -136,7 +138,9 @@ CONTENT
     end
 
     it 'generates a page refresh' do
-      result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://lotusrb.org').to_s
+      # RUBY_VERSION >= 2.2
+      # result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://lotusrb.org').to_s
+      result = @builder.meta(:'http-equiv' => 'refresh', content: '23;url=http://lotusrb.org').to_s
       result.must_equal %(<meta http-equiv="refresh" content="23;url=http://lotusrb.org">)
     end
   end

@@ -42,8 +42,12 @@ class HtmlView
     html.div(id: 'container')
   end
 
+  # RUBY_VERSION >= '2.2'
+  # def div_with_data_attr
+  #   html.div('data-where': 'up')
+  # end
   def div_with_data_attr
-    html.div('data-where': 'up')
+    html.div(:'data-where' => 'up')
   end
 
   def div_with_attrs

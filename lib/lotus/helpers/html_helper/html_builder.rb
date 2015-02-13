@@ -1,3 +1,4 @@
+require 'lotus/utils' # RUBY_VERSION >= '2.2'
 require 'lotus/utils/escape'
 require 'lotus/helpers/html_helper/empty_html_node'
 require 'lotus/helpers/html_helper/html_node'
@@ -269,9 +270,16 @@ module Lotus
         #
         # @since x.x.x
         # @api private
-        def resolve(&blk)
-          @context = blk.binding.receiver
-          instance_exec(&blk)
+        if RUBY_VERSION >= '2.2' && !Utils.jruby?
+          def resolve(&blk)
+            @context = blk.binding.receiver
+            instance_exec(&blk)
+          end
+        else
+          def resolve(&blk)
+            @context = eval 'self', blk.binding
+            instance_exec(&blk)
+          end
         end
 
         # Forward missing methods to the current context.

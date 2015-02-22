@@ -1,4 +1,5 @@
 require 'lotus/utils' # RUBY_VERSION >= '2.2'
+require 'lotus/utils/class_attribute'
 require 'lotus/utils/escape'
 require 'lotus/helpers/html_helper/empty_html_node'
 require 'lotus/helpers/html_helper/html_node'
@@ -149,7 +150,7 @@ module Lotus
         CONTENT_TAGS.each do |tag|
           class_eval %{
             def #{ tag }(content = nil, attributes = nil, &blk)
-              @nodes << HtmlNode.new(:#{ tag }, blk || content, attributes || content)
+              @nodes << self.class.html_node.new(:#{ tag }, blk || content, attributes || content, options)
               self
             end
           }
@@ -164,6 +165,11 @@ module Lotus
           }
         end
 
+        include Utils::ClassAttribute
+
+        class_attribute :html_node
+        self.html_node = ::Lotus::Helpers::HtmlHelper::HtmlNode
+
         # Initialize a new builder
         #
         # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the builder
@@ -172,6 +178,9 @@ module Lotus
         # @api private
         def initialize
           @nodes = []
+        end
+
+        def options
         end
 
         # Define a custom tag
@@ -217,7 +226,7 @@ module Lotus
         #   #  hello
         #   #</custom>
         def tag(name, content = nil, attributes = nil, &blk)
-          @nodes << HtmlNode.new(name, blk || content, attributes || content)
+          @nodes << HtmlNode.new(name, blk || content, attributes || content, options)
           self
         end
 

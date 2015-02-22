@@ -1,4 +1,5 @@
 require 'lotus/view'
+require 'lotus/controller'
 require 'lotus/helpers/html_helper'
 require 'lotus/helpers/escape_helper'
 
@@ -195,10 +196,32 @@ module Users
   end
 end
 
+class FormHelperView
+  include Lotus::Helpers::FormHelper
+  attr_reader :params
+
+  def initialize(params)
+    @params = Lotus::Action::Params.new(params)
+  end
+end
+
+class DeliveryParams < Lotus::Action::Params
+  param :delivery do
+    param :customer_id, type: Integer, presence: true
+    param :address do
+      param :street, type: String, presence: true
+    end
+  end
+end
+
 module FullStack
   class Routes
     def self.path(name)
       "/#{ name }"
+    end
+
+    def self.deliveries
+      '/deliveries'
     end
   end
 
@@ -212,6 +235,13 @@ module FullStack
         def routing_helper_path
           routes.path(:dashboard)
         end
+      end
+    end
+
+    module Deliveries
+      class New
+        include TestView
+        template 'deliveries/new'
       end
     end
   end

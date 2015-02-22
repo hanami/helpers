@@ -2,6 +2,7 @@ require 'lotus/helpers/version'
 require 'lotus/helpers/html_helper'
 require 'lotus/helpers/escape_helper'
 require 'lotus/helpers/routing_helper'
+require 'lotus/helpers/form_helper'
 
 module Lotus
   # View helpers for Ruby applications
@@ -21,6 +22,7 @@ module Lotus
         include Lotus::Helpers::HtmlHelper
         include Lotus::Helpers::EscapeHelper
         include Lotus::Helpers::RoutingHelper
+        include Lotus::Helpers::FormHelper
       end
     end
   end

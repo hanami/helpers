@@ -17,7 +17,7 @@ module Lotus
         # @param attributes [Hash,NilClass] the optional tag attributes
         #
         # @return [Lotus::Helpers::HtmlHelper::HtmlNode]
-        def initialize(name, content, attributes)
+        def initialize(name, content, attributes, options = {})
           @builder = HtmlBuilder.new
           @name    = name
           @content = case content

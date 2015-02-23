@@ -15,6 +15,7 @@ module Lotus
         # @param name [Symbol,String] the name of the tag
         # @param content [String,Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
         # @param attributes [Hash,NilClass] the optional tag attributes
+        # @param options [Hash] a optional set of data
         #
         # @return [Lotus::Helpers::HtmlHelper::HtmlNode]
         def initialize(name, content, attributes, options = {})

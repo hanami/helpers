@@ -205,6 +205,24 @@ class FormHelperView
   end
 end
 
+class Address
+  attr_reader :street
+
+  def initialize(attributes = {})
+    @street = attributes[:street]
+  end
+end
+
+class Delivery
+  attr_reader :id, :customer_id, :address
+
+  def initialize(attributes = {})
+    @id          = attributes[:id]
+    @customer_id = attributes[:customer_id]
+    @address     = attributes[:address]
+  end
+end
+
 class DeliveryParams < Lotus::Action::Params
   param :delivery do
     param :customer_id, type: Integer, presence: true
@@ -220,8 +238,12 @@ module FullStack
       "/#{ name }"
     end
 
-    def self.deliveries
+    def self.deliveries_path
       '/deliveries'
+    end
+
+    def self.delivery_path(attrs = {})
+      "/deliveries/#{ attrs.fetch(:id) }"
     end
   end
 
@@ -242,6 +264,27 @@ module FullStack
       class New
         include TestView
         template 'deliveries/new'
+
+        def form_values
+          :delivery
+        end
+
+        def form_action
+          routes.deliveries_path
+        end
+      end
+
+      class Edit
+        include TestView
+        template 'deliveries/edit'
+
+        def form_values
+          Hash[delivery: delivery]
+        end
+
+        def form_action
+          routes.delivery_path(id: delivery.id)
+        end
       end
     end
   end

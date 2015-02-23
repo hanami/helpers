@@ -119,7 +119,7 @@ module Lotus
       #
       # @example Method override
       #   <%=
-      #     form_for :book, routes.book_path(book.id), method: :put do
+      #     form_for :book, routes.book_path(id: book.id), method: :put do
       #       text_field :title
       #
       #       submit 'Update'
@@ -154,9 +154,95 @@ module Lotus
       #     #
       #     #   <button type="submit">Create</button>
       #     # </form>
+      #
+      # @example Form to create a new resource
+      #   <%=
+      #     form_for :book, routes.books_path do
+      #       text_field :title
+      #
+      #       submit 'Create'
+      #     end
+      #   %>
+      #
+      #   Output:
+      #     # <form action="/books" id="book-form" method="POST">
+      #     #   <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #     #
+      #     #   <button type="submit">Create</button>
+      #     # </form>
+      #
+      # @example Form to update an existing resource
+      #   <%=
+      #     form_for { book: book }, routes.book_path(id: book.id) do
+      #       text_field :title
+      #
+      #       submit 'Update'
+      #     end
+      #   %>
+      #
+      #   Output:
+      #     # <form action="/books/23" id="book-form" method="POST">
+      #     #   <input type="hidden" name="_method" value="PUT">
+      #     #   <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #     #
+      #     #   <button type="submit">Update</button>
+      #     # </form>
+      #
+      # @example Share markup betweek new and update forms
+      #   module Deliveries
+      #     class New
+      #       include Lotus::View
+      #       include Lotus::Helpers
+      #
+      #       def form_values
+      #         :delivery
+      #       end
+      #
+      #       def form_action
+      #         routes.deliveries_path
+      #       end
+      #     end
+      #
+      #     class Edit
+      #       include Lotus::View
+      #       include Lotus::Helpers
+      #
+      #       def form_values
+      #         { delivery: delivery }
+      #       end
+      #
+      #       def form_action
+      #         routes.delivery_path(id: delivery.id)
+      #       end
+      #     end
+      #   end
+      #
+      #   # deliveries/_form.html.erb
+      #   <%=
+      #     form_for form_values, form_action do
+      #       text_field :title
+      #
+      #       submit update? ? 'Update' : 'Create'
+      #     end
+      #   %>
+      #
+      #   # deliveries/new.html.erb
+      #   <%= render partial: 'deliveries/form' %>
+      #
+      #   # deliveries/edit.html.erb
+      #   <%= render partial: 'deliveries/form' %>
       def form_for(name, url, attributes = {}, &blk)
-        attributes = { action: url, id: "#{ name }-form", method: DEFAULT_METHOD }.merge(attributes)
-        FormBuilder.new(name, params, attributes, &blk)
+        name, values = case name
+        when Hash
+          [name.first.first, name]
+        else
+          [name, {}]
+        end
+
+        verb       = :patch if values.any?
+        attributes = { action: url, id: "#{ name }-form", method: verb || DEFAULT_METHOD }.merge(attributes)
+
+        FormBuilder.new(name, params, Values.new(values), attributes, &blk)
       end
     end
   end

@@ -5,6 +5,34 @@ require 'lotus/utils/string'
 module Lotus
   module Helpers
     module FormHelper
+      # FIXME Don't inherit from OpenStruct
+      # TODO unify values with params
+      require 'ostruct'
+      class Values < OpenStruct
+        GET_SEPARATOR = '.'.freeze
+
+        def get(key)
+          key, *keys = key.to_s.split(GET_SEPARATOR)
+          result     = self[key]
+
+          Array(keys).each do |k|
+            break if result.nil?
+
+            result = if result.respond_to?(k)
+              result.public_send(k)
+            else
+              nil
+            end
+          end
+
+          result
+        end
+
+        def update?
+          to_h.keys.count > 0
+        end
+      end
+
       # Form builder
       #
       # @since x.x.x
@@ -23,7 +51,7 @@ module Lotus
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#radio_button
-        CHECKED           = 'checked'.freeze
+        CHECKED = 'checked'.freeze
 
         # Selected attribute value for option
         #
@@ -31,7 +59,7 @@ module Lotus
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#select
-        SELECTED          = 'selected'.freeze
+        SELECTED = 'selected'.freeze
 
         # Separator for accept attribute of file input
         #
@@ -39,7 +67,7 @@ module Lotus
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#file_input
-        ACCEPT_SEPARATOR  = ','.freeze
+        ACCEPT_SEPARATOR = ','.freeze
 
         # Replacement for input id interpolation
         #
@@ -66,17 +94,19 @@ module Lotus
         # @param name [Symbol] the toplevel name of the form, it's used to generate
         #   input names, ids, and to lookup params to fill values.
         # @param params [Lotus::Action::Params] the params of the request
+        # @param values [Hash] A set of values
         # @param attributes [Hash] HTML attributes to pass to the form tag
         # @param blk [Proc] A block that describes the contents of the form
         #
         # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
         #
         # @since x.x.x
-        def initialize(name, params, attributes = {}, &blk)
+        def initialize(name, params, values, attributes = {}, &blk)
           super()
 
           @name       = name
           @params     = params
+          @values     = values
           @attributes = attributes
           @blk        = blk
         end
@@ -515,12 +545,16 @@ module Lotus
         end
 
         protected
+        def update?
+          @values.update?
+        end
+
         # A set of options to pass to the sub form helpers.
         #
         # @api private
         # @since x.x.x
         def options
-          Hash[form_name: @name, params: @params, verb: @verb]
+          Hash[form_name: @name, params: @params, values: @values, verb: @verb]
         end
 
         private
@@ -578,7 +612,7 @@ module Lotus
         # @since x.x.x
         def _value(name)
           name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
-          @params.get(name)
+          @values.get(name) || @params.get(name)
         end
 
         # Input <tt>for</tt> HTML attribute

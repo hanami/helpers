@@ -612,7 +612,7 @@ module Lotus
         # @since x.x.x
         def _value(name)
           name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
-          @values.get(name) || @params.get(name)
+          @params.get(name) || @values.get(name)
         end
 
         # Input <tt>for</tt> HTML attribute

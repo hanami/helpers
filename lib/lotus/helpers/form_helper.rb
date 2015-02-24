@@ -85,7 +85,8 @@ module Lotus
       # @param name [Symbol] the toplevel name of the form, it's used to generate
       #   input names, ids, and to lookup params to fill values.
       # @param url [String] the form action URL
-      # @param attributes [Hash] HTML attributes to pass to the form tag
+      # @param options [Hash] HTML attributes to pass to the form tag and form values
+      # @option options [Hash] :values An optional payload of objects to pass
       # @param blk [Proc] A block that describes the contents of the form
       #
       # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
@@ -173,7 +174,7 @@ module Lotus
       #
       # @example Form to update an existing resource
       #   <%=
-      #     form_for { book: book }, routes.book_path(id: book.id) do
+      #     form_for :book, routes.book_path(id: book.id), values: { book: book } do
       #       text_field :title
       #
       #       submit 'Update'
@@ -195,7 +196,7 @@ module Lotus
       #       include Lotus::Helpers
       #
       #       def form_values
-      #         :delivery
+      #         Hash[]
       #       end
       #
       #       def form_action
@@ -208,7 +209,7 @@ module Lotus
       #       include Lotus::Helpers
       #
       #       def form_values
-      #         { delivery: delivery }
+      #         Hash[delivery: delivery]
       #       end
       #
       #       def form_action
@@ -219,7 +220,7 @@ module Lotus
       #
       #   # deliveries/_form.html.erb
       #   <%=
-      #     form_for form_values, form_action do
+      #     form_for :delivery, form_action, values: form_values do
       #       text_field :title
       #
       #       submit update? ? 'Update' : 'Create'
@@ -231,18 +232,12 @@ module Lotus
       #
       #   # deliveries/edit.html.erb
       #   <%= render partial: 'deliveries/form' %>
-      def form_for(name, url, attributes = {}, &blk)
-        name, values = case name
-        when Hash
-          [name.first.first, name]
-        else
-          [name, {}]
-        end
+      def form_for(name, url, options = {}, &blk)
+        values     = Values.new(options.delete(:values) || {})
+        verb       = :patch if values.update?
+        attributes = { action: url, id: "#{ name }-form", method: verb || DEFAULT_METHOD }.merge(options)
 
-        verb       = :patch if values.any?
-        attributes = { action: url, id: "#{ name }-form", method: verb || DEFAULT_METHOD }.merge(attributes)
-
-        FormBuilder.new(name, params, Values.new(values), attributes, &blk)
+        FormBuilder.new(name, params, values, attributes, &blk)
       end
     end
   end

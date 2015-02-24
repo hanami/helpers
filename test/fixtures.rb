@@ -266,7 +266,7 @@ module FullStack
         template 'deliveries/new'
 
         def form_values
-          :delivery
+          Hash[]
         end
 
         def form_action

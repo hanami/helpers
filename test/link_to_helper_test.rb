@@ -18,6 +18,6 @@ describe Lotus::Helpers::LinkToHelper do
   end
 
   it 'returns a link with id' do
-    @view.link_to_with_id.must_equal %(<a id="posts_link" href="/posts">Post</a>)
+    @view.link_to_with_id.must_equal %(<a id="posts__link" href="/posts">Post</a>)
   end
 end

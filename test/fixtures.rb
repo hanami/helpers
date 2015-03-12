@@ -257,7 +257,7 @@ class LinkTo
   end
 
   def link_to_with_id
-    link_to('Post', routes.path(:posts), id: 'posts_link')
+    link_to('Post', routes.path(:posts), id: 'posts__link')
   end
 
 end

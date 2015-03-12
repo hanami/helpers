@@ -232,11 +232,7 @@ class LinkTo
 
   class Routes
     def self.path(name, id = nil)
-      if id
-        "/#{ name }/#{id}"
-      else
-        "/#{ name }"
-      end
+      "/#{name}" << "/#{id}"
     end
   end
 

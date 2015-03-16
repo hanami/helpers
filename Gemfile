@@ -8,7 +8,7 @@ unless ENV['TRAVIS']
 end
 
 gem 'lotus-utils', github: 'lotus/utils', branch: '0.4.x'
-gem 'lotus-view',  github: 'lotus/view',  branch: '0.3.x'
+gem 'lotus-view',  github: 'lotus/view',  branch: '0.4.x'
 
 gem 'simplecov', require: false
 gem 'coveralls', require: false

@@ -198,7 +198,7 @@ end
 module FullStack
   class Routes
     def self.path(name)
-      "/#{ name }"
+      Lotus::Utils::Escape::SafeString.new("/#{ name }")
     end
   end
 

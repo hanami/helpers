@@ -5,7 +5,7 @@ module Lotus
     module HtmlHelper
       # HTML node
       #
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       #
       # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode
@@ -34,7 +34,7 @@ module Lotus
         #
         # @return [String] the output
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         #
         # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode#to_s
@@ -47,7 +47,7 @@ module Lotus
         #
         # @return [String] the content
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def content
           case @content

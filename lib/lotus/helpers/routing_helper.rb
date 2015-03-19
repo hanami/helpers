@@ -8,7 +8,7 @@ module Lotus
     # By including this module in a view, it makes that factory avaliable as
     # <tt>routes</tt>.
     #
-    # @since x.x.x
+    # @since 0.1.0
     #
     # @example Basic usage in template
     #   require 'lotus'

@@ -6,13 +6,13 @@ require 'lotus/helpers/routing_helper'
 module Lotus
   # View helpers for Ruby applications
   #
-  # @since x.x.x
+  # @since 0.1.0
   module Helpers
     # Override for Module.included
     #
     # It injects all the available helpers.
     #
-    # @since x.x.x
+    # @since 0.1.0
     # @api private
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included

@@ -46,50 +46,163 @@ $ gem install lotus-helpers
 
 ## Usage
 
-TODO: Write usage instructions here
+`Lotus::Helpers` offers a set of utilities to enrich web views.
 
-## Design
+### HTML helper
 
-All the Lotus helpers will be modules to include.
+HTML5 markup generator (`#html`).
 
-They inject **private** methods.
-The reason is simple: this will prevent those facilities to leak on the outside.
+View:
 
-We want to encourage developers to use meaningful and simple methods in their templates.
+```ruby
+module Users
+  class Show
+    include Lotus::Helpers
+
+    def sidebar
+      html.aside(id: 'sidebar') do
+        p "Languages", class: 'title'
+
+        ul do
+          li "Italian"
+          li "English"
+        end
+      end
+    end
+  end
+end
+```
+
+Template:
+
+```erb
+<%= sidebar %>
+```
+
+Output:
+
+```html
+<aside id="sidebar">
+  <p class="title">Languages</p>
+
+  <ul>
+    <li>Italian</li>
+    <li>English</li>
+  </ul>
+</aside>
+```
+
+### Escape helper
+
+HTML (`#h`), HTML attribute (`#ha`) and URL (`#hu`) escape helpers.
+
+View:
+
+```ruby
+module Users
+  class Show
+    include Lotus::Helpers
+
+    def home_page_link
+      %(<a href="#{ hu(user.home_page_url) }" title="#{ ha(user.name} }'s website">#{ h(user.website_name) }</a>)
+    end
+
+    def code_snippet
+      raw user.code_snippet
+    end
+  end
+end
+```
+
+Template:
+
+```erb
+<%= home_page_link %>
+<%= code_snippet %>
+```
+
+Output:
+
+```html
+<a href="https://example.org" title="Maria's website">My Blog</a>
+<code>puts "Hello, World!"</code>
+```
+
+### Routing helper
+
+Lotus and Lotus::Router integration (`#routes`).
+
+View:
+
+```ruby
+module Home
+  class Index
+    include Lotus::Helpers
+
+    def link_to_home
+      %(<a href="#{ routes.home_path }">Home</a>)
+    end
+  end
+end
+```
+
+Template:
+
+```erb
+<%= link_to_home %>
+```
+
+Output:
+
+```html
+<a href="/">Home</a>
+```
+
+## Philosophy
+
+All the Lotus helpers are modules to include.
+
+Most of the time they inject **private** methods.
+This restriction prevents helper methods to be used on the outside (eg. in a template).
+
+We want to encourage developers to use **meaningful** and **simple APIs** in their templates.
 
 ### Bad style example
 
 ```ruby
-class ProductView
-  include Lotus::Helpers::CurrencyFormatter
-end
-```
-
-```erb
-<%= format_currency product.price %>
-```
-
-This increases the cluttering of the template markup.
-Test the price that will be printed is hard.
-
-### Good style example
-
-```ruby
-class ProductView
-  include Lotus::Helpers::CurrencyFormatter
-
-  def formatted_price
-    format_currency product.price
+module Users
+  class Show
+    include Lotus::Helpers
   end
 end
 ```
 
 ```erb
-<%= formatted_price %>
+<%= format_number user.followers_count %>
+```
+
+This style increases the complexity of the template and it makes testing hard.
+
+### Good style example
+
+```ruby
+module Users
+  class Show
+    include Lotus::Helpers
+
+    def followers_count
+      format_number user.followers_count
+    end
+  end
+end
+```
+
+```erb
+<%= followers_count %>
 ```
 
 This simplifies the markup.
-Test the price that will be printed is easy by introspecting `ProductView#formatted_price`.
+In order to test the value that will be printed becomes easier: `Users::Show#followers_count`.
 
 ## Versioning
 

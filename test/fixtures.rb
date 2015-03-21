@@ -230,6 +230,14 @@ end
 class LinkTo
   include Lotus::Helpers::LinkToHelper
 
+  class Index
+    include TestView
+
+    def link_to_home
+      link_to('Home', '/')
+    end
+  end
+
   class Routes
     def self.path(name, id = nil)
       "/#{name}" << "/#{id}"

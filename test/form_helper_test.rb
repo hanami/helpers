@@ -106,15 +106,122 @@ describe Lotus::Helpers::FormHelper do
   # INPUT FIELDS
   #
 
-  # describe '#check_box' do
-  #   it 'renders' do
-  #     actual = view.form_for(:book, action) do
-  #       check_box :free_shipping
-  #     end.to_s
+  describe '#check_box' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping
+      end.to_s
 
-  #     actual.must_include %()
-  #   end
-  # end
+      actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1">)
+    end
+
+    it 'allows to pass checked and unchecked value' do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, checked_value: 'true', unchecked_value: 'false'
+      end.to_s
+
+      actual.must_include %(<input type="hidden" name="book[free_shipping]" value="false">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, id: 'shipping'
+      end.to_s
+
+      actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="shipping" value="1">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, name: 'book[free]'
+      end.to_s
+
+      actual.must_include %(<input type="hidden" name="book[free]" value="0">\n<input type="checkbox" name="book[free]" id="book-free-shipping" value="1">)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" class="form-control">)
+    end
+
+    it "doesn't render hidden field if 'value' attribute is specified" do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, value: 'ok'
+      end.to_s
+
+      actual.wont_include %(<input type="hidden" name="book[free_shipping]" value="0">)
+      actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="ok">)
+    end
+
+    it "renders hidden field if 'value' attribute and 'unchecked_value' option are both specified" do
+      actual = view.form_for(:book, action) do
+        check_box :free_shipping, value: 'yes', unchecked_value: 'no'
+      end.to_s
+
+      actual.must_include %(<input type="hidden" name="book[free_shipping]" value="no">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="yes">)
+    end
+
+    it "handles multiple checkboxes" do
+      actual = view.form_for(:book, action) do
+        check_box :languages, name: 'book[languages][]', value: 'italian' #, id: nil FIXME
+        check_box :languages, name: 'book[languages][]', value: 'english' #, id: nil FIXME
+      end.to_s
+
+      actual.must_include %(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">)
+    end
+
+    describe "with filled params" do
+      let(:params) { Hash[book: { free_shipping: value }] }
+
+      describe "when the params value equals to check box value" do
+        let(:value) { '1' }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" checked="checked">)
+        end
+      end
+
+      describe "when the params value equals to the hidden field value" do
+        let(:value) { '0' }
+
+        it "renders without 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1">)
+        end
+
+        it "allows to override 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping, checked: 'checked'
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" checked="checked">)
+        end
+      end
+
+      describe "when multiple params are present" do
+        let(:params) { Hash[book: { languages: ['italian']}] }
+
+        it "handles multiple checkboxes" do
+          actual = view.form_for(:book, action) do
+            check_box :languages, name: 'book[languages][]', value: 'italian' #, id: nil FIXME
+            check_box :languages, name: 'book[languages][]', value: 'english' #, id: nil FIXME
+          end.to_s
+
+          actual.must_include %(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian" checked="checked">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">)
+        end
+      end
+    end
+  end
 
   describe "#color_field" do
     it "renders" do

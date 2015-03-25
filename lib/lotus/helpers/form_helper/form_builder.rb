@@ -243,6 +243,109 @@ module Lotus
           super(content, attributes)
         end
 
+        # Check box
+        #
+        # It renders a check box input.
+        #
+        # When a form is submitted, browsers don't send the value of unchecked
+        # check boxes. If an user unchecks a check box, their browser won't send
+        # the unchecked value. On the server side the corresponding value is
+        # missing, so the application will assume that the user action never
+        # happened.
+        #
+        # To solve this problem the form renders a hidden field with the
+        # "unchecked value". When the user unchecks the input, the browser will
+        # ignore it, but it will still send the value of the hidden input. See
+        # the examples below.
+        #
+        # When editing a resource, the form automatically assigns the
+        # <tt>checked="checked"</tt> attribute.
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        # @option attributes [String] :checked_value (defaults to "1")
+        # @option attributes [String] :unchecked_value (defaults to "0")
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     check_box :free_shipping
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1">
+        #
+        # @example Specify (un)checked values
+        #   <%=
+        #     check_box :free_shipping, checked_value: 'true', unchecked_value: 'false'
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="hidden" name="delivery[free_shipping]" value="false">
+        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="true">
+        #
+        # @example Automatic "checked" attribute
+        #   # For this example the params are:
+        #   #
+        #   #  { delivery: { free_shipping: '1' } }
+        #   <%=
+        #     check_box :free_shipping
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
+        #
+        # @example Force "checked" attribute
+        #   # For this example the params are:
+        #   #
+        #   #  { delivery: { free_shipping: '0' } }
+        #   <%=
+        #     check_box :free_shipping, checked: 'checked'
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
+        #
+        # @example Multiple check boxes
+        #   <%=
+        #     check_box :languages, name: 'book[languages][]', value: 'italian', id: nil
+        #     check_box :languages, name: 'book[languages][]', value: 'english', id: nil
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="checkbox" name="book[languages][]" value="italian">
+        #   #  <input type="checkbox" name="book[languages][]" value="english">
+        #
+        # @example Automatic "checked" attribute for multiple check boxes
+        #   # For this example the params are:
+        #   #
+        #   #  { book: { languages: ['italian'] } }
+        #   <%=
+        #     check_box :languages, name: 'book[languages][]', value: 'italian', id: nil
+        #     check_box :languages, name: 'book[languages][]', value: 'english', id: nil
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
+        #   #  <input type="checkbox" name="book[languages][]" value="english">
+        def check_box(name, attributes = {})
+          if attributes[:value].nil? || !attributes[:unchecked_value].nil?
+            input(type: :hidden, name: attributes[:name] || _input_name(name), value: attributes.delete(:unchecked_value) || '0')
+          end
+
+          attributes = { type: :checkbox, name: _input_name(name), id: _input_id(name), value: attributes.delete(:checked_value) || '1' }.merge(attributes)
+
+          # FIXME during Values refactoring let Values#get to return Value. This new type should override #== to handle equality with given value
+          value = _value(name)
+          attributes[:checked] = CHECKED if value && ( value == attributes[:value] || value.include?(attributes[:value]) )
+
+          input attributes
+        end
+
         # Color input
         #
         # @param name [Symbol] the input name
@@ -465,6 +568,10 @@ module Lotus
           input(attributes)
         end
 
+        def _checked_value(attributes, name, value)
+          attributes[:checked] = CHECKED
+        end
+
         # Select input
         #
         # @param name [Symbol] the input name
@@ -612,6 +719,10 @@ module Lotus
         # @since x.x.x
         def _value(name)
           name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
+
+          # FIXME during Values refactoring, ensure to make simplify this to:
+          # @values.get(name)
+
           @params.get(name) || @values.get(name)
         end
 

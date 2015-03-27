@@ -226,3 +226,42 @@ class ViewWithoutRoutingHelper
     routes.path(:dashboard)
   end
 end
+
+class LinkTo
+  include Lotus::Helpers::LinkToHelper
+
+  class Index
+    include TestView
+
+    def link_to_home
+      link_to('Home', '/')
+    end
+  end
+
+  class Routes
+    def self.path(name, id = nil)
+      "/#{name}" << "/#{id}"
+    end
+  end
+
+  def routes
+    Routes
+  end
+
+  def link_to_posts
+    link_to('Posts', routes.path(:posts))
+  end
+
+  def link_to_post
+    link_to('Post', routes.path(:post, 1))
+  end
+
+  def link_to_with_class
+    link_to('Post', routes.path(:posts), class: 'first')
+  end
+
+  def link_to_with_id
+    link_to('Post', routes.path(:posts), id: 'posts__link')
+  end
+
+end

@@ -129,8 +129,16 @@ class NumbersView
     format_number nil
   end
 
+  def pass_class_name
+    format_number Object
+  end
+
+  def pass_string
+    format_number 'string'
+  end
+
   def pass_non_numeric
-    format_number '10'
+    format_number '1.0'
   end
 
   def big_decimal
@@ -142,6 +150,10 @@ class NumbersView
   end
 
   def rational
+    format_number Rational(1)
+  end
+
+  def string
     format_number Rational(1)
   end
 end

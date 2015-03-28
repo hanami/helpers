@@ -16,7 +16,7 @@ module Lotus
 
         private
 
-        DELIMITED_REGEX = /(\d)(?=(\d\d\d)+(?!\d))/
+        REGEX_TO_DELIMIT = /(\d)(?=(\d{3})+$)/
         DEFAULT_SEPARATOR = '.'
 
         attr_accessor :number, :delimiter, :separator, :precision
@@ -29,15 +29,16 @@ module Lotus
         end
 
         def parts
-          left, right = split_number
-          left.gsub!(DELIMITED_REGEX) do |digit_to_delimit|
-            "#{digit_to_delimit}#{delimiter}"
-          end
-          [left, right].compact
+          first, second = split_number
+          [add_delimiter_to(first), second].compact
         end
 
         def split_number
           to_str.split(DEFAULT_SEPARATOR)
+        end
+
+        def add_delimiter_to(n)
+          n.gsub(REGEX_TO_DELIMIT) { |digit| "#{digit}#{delimiter}" }
         end
 
         def rounded_number
@@ -53,8 +54,6 @@ module Lotus
         def to_f
           case rounded_number
           when NilClass
-            raise TypeError
-          when String
             raise TypeError
           when Fixnum
             number

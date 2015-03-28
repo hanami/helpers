@@ -41,19 +41,27 @@ describe Lotus::Helpers::Numbers do
     proc { @view.pass_nil }.must_raise TypeError
   end
 
-  it 'raises TypeError when non-numeric is passed' do
-    proc { @view.pass_non_numeric }.must_raise TypeError
+  it 'raises a TypeError when a class name is passed' do
+    proc { @view.pass_class_name }.must_raise TypeError
+  end
+
+  it 'raises a TypeError when a string cannot be coerced into a float' do
+    proc { @view.pass_string }.must_raise TypeError
+  end
+
+  it 'returns string when passed a string' do
+    @view.pass_non_numeric.must_equal '1.0'
   end
 
   it 'returns string when passed BigDecimal' do
-    @view.big_decimal.must_equal "0.0001"
+    @view.big_decimal.must_equal '0.0001'
   end
 
   it 'returns string when passed Complex' do
-    @view.complex.must_equal "1.0"
+    @view.complex.must_equal '1.0'
   end
 
   it 'returns string when passed a Rational' do
-    @view.rational.must_equal "1.0"
+    @view.rational.must_equal '1.0'
   end
 end

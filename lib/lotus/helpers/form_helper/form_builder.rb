@@ -1,19 +1,22 @@
 require 'lotus/helpers/form_helper/html_node'
 require 'lotus/helpers/html_helper/html_builder'
 require 'lotus/utils/string'
+require 'lotus/utils/hash'
 
 module Lotus
   module Helpers
     module FormHelper
-      # FIXME Don't inherit from OpenStruct
       # TODO unify values with params
-      require 'ostruct'
-      class Values < OpenStruct
+      class Values
         GET_SEPARATOR = '.'.freeze
+
+        def initialize(values = {})
+          @values = Utils::Hash.new(values).stringify!
+        end
 
         def get(key)
           key, *keys = key.to_s.split(GET_SEPARATOR)
-          result     = self[key]
+          result     = @values[key]
 
           Array(keys).each do |k|
             break if result.nil?
@@ -29,7 +32,7 @@ module Lotus
         end
 
         def update?
-          to_h.keys.count > 0
+          @values.any?
         end
       end
 

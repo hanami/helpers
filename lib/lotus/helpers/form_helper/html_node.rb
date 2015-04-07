@@ -25,7 +25,6 @@ module Lotus
           super
           @builder = FormBuilder.new(
             options.fetch(:form_name),
-            options.fetch(:params),
             options.fetch(:values)
           )
           @verb    = options.fetch(:verb, nil)

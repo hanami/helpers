@@ -233,11 +233,11 @@ module Lotus
       #   # deliveries/edit.html.erb
       #   <%= render partial: 'deliveries/form' %>
       def form_for(name, url, options = {}, &blk)
-        values     = Values.new(options.delete(:values) || {})
+        values     = Values.new(options.delete(:values), params)
         verb       = :patch if values.update?
         attributes = { action: url, id: "#{ name }-form", method: verb || DEFAULT_METHOD }.merge(options)
 
-        FormBuilder.new(name, params, values, attributes, &blk)
+        FormBuilder.new(name, values, attributes, &blk)
       end
     end
   end

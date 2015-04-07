@@ -1,41 +1,11 @@
 require 'lotus/helpers/form_helper/html_node'
+require 'lotus/helpers/form_helper/values'
 require 'lotus/helpers/html_helper/html_builder'
 require 'lotus/utils/string'
-require 'lotus/utils/hash'
 
 module Lotus
   module Helpers
     module FormHelper
-      # TODO unify values with params
-      class Values
-        GET_SEPARATOR = '.'.freeze
-
-        def initialize(values = {})
-          @values = Utils::Hash.new(values).stringify!
-        end
-
-        def get(key)
-          key, *keys = key.to_s.split(GET_SEPARATOR)
-          result     = @values[key]
-
-          Array(keys).each do |k|
-            break if result.nil?
-
-            result = if result.respond_to?(k)
-              result.public_send(k)
-            else
-              nil
-            end
-          end
-
-          result
-        end
-
-        def update?
-          @values.any?
-        end
-      end
-
       # Form builder
       #
       # @since x.x.x
@@ -88,6 +58,22 @@ module Lotus
         # @see Lotus::Helpers::FormHelper::FormBuilder#_value
         INPUT_VALUE_REPLACEMENT = '.\k<token>'.freeze
 
+        # Default value for unchecked check box
+        #
+        # @since x.x.x
+        # @api private
+        #
+        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        DEFAULT_UNCHECKED_VALUE = '0'.freeze
+
+        # Default value for checked check box
+        #
+        # @since x.x.x
+        # @api private
+        #
+        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        DEFAULT_CHECKED_VALUE = '1'.freeze
+
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
 
         self.html_node = ::Lotus::Helpers::FormHelper::HtmlNode
@@ -104,11 +90,10 @@ module Lotus
         # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
         #
         # @since x.x.x
-        def initialize(name, params, values, attributes = {}, &blk)
+        def initialize(name, values, attributes = {}, &blk)
           super()
 
           @name       = name
-          @params     = params
           @values     = values
           @attributes = attributes
           @blk        = blk
@@ -336,17 +321,8 @@ module Lotus
         #   #  <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
         #   #  <input type="checkbox" name="book[languages][]" value="english">
         def check_box(name, attributes = {})
-          if attributes[:value].nil? || !attributes[:unchecked_value].nil?
-            input(type: :hidden, name: attributes[:name] || _input_name(name), value: attributes.delete(:unchecked_value) || '0')
-          end
-
-          attributes = { type: :checkbox, name: _input_name(name), id: _input_id(name), value: attributes.delete(:checked_value) || '1' }.merge(attributes)
-
-          # FIXME during Values refactoring let Values#get to return Value. This new type should override #== to handle equality with given value
-          value = _value(name)
-          attributes[:checked] = CHECKED if value && ( value == attributes[:value] || value.include?(attributes[:value]) )
-
-          input attributes
+          _hidden_field_for_check_box(    name, attributes)
+          input _attributes_for_check_box(name, attributes)
         end
 
         # Color input
@@ -571,10 +547,6 @@ module Lotus
           input(attributes)
         end
 
-        def _checked_value(attributes, name, value)
-          attributes[:checked] = CHECKED
-        end
-
         # Select input
         #
         # @param name [Symbol] the input name
@@ -664,7 +636,7 @@ module Lotus
         # @api private
         # @since x.x.x
         def options
-          Hash[form_name: @name, params: @params, values: @values, verb: @verb]
+          Hash[form_name: @name, values: @values, verb: @verb]
         end
 
         private
@@ -722,11 +694,7 @@ module Lotus
         # @since x.x.x
         def _value(name)
           name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
-
-          # FIXME during Values refactoring, ensure to make simplify this to:
-          # @values.get(name)
-
-          @params.get(name) || @values.get(name)
+          @values.get(name)
         end
 
         # Input <tt>for</tt> HTML attribute
@@ -735,6 +703,43 @@ module Lotus
         # @since x.x.x
         def _for(content, name)
           _input_id(name || content)
+        end
+
+        # Hidden field for check box
+        #
+        # @api private
+        # @since x.x.x
+        #
+        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        def _hidden_field_for_check_box(name, attributes)
+          if attributes[:value].nil? || !attributes[:unchecked_value].nil?
+            input({
+              type:  :hidden,
+              name:  attributes[:name] || _input_name(name),
+              value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
+            })
+          end
+        end
+
+        # HTML attributes for check box
+        #
+        # @api private
+        # @since x.x.x
+        #
+        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        def _attributes_for_check_box(name, attributes)
+          attributes = {
+            type:  :checkbox,
+            name:  _input_name(name),
+            id:    _input_id(name),
+            value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
+          }.merge(attributes)
+
+          value = _value(name)
+          attributes[:checked] = CHECKED if value &&
+            ( value == attributes[:value] || value.include?(attributes[:value]) )
+
+          attributes
         end
       end
     end

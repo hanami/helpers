@@ -23,20 +23,18 @@ module Lotus
       #
       # @since x.x.x
       #
-      # @see Lotus::Helpers::Numbers#format_number
-      #
       # @example Basic usage
       #   require 'lotus/helpers/numbers'
       #
-      #   class checkout
+      #   class Checkout
       #     include Lotus::Helpers::Numbers
       #
       #     def total
-      #       n 1999.99
+      #       format_number 1999.99
       #     end
       #
       #     def euros
-      #       n 1256.95, delimiter: '.', separator: ','
+      #       format_number 1256.95, delimiter: '.', separator: ','
       #     end
       #   end
       #

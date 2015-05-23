@@ -174,10 +174,10 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { free_shipping: value }] }
+      let(:params) { Hash[book: { free_shipping: val }] }
 
       describe "when the params value equals to check box value" do
-        let(:value) { '1' }
+        let(:val) { '1' }
 
         it "renders with 'checked' attribute" do
           actual = view.form_for(:book, action) do
@@ -189,7 +189,7 @@ describe Lotus::Helpers::FormHelper do
       end
 
       describe "when the params value equals to the hidden field value" do
-        let(:value) { '0' }
+        let(:val) { '0' }
 
         it "renders without 'checked' attribute" do
           actual = view.form_for(:book, action) do
@@ -265,15 +265,15 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { cover: value }] }
-      let(:value)  { '#d3397e' }
+      let(:params) { Hash[book: { cover: val }] }
+      let(:val)  { '#d3397e' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
           color_field :cover
         end.to_s
 
-        actual.must_include %(<input type="color" name="book[cover]" id="book-cover" value="#{ value }">)
+        actual.must_include %(<input type="color" name="book[cover]" id="book-cover" value="#{ val }">)
       end
 
       it "allows to override 'value' attribute" do
@@ -328,15 +328,15 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { release_date: value }] }
-      let(:value)  { '2014-06-23' }
+      let(:params) { Hash[book: { release_date: val }] }
+      let(:val)    { '2014-06-23' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
           date_field :release_date
         end.to_s
 
-        actual.must_include %(<input type="date" name="book[release_date]" id="book-release-date" value="#{ value }">)
+        actual.must_include %(<input type="date" name="book[release_date]" id="book-release-date" value="#{ val }">)
       end
 
       it "allows to override 'value' attribute" do
@@ -391,15 +391,15 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { published_at: value }] }
-      let(:value)  { '2015-02-19T12:56:31Z' }
+      let(:params) { Hash[book: { published_at: val }] }
+      let(:val)    { '2015-02-19T12:56:31Z' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
           datetime_field :published_at
         end.to_s
 
-        actual.must_include %(<input type="datetime" name="book[published_at]" id="book-published-at" value="#{ value }">)
+        actual.must_include %(<input type="datetime" name="book[published_at]" id="book-published-at" value="#{ val }">)
       end
 
       it "allows to override 'value' attribute" do
@@ -454,15 +454,15 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { released_at: value }] }
-      let(:value)  { '2015-02-19T14:11:19+01:00' }
+      let(:params) { Hash[book: { released_at: val }] }
+      let(:val)    { '2015-02-19T14:11:19+01:00' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
           datetime_local_field :released_at
         end.to_s
 
-        actual.must_include %(<input type="datetime-local" name="book[released_at]" id="book-released-at" value="#{ value }">)
+        actual.must_include %(<input type="datetime-local" name="book[released_at]" id="book-released-at" value="#{ val }">)
       end
 
       it "allows to override 'value' attribute" do
@@ -525,8 +525,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { publisher_email: value }] }
-      let(:value)  { 'maria@publisher.org' }
+      let(:params) { Hash[book: { publisher_email: val }] }
+      let(:val)    { 'maria@publisher.org' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
@@ -624,8 +624,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { image_cover: value }] }
-      let(:value)  { 'image' }
+      let(:params) { Hash[book: { image_cover: val }] }
+      let(:val)    { 'image' }
 
       it "ignores value" do
         actual = view.form_for(:book, action) do
@@ -679,8 +679,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { author_id: value }] }
-      let(:value)  { '1' }
+      let(:params) { Hash[book: { author_id: val }] }
+      let(:val)    { '1' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
@@ -742,8 +742,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { title: value }] }
-      let(:value)  { 'PPoEA' }
+      let(:params) { Hash[book: { title: val }] }
+      let(:val)    { 'PPoEA' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
@@ -792,8 +792,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { category: value }] }
-      let(:value)  { 'Non-Fiction' }
+      let(:params) { Hash[book: { category: val }] }
+      let(:val)    { 'Non-Fiction' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do
@@ -850,8 +850,8 @@ describe Lotus::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { store: value }] }
-      let(:value)  { 'it' }
+      let(:params) { Hash[book: { store: val }] }
+      let(:val)    { 'it' }
 
       it "renders with value" do
         actual = view.form_for(:book, action) do

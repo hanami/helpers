@@ -235,15 +235,19 @@ end
 module FullStack
   class Routes
     def self.path(name)
-      "/#{ name }"
+      _escape "/#{ name }"
     end
 
     def self.deliveries_path
-      '/deliveries'
+      _escape '/deliveries'
     end
 
     def self.delivery_path(attrs = {})
-      "/deliveries/#{ attrs.fetch(:id) }"
+      _escape "/deliveries/#{ attrs.fetch(:id) }"
+    end
+
+    def self._escape(string)
+      Lotus::Utils::Escape::SafeString.new(string)
     end
   end
 

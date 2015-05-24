@@ -52,7 +52,7 @@ describe Lotus::Helpers::FormHelper do
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(:book, action, class: 'form-horizonal').to_s
-      actual.must_equal %(<form action="/books" id="book-form" method="POST" class="form-horizonal"></form>)
+      actual.must_equal %(<form action="/books" id="book-form" class="form-horizonal" method="POST"></form>)
     end
   end
 

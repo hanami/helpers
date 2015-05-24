@@ -269,6 +269,10 @@ module FullStack
         include TestView
         template 'deliveries/new'
 
+        def form
+          Form.new(:delivery, routes.deliveries_path)
+        end
+
         def form_values
           Hash[]
         end
@@ -276,11 +280,20 @@ module FullStack
         def form_action
           routes.deliveries_path
         end
+
+        def form_verb
+        end
       end
 
       class Edit
         include TestView
         template 'deliveries/edit'
+
+        def form
+          Form.new(:delivery,
+                   routes.delivery_path(id: delivery.id),
+                   values: {delivery: delivery})
+        end
 
         def form_values
           Hash[delivery: delivery]
@@ -288,6 +301,10 @@ module FullStack
 
         def form_action
           routes.delivery_path(id: delivery.id)
+        end
+
+        def form_verb
+          :patch
         end
       end
     end

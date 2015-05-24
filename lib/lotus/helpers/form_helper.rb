@@ -233,9 +233,25 @@ module Lotus
       #   # deliveries/edit.html.erb
       #   <%= render partial: 'deliveries/form' %>
       def form_for(name, url, options = {}, &blk)
+        # FIXME:
+        #   * Get rid of Values#update? magic
+        #   * Introduce Lotus::Form and make it avaliable in views.
+        #     This helps to DRY code with form instantiation.
+        #     See: FullStack::Views::Deliveries::New and Edit fixtures
+        #   * Make form_for to accept a Lotus::Form, so settings like CSS class can stay in templates
+        #   * Make form_for to return a value that is the form builder.
+        #     This overcomes the problem of a gigantic ERb output block.
+        #     It also helps designes to have more control of markup.
+        #       <%= f = form_for form, class: 'form-horizontal' %>
+        #         <div class="form-group">
+        #           <%= f.input_text :customer %>
+        #         </div>
+        #
+        #         <%= f.submit 'Create' %>
+        #       <%= f.close %>
         values     = Values.new(options.delete(:values), params)
-        verb       = :patch if values.update?
-        attributes = { action: url, id: "#{ name }-form", method: verb || DEFAULT_METHOD }.merge(options)
+        attributes = { action: url, id: "#{ name }-form" }.merge(options)
+        attributes[:method] ||= DEFAULT_METHOD
 
         FormBuilder.new(name, values, attributes, &blk)
       end

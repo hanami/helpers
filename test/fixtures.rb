@@ -283,6 +283,10 @@ module FullStack
 
         def form_verb
         end
+
+        def submit_label
+          'Create'
+        end
       end
 
       class Edit
@@ -305,6 +309,10 @@ module FullStack
 
         def form_verb
           :patch
+        end
+
+        def submit_label
+          'Update'
         end
       end
     end

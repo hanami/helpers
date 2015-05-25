@@ -15,10 +15,6 @@ module Lotus
           @params.get(key) || _get_from_values(key)
         end
 
-        def update?
-          @values.any?
-        end
-
         private
         def _get_from_values(key)
           initial_key, *keys = key.to_s.split(GET_SEPARATOR)

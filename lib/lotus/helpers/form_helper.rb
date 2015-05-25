@@ -190,51 +190,9 @@ module Lotus
       #     # </form>
       #
       # @example Share markup betweek new and update forms
-      #   module Deliveries
-      #     class New
-      #       include Lotus::View
-      #       include Lotus::Helpers
-      #
-      #       def form_values
-      #         Hash[]
-      #       end
-      #
-      #       def form_action
-      #         routes.deliveries_path
-      #       end
-      #     end
-      #
-      #     class Edit
-      #       include Lotus::View
-      #       include Lotus::Helpers
-      #
-      #       def form_values
-      #         Hash[delivery: delivery]
-      #       end
-      #
-      #       def form_action
-      #         routes.delivery_path(id: delivery.id)
-      #       end
-      #     end
-      #   end
-      #
-      #   # deliveries/_form.html.erb
-      #   <%=
-      #     form_for :delivery, form_action, values: form_values do
-      #       text_field :title
-      #
-      #       submit update? ? 'Update' : 'Create'
-      #     end
-      #   %>
-      #
-      #   # deliveries/new.html.erb
-      #   <%= render partial: 'deliveries/form' %>
-      #
-      #   # deliveries/edit.html.erb
-      #   <%= render partial: 'deliveries/form' %>
+      #   FIXME
       def form_for(name, url, options = {}, &blk)
         # FIXME:
-        #   * Get rid of Values#update? magic
         #   * Introduce Lotus::Form and make it avaliable in views.
         #     This helps to DRY code with form instantiation.
         #     See: FullStack::Views::Deliveries::New and Edit fixtures

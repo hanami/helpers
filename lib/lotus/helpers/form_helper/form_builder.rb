@@ -627,10 +627,6 @@ module Lotus
         end
 
         protected
-        def update?
-          @values.update?
-        end
-
         # A set of options to pass to the sub form helpers.
         #
         # @api private

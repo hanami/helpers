@@ -763,6 +763,69 @@ describe Lotus::Helpers::FormHelper do
     end
   end
 
+  describe "#password_field" do
+    it "renders" do
+      actual = view.form_for(:signup, action) do
+        password_field :password
+      end.to_s
+
+      actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:signup, action) do
+        password_field :password, id: 'signup-pass'
+      end.to_s
+
+      actual.must_include %(<input type="password" name="signup[password]" id="signup-pass" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:signup, action) do
+        password_field :password, name: 'password'
+      end.to_s
+
+      actual.must_include %(<input type="password" name="password" id="signup-password" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:signup, action) do
+        password_field :password, value: 'topsecret'
+      end.to_s
+
+      actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="topsecret">)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:signup, action) do
+        password_field :password, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="" class="form-control">)
+    end
+
+    describe "with filled params" do
+      let(:params) { Hash[signup: { password: val }] }
+      let(:val)    { 'secret' }
+
+      it "ignores value" do
+        actual = view.form_for(:signup, action) do
+          password_field :password
+        end.to_s
+
+        actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:signup, action) do
+          password_field :password, value: '123'
+        end.to_s
+
+        actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="123">)
+      end
+    end
+  end
+
   describe "#radio_button" do
     it "renders" do
       actual = view.form_for(:book, action) do

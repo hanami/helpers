@@ -547,6 +547,25 @@ module Lotus
           input(attributes)
         end
 
+        # Password input
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     password_field :password
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="password" name="signup[password]" id="signup-password" value="">
+        def password_field(name, attributes = {})
+          input({ type: :password, name: _input_name(name), id: _input_id(name), value: nil }.merge(attributes))
+        end
+
         # Select input
         #
         # @param name [Symbol] the input name

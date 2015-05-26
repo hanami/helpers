@@ -1,6 +1,17 @@
 require 'test_helper'
 
 describe 'Form helper' do
+  describe 'form with huge ERB block' do
+    before do
+      @params = Lotus::Action::Params.new({})
+      @actual = FullStack::Views::Sessions::New.render(format: :html, params: @params)
+    end
+
+    it 'renders the form' do
+      @actual.must_include %(<form action="/sessions" id="session-form" class="form-horizontal" method="POST">\n<div class="form-group">\n<label for="session-email">Email</label>\n<input type="email" name="session[email]" id="session-email" value="" class="form-control" placeholder="Email address">\n</div>\n<div class="form-group">\n<label for="session-password">Password</label>\n<input type="password" name="session[password]" id="session-password" value="" class="form-control">\n</div>\n<button type="submit" class="btn btn-default">Sign in</button>\n</form>)
+    end
+  end
+
   describe 'form to create a new resource' do
     describe 'first page load' do
       before do

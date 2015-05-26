@@ -238,6 +238,10 @@ module FullStack
       _escape "/#{ name }"
     end
 
+    def self.sessions_path
+      _escape '/sessions'
+    end
+
     def self.deliveries_path
       _escape '/deliveries'
     end
@@ -261,6 +265,13 @@ module FullStack
         def routing_helper_path
           routes.path(:dashboard)
         end
+      end
+    end
+
+    module Sessions
+      class New
+        include TestView
+        template 'sessions/new'
       end
     end
 

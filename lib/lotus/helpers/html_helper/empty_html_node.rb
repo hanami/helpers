@@ -3,12 +3,12 @@ module Lotus
     module HtmlHelper
       # Empty HTML node
       #
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       class EmptyHtmlNode
         # Attributes separator
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         ATTRIBUTES_SEPARATOR = ' '.freeze
 
@@ -19,7 +19,7 @@ module Lotus
         #
         # @return [Lotus::Helpers::HtmlHelper::EmptyHtmlNode]
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def initialize(name, attributes)
           @name       = name
@@ -30,7 +30,7 @@ module Lotus
         #
         # @return [String] the output
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def to_s
           %(<#{ @name }#{attributes}>)
@@ -41,7 +41,7 @@ module Lotus
         #
         # @return [String,NilClass] the tag attributes
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def attributes
           return if @attributes.nil?

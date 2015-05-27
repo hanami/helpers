@@ -10,7 +10,7 @@ module Lotus
     # By including <tt>Lotus::Helpers::EscapeHelper</tt> it will inject private
     # methods as markup escape utilities.
     #
-    # @since x.x.x
+    # @since 0.1.0
     module EscapeHelper
       private
       # Escape the given HTML tag content.
@@ -24,7 +24,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.1.0
       #
       # @see Lotus::Helpers::EscapeHelper#escape_html_attribute
       #
@@ -74,7 +74,7 @@ module Lotus
         Utils::Escape.html(input)
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       alias_method :h, :escape_html
 
       # Escape the given HTML tag attribute.
@@ -90,7 +90,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.1.0
       #
       # @see Lotus::Helpers::EscapeHelper#escape_html
       #
@@ -146,7 +146,7 @@ module Lotus
         Utils::Escape.html_attribute(input)
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       alias_method :ha, :escape_html_attribute
 
       # Escape an URL to be used in HTML attributes
@@ -170,7 +170,7 @@ module Lotus
       #
       # @return [String] the escaped string
       #
-      # @since x.x.x
+      # @since 0.1.0
       #
       # @see Lotus::Utils::Escape.url
       # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
@@ -224,7 +224,7 @@ module Lotus
         Utils::Escape.url(input, schemes)
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       alias_method :hu, :escape_url
 
       # Bypass escape.
@@ -236,7 +236,7 @@ module Lotus
       #
       # @return [Lotus::Utils::Escape::SafeString] the string marked as safe string
       #
-      # @since x.x.x
+      # @since 0.1.0
       #
       # @example
       #   require 'lotus/helpers/escape_helper'

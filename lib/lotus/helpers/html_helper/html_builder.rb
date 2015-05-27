@@ -9,11 +9,11 @@ module Lotus
     module HtmlHelper
       # HTML Builder
       #
-      # @since x.x.x
+      # @since 0.1.0
       class HtmlBuilder
         # HTML5 content tags
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         #
         # @see Lotus::Helpers::HtmlHelper::HtmlNode
@@ -117,7 +117,7 @@ module Lotus
 
         # HTML5 empty tags
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         #
         # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode
@@ -143,7 +143,7 @@ module Lotus
 
         # New line separator
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         NEWLINE = "\n".freeze
 
@@ -174,7 +174,7 @@ module Lotus
         #
         # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the builder
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def initialize
           @nodes = []
@@ -192,7 +192,7 @@ module Lotus
         #
         # @return [self]
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api public
         #
         # @see Lotus::Helpers::HtmlHelper
@@ -237,7 +237,7 @@ module Lotus
         #
         # @return [self]
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api public
         #
         # @see Lotus::Helpers::HtmlHelper
@@ -257,7 +257,7 @@ module Lotus
         #
         # @return [Lotus::Utils::Escape::SafeString] the output
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         #
         # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Escape/SafeString
@@ -269,7 +269,7 @@ module Lotus
         #
         # @return [TrueClass,FalseClass] the result of the check
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def nested?
           @nodes.any?
@@ -277,7 +277,7 @@ module Lotus
 
         # Resolve the context for nested contents
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         if RUBY_VERSION >= '2.2' && !Utils.jruby?
           def resolve(&blk)
@@ -294,7 +294,7 @@ module Lotus
         # Forward missing methods to the current context.
         # This allows to access views local variables from nested content blocks.
         #
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def method_missing(m, *args, &blk)
           @context.__send__(m, *args, &blk)

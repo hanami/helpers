@@ -24,7 +24,7 @@ module Lotus
     #   * It builds attributes from given hash (6)
     #   * It combines attributes and block (7)
     #
-    # @since x.x.x
+    # @since 0.1.0
     #
     # @see Lotus::Helpers::HtmlHelper#html
     #
@@ -180,7 +180,7 @@ module Lotus
       #
       # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the HTML builder
       #
-      # @since x.x.x
+      # @since 0.1.0
       #
       # @see Lotus::Helpers::HtmlHelper
       # @see Lotus::Helpers::HtmlHelper::HtmlBuilder

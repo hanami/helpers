@@ -10,6 +10,10 @@
       password_field :password, class: 'form-control'
     end
 
+    fields_for :remember do
+      check_box :me
+    end
+
     submit 'Sign in', class: 'btn btn-default'
   end
 %>

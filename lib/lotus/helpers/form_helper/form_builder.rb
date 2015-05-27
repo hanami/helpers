@@ -80,23 +80,40 @@ module Lotus
 
         # Instantiate a form builder
         #
-        # @param name [Symbol] the toplevel name of the form, it's used to generate
-        #   input names, ids, and to lookup params to fill values.
-        # @param params [Lotus::Action::Params] the params of the request
-        # @param values [Hash] A set of values
-        # @param attributes [Hash] HTML attributes to pass to the form tag
-        # @param blk [Proc] A block that describes the contents of the form
+        # @overload initialize(form, attributes, params, &blk)
+        #   Top level form
+        #   @param form [Lotus::Helpers:FormHelper::Form] the form
+        #   @param attributes [::Hash] a set of HTML attributes
+        #   @param params [Lotus::Action::Params] request params
+        #   @param blk [Proc] a block that describes the contents of the form
+        #
+        # @overload initialize(form, attributes, params, &blk)
+        #   Nested form
+        #   @param form [Lotus::Helpers:FormHelper::Form] the form
+        #   @param attributes [Lotus::Helpers::FormHelper::Values] user defined
+        #     values
+        #   @param blk [Proc] a block that describes the contents of the form
         #
         # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
         #
         # @since x.x.x
-        def initialize(name, values, attributes = {}, &blk)
+        # @api private
+        def initialize(form, attributes, params = nil, &blk)
           super()
 
-          @name       = name
-          @values     = values
-          @attributes = attributes
-          @blk        = blk
+          @blk = blk
+
+          # Nested form
+          if params.nil? && attributes.is_a?(Values)
+            @values     = attributes
+            @attributes = {}
+            @name       = form
+          else
+            @form       = form
+            @name       = form.name
+            @values     = Values.new(form.values, params)
+            @attributes = attributes
+          end
         end
 
         # Resolves all the nodes and generates the markup
@@ -651,7 +668,7 @@ module Lotus
         # @api private
         # @since x.x.x
         def options
-          Hash[form_name: @name, values: @values, verb: @verb]
+          Hash[name: @name, values: @values, verb: @verb]
         end
 
         private

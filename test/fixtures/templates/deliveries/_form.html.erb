@@ -1,5 +1,5 @@
 <%=
-  form_for(:delivery, form_action, method: form_verb, values: form_values, class: 'form-horizontal') do
+  form_for(form, class: 'form-horizontal') do
     div class: 'form-group' do
       label :customer
       input_text :customer, class: 'form-control', placeholder: 'Customer', name: nil

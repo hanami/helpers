@@ -23,11 +23,12 @@ module Lotus
         # @api private
         def initialize(name, content, attributes, options)
           super
+
+          @verb    = options.fetch(:verb, nil)
           @builder = FormBuilder.new(
-            options.fetch(:form_name),
+            options.fetch(:name),
             options.fetch(:values)
           )
-          @verb    = options.fetch(:verb, nil)
         end
 
         private

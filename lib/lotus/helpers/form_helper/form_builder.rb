@@ -158,7 +158,7 @@ module Lotus
         #   %>
         #
         #   Output:
-        #     # <form action="/deliveries" id="delivery-form" method="POST">
+        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
         #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
         #     #   <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
         #     #
@@ -184,7 +184,7 @@ module Lotus
         #   %>
         #
         #   Output:
-        #     # <form action="/deliveries" id="delivery-form" method="POST">
+        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
         #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
         #     #   <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
         #     #   <input type="text" name="delivery[address][location][city]" id="delivery-address-location-city" value="">

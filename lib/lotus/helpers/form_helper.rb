@@ -81,6 +81,12 @@ module Lotus
       # @api private
       DEFAULT_METHOD = 'POST'.freeze
 
+      # Default charset
+      #
+      # @since x.x.x
+      # @api private
+      DEFAULT_CHARSET = 'utf-8'.freeze
+
       # Form object
       #
       # @since x.x.x
@@ -166,7 +172,7 @@ module Lotus
         #
         #   # It will render:
         #   #
-        #   #  <form action="/deliveries/1" method="POST">
+        #   #  <form action="/deliveries/1" method="POST" accept-charset="utf-8">
         #   #    <input type="hidden" name="_method" value="PATCH">
         #   #
         #   #    # Value taken from delivery.delivered_on
@@ -239,7 +245,7 @@ module Lotus
       #   %>
       #
       #   Output:
-      #     # <form action="/books" method="POST" id="book-form" class="form-horizontal">
+      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
       #     #   <div>
       #     #     <label for="book-title">Title</label>
       #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
@@ -270,7 +276,7 @@ module Lotus
       #   <%= form %>
       #
       #   Output:
-      #     # <form action="/books" method="POST" id="book-form" class="form-horizontal">
+      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
       #     #   <div>
       #     #     <label for="book-title">Title</label>
       #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
@@ -332,7 +338,7 @@ module Lotus
       #   %>
       #
       #   Output:
-      #     # <form action="/books" method="POST" id="book-form" class="form-horizontal">
+      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
       #     #   <div>
       #     #     <label for="book-title">Title</label>
       #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
@@ -351,7 +357,7 @@ module Lotus
       #   %>
       #
       #   Output:
-      #     # <form action="/books/23" id="book-form" method="POST">
+      #     # <form action="/books/23" accept-charset="utf-8" id="book-form" method="POST">
       #     #   <input type="hidden" name="_method" value="PUT">
       #     #   <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
       #     #
@@ -372,25 +378,13 @@ module Lotus
       #   %>
       #
       #   Output:
-      #     # <form action="/deliveries" id="delivery-form" method="POST">
+      #     # <form action="/deliveries" accept-charset="utf-8" id="delivery-form" method="POST">
       #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
       #     #   <input type="text" name="delivery[address][city]" id="delivery-address-city" value="">
       #     #
       #     #   <button type="submit">Create</button>
       #     # </form>
       def form_for(name, url, options = {}, &blk)
-        # FIXME:
-        #   * Set accepted-charset attribute by default
-        #   * Make form_for to return a value that is the form builder.
-        #     This overcomes the problem of a gigantic ERb output block.
-        #     It also helps designes to have more control of markup.
-        #       <%= f = form_for form, class: 'form-horizontal' %>
-        #         <div class="form-group">
-        #           <%= f.input_text :customer %>
-        #         </div>
-        #
-        #         <%= f.submit 'Create' %>
-        #       <%= f.close %>
         form = if name.is_a?(Form)
           options = url
           name
@@ -398,7 +392,7 @@ module Lotus
           Form.new(name, url, options.delete(:values))
         end
 
-        attributes = { action: form.url, method: form.verb, id: "#{ form.name }-form" }.merge(options)
+        attributes = { action: form.url, method: form.verb, :'accept-charset' => DEFAULT_CHARSET, id: "#{ form.name }-form" }.merge(options)
         FormBuilder.new(form, attributes, params, &blk)
       end
     end

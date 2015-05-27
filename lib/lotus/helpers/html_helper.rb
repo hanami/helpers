@@ -81,7 +81,7 @@ module Lotus
     #     input type: 'submit', value: 'Save changes'
     #   end
     #   # =>
-    #   #<form action="/users" method="POST">
+    #   #<form action="/users" method="POST" accept-charset="utf-8">
     #   #  <div>
     #   #    <label for="user-first-name">First name</label>
     #   #    <input type="text" id="user-first-name" name="user[first_name]" value="L">

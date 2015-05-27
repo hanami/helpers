@@ -12,27 +12,27 @@ describe Lotus::Helpers::FormHelper do
   describe '#form_for' do
     it 'renders' do
       actual = view.form_for(:book, action).to_s
-      actual.must_equal %(<form action="/books" method="POST" id="book-form"></form>)
+      actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form"></form>)
     end
 
     it "allows to override 'id' attribute" do
       actual = view.form_for(:book, action, id: 'books').to_s
-      actual.must_equal %(<form action="/books" method="POST" id="books"></form>)
+      actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="books"></form>)
     end
 
     it "allows to override 'method' attribute (get)" do
       actual = view.form_for(:book, action, method: 'get').to_s
-      actual.must_equal %(<form action="/books" method="GET" id="book-form"></form>)
+      actual.must_equal %(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>)
     end
 
     it "allows to override 'method' attribute (:get)" do
       actual = view.form_for(:book, action, method: :get).to_s
-      actual.must_equal %(<form action="/books" method="GET" id="book-form"></form>)
+      actual.must_equal %(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>)
     end
 
     it "allows to override 'method' attribute (GET)" do
       actual = view.form_for(:book, action, method: 'GET').to_s
-      actual.must_equal %(<form action="/books" method="GET" id="book-form"></form>)
+      actual.must_equal %(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>)
     end
 
     [:patch, :put, :delete].each do |verb|
@@ -41,18 +41,18 @@ describe Lotus::Helpers::FormHelper do
           text_field :title
         end.to_s
 
-        actual.must_equal %(<form action="/books" method="POST" id="book-form">\n<input type="hidden" name="_method" value="#{ verb.to_s.upcase }">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>)
+        actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="hidden" name="_method" value="#{ verb.to_s.upcase }">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>)
       end
     end
 
     it "allows to override 'action' attribute" do
       actual = view.form_for(:book, action, action: '/b').to_s
-      actual.must_equal %(<form action="/b" method="POST" id="book-form"></form>)
+      actual.must_equal %(<form action="/b" method="POST" accept-charset="utf-8" id="book-form"></form>)
     end
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(:book, action, class: 'form-horizonal').to_s
-      actual.must_equal %(<form action="/books" method="POST" id="book-form" class="form-horizonal"></form>)
+      actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizonal"></form>)
     end
   end
 
@@ -76,7 +76,7 @@ describe Lotus::Helpers::FormHelper do
         text_field :title
       end.to_s
 
-      actual.must_equal %(<form action="/books" method="POST" id="book-form">\n<input type="text" name="book[categories][name]" id="book-categories-name" value="">\n<input type="text" name="book[categories][subcategories][name]" id="book-categories-subcategories-name" value="">\n<input type="text" name="book[categories][name2]" id="book-categories-name2" value="">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>)
+      actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="text" name="book[categories][name]" id="book-categories-name" value="">\n<input type="text" name="book[categories][subcategories][name]" id="book-categories-subcategories-name" value="">\n<input type="text" name="book[categories][name2]" id="book-categories-name2" value="">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>)
     end
 
     describe "with filled params" do
@@ -97,7 +97,7 @@ describe Lotus::Helpers::FormHelper do
           text_field :title
         end.to_s
 
-        actual.must_equal %(<form action="/books" method="POST" id="book-form">\n<input type="text" name="book[categories][name]" id="book-categories-name" value="foo">\n<input type="text" name="book[categories][subcategories][name]" id="book-categories-subcategories-name" value="sub">\n<input type="text" name="book[categories][name2]" id="book-categories-name2" value="bar">\n<input type="text" name="book[title]" id="book-title" value="TDD">\n</form>)
+        actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="text" name="book[categories][name]" id="book-categories-name" value="foo">\n<input type="text" name="book[categories][subcategories][name]" id="book-categories-subcategories-name" value="sub">\n<input type="text" name="book[categories][name2]" id="book-categories-name2" value="bar">\n<input type="text" name="book[title]" id="book-title" value="TDD">\n</form>)
       end
     end
   end

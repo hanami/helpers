@@ -92,6 +92,142 @@ Output:
 </aside>
 ```
 
+### Form Helper
+
+Form generator for HTML5 (`#form_for`)
+
+#### Template Usage
+
+Template:
+
+```erb
+<%=
+  form_for :book, routes.books_path do
+    text_field :title
+
+    submit 'Create'
+  end
+%>
+```
+
+Output:
+
+```html
+<form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+  <input type="text" name="book[title]" id="book-id" value="">
+  <button type="submit">Create</button>
+</form>
+```
+
+#### View Usage
+
+View:
+
+```ruby
+module Books
+  class New
+    include Lotus::Helpers
+
+    def form
+      form_for :book, routes.books_path do
+        text_field :title
+
+        submit 'Create'
+      end
+    end
+  end
+end
+```
+
+Template:
+
+```erb
+<%= form %>
+```
+
+Output:
+
+```html
+<form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+  <input type="text" name="book[title]" id="book-id" value="">
+  <button type="submit">Create</button>
+</form>
+```
+
+#### Reuse Code
+
+Views:
+
+```ruby
+module Books
+  class New
+    include Lotus::Helpers
+
+    def form
+      Form.new(:book, routes.books_path)
+    end
+
+    def submit_label
+      'Create'
+    end
+  end
+
+  class Edit
+    include Lotus::Helpers
+
+    def form
+      Form.new(:book, routes.book_path(id: book.id), {book: book}, {method: :patch})
+    end
+
+    def submit_label
+      'Update'
+    end
+  end
+end
+```
+
+Templates:
+
+```erb
+# books/new.html.erb
+<%= render partial: 'books/form' %>
+```
+
+```erb
+# books/edit.html.erb
+<%= render partial: 'books/form' %>
+```
+
+```erb
+# books/_form.html.erb
+<%=
+  form_for form, class: 'form-horizontal' do
+    text_field :title
+
+    submit submit_label
+  end
+%>
+```
+
+Output for new:
+
+```html
+<form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+  <input type="text" name="book[title]" id="book-id" value="">
+  <button type="submit">Create</button>
+</form>
+```
+
+Output for edit:
+
+```html
+<form action="/books/23" method="POST" accept-charset="utf-8" id="book-form">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="text" name="book[title]" id="book-id" value="TDD">
+  <button type="submit">Update</button>
+</form>
+```
+
 ### Escape helper
 
 HTML (`#h`), HTML attribute (`#ha`) and URL (`#hu`) escape helpers.
@@ -128,7 +264,7 @@ Output:
 <code>puts "Hello, World!"</code>
 ```
 
-### Routing helper
+### Routing Helper
 
 Lotus and Lotus::Router integration (`#routes`).
 
@@ -156,6 +292,36 @@ Output:
 
 ```html
 <a href="/">Home</a>
+```
+
+### Number Formatting Helper
+
+Format numbers (`#format_number`).
+
+View:
+
+```ruby
+module Home
+  class Index
+    include Lotus::Helpers
+
+    def visitors_count
+      format_number '1000'
+    end
+  end
+end
+```
+
+Template:
+
+```erb
+<p><%= visitors_count %></p>
+```
+
+Output:
+
+```html
+<p>1,000</p>
 ```
 
 ## Philosophy

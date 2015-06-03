@@ -1,0 +1,19 @@
+<%=
+  form_for :session, routes.sessions_path, class: 'form-horizontal' do
+    div class: 'form-group' do
+      label :email
+      email_field :email, class: 'form-control', placeholder: 'Email address'
+    end
+
+    div class: 'form-group' do
+      label :password
+      password_field :password, class: 'form-control'
+    end
+
+    fields_for :remember do
+      check_box :me
+    end
+
+    submit 'Sign in', class: 'btn btn-default'
+  end
+%>

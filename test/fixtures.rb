@@ -1,4 +1,5 @@
 require 'lotus/view'
+require 'lotus/controller'
 require 'lotus/helpers/html_helper'
 require 'lotus/helpers/escape_helper'
 
@@ -195,10 +196,62 @@ module Users
   end
 end
 
+class FormHelperView
+  include Lotus::Helpers::FormHelper
+  attr_reader :params
+
+  def initialize(params)
+    @params = Lotus::Action::Params.new(params)
+  end
+end
+
+class Address
+  attr_reader :street
+
+  def initialize(attributes = {})
+    @street = attributes[:street]
+  end
+end
+
+class Delivery
+  attr_reader :id, :customer_id, :address
+
+  def initialize(attributes = {})
+    @id          = attributes[:id]
+    @customer_id = attributes[:customer_id]
+    @address     = attributes[:address]
+  end
+end
+
+class DeliveryParams < Lotus::Action::Params
+  param :delivery do
+    param :customer_id, type: Integer, presence: true
+    param :address do
+      param :street, type: String, presence: true
+    end
+  end
+end
+
 module FullStack
   class Routes
     def self.path(name)
-      Lotus::Utils::Escape::SafeString.new("/#{ name }")
+      _escape "/#{ name }"
+    end
+
+    def self.sessions_path
+      _escape '/sessions'
+    end
+
+    def self.deliveries_path
+      _escape '/deliveries'
+    end
+
+    def self.delivery_path(attrs = {})
+      _escape "/deliveries/#{ attrs.fetch(:id) }"
+    end
+
+    def self._escape(string)
+      Lotus::Utils::Escape::SafeString.new(string)
     end
   end
 
@@ -211,6 +264,43 @@ module FullStack
 
         def routing_helper_path
           routes.path(:dashboard)
+        end
+      end
+    end
+
+    module Sessions
+      class New
+        include TestView
+        template 'sessions/new'
+      end
+    end
+
+    module Deliveries
+      class New
+        include TestView
+        template 'deliveries/new'
+
+        def form
+          Form.new(:delivery, routes.deliveries_path)
+        end
+
+        def submit_label
+          'Create'
+        end
+      end
+
+      class Edit
+        include TestView
+        template 'deliveries/edit'
+
+        def form
+          Form.new(:delivery,
+                   routes.delivery_path(id: delivery.id),
+                   {delivery: delivery}, {method: :patch})
+        end
+
+        def submit_label
+          'Update'
         end
       end
     end

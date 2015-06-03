@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::Numbers do
+describe Lotus::Helpers::NumberFormattingHelper do
   before do
     @view = NumbersView.new
   end
@@ -38,19 +38,23 @@ describe Lotus::Helpers::Numbers do
   end
 
   it 'raises TypeError when nil is passed' do
-    proc { @view.pass_nil }.must_raise TypeError
+    -> { @view.pass_nil }.must_raise TypeError
   end
 
   it 'raises a TypeError when a class name is passed' do
-    proc { @view.pass_class_name }.must_raise TypeError
+    -> { @view.pass_class_name }.must_raise TypeError
   end
 
   it 'raises a TypeError when a string cannot be coerced into a float' do
-    proc { @view.pass_string }.must_raise TypeError
+    -> { @view.pass_string }.must_raise TypeError
   end
 
-  it 'returns string when passed a string' do
-    @view.pass_non_numeric.must_equal '1.0'
+  it 'returns string when passed a string that represent an integer' do
+    @view.pass_non_numeric_integer.must_equal '1'
+  end
+
+  it 'returns string when passed a string that represent a float' do
+    @view.pass_non_numeric_float.must_equal '1.0'
   end
 
   it 'returns string when passed BigDecimal' do
@@ -63,5 +67,13 @@ describe Lotus::Helpers::Numbers do
 
   it 'returns string when passed a Rational' do
     @view.rational.must_equal '1.0'
+  end
+
+  it 'returns infinity representation' do
+    @view.infinity.must_equal 'Infinity'
+  end
+
+  it 'returns NaN representation' do
+    @view.nan.must_equal 'NaN'
   end
 end

@@ -2,7 +2,6 @@ require 'lotus/view'
 require 'lotus/controller'
 require 'lotus/helpers/html_helper'
 require 'lotus/helpers/escape_helper'
-require 'lotus/helpers/numbers'
 
 class HtmlView
   include Lotus::Helpers::HtmlHelper
@@ -92,7 +91,7 @@ class HtmlView
 end
 
 class NumbersView
-  include Lotus::Helpers::Numbers
+  include Lotus::Helpers::NumberFormattingHelper
 
   def single_digit
     format_number 1
@@ -138,7 +137,11 @@ class NumbersView
     format_number 'string'
   end
 
-  def pass_non_numeric
+  def pass_non_numeric_integer
+    format_number '1'
+  end
+
+  def pass_non_numeric_float
     format_number '1.0'
   end
 
@@ -156,6 +159,14 @@ class NumbersView
 
   def string
     format_number Rational(1)
+  end
+
+  def infinity
+    format_number Float::INFINITY
+  end
+
+  def nan
+    format_number 0.0/0
   end
 end
 
@@ -340,6 +351,17 @@ module FullStack
       class New
         include TestView
         template 'sessions/new'
+      end
+    end
+
+    module Cart
+      class Show
+        include TestView
+        template 'cart/show'
+
+        def total
+          format_number locals[:total]
+        end
       end
     end
 

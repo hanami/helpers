@@ -4,7 +4,7 @@ require 'lotus/helpers/escape_helper'
 require 'lotus/helpers/routing_helper'
 require 'lotus/helpers/link_to_helper'
 require 'lotus/helpers/form_helper'
-require 'lotus/helpers/numbers'
+require 'lotus/helpers/number_formatting_helper'
 
 module Lotus
   # View helpers for Ruby applications
@@ -26,6 +26,7 @@ module Lotus
         include Lotus::Helpers::RoutingHelper
         include Lotus::Helpers::LinkToHelper
         include Lotus::Helpers::FormHelper
+        include Lotus::Helpers::NumberFormattingHelper
       end
     end
   end

@@ -24,7 +24,9 @@ module Lotus
         def initialize(name, content, attributes, options)
           super
 
-          @verb    = options.fetch(:verb, nil)
+          @verb       = options.fetch(:verb,       nil)
+          @csrf_token = options.fetch(:csrf_token, nil)
+
           @builder = FormBuilder.new(
             options.fetch(:name),
             options.fetch(:values)
@@ -42,6 +44,7 @@ module Lotus
         # @see Lotus::Helpers::HtmlHelper::HtmlNode#content
         def content
           _method_override!
+          _csrf_protection!
           super
         end
 
@@ -55,6 +58,19 @@ module Lotus
           verb = @verb
           @builder.resolve do
             input(type: :hidden, name: :_method, value: verb)
+          end
+        end
+
+        # Inject a hidden field for CSRF Protection token
+        #
+        # @since x.x.x
+        # @api private
+        def _csrf_protection!
+          return if @csrf_token.nil?
+
+          _csrf_token = @csrf_token
+          @builder.resolve do
+            input(type: :hidden, name: FormHelper::CSRF_TOKEN, value: _csrf_token)
           end
         end
       end

@@ -87,6 +87,14 @@ module Lotus
       # @api private
       DEFAULT_CHARSET = 'utf-8'.freeze
 
+      # CSRF Token session key
+      #
+      # This key is shared with <tt>lotusrb</tt>, <tt>lotus-controller</tt>.
+      #
+      # @since x.x.x
+      # @api private
+      CSRF_TOKEN = :_csrf_token
+
       # Form object
       #
       # @since x.x.x
@@ -393,7 +401,22 @@ module Lotus
         end
 
         attributes = { action: form.url, method: form.verb, :'accept-charset' => DEFAULT_CHARSET, id: "#{ form.name }-form" }.merge(options)
-        FormBuilder.new(form, attributes, params, &blk)
+        FormBuilder.new(form, attributes, self, &blk)
+      end
+
+      # Returns CSRF Protection Token stored in session.
+      #
+      # It returns <tt>nil</tt> if sessions aren't enabled or the value is missing.
+      #
+      # @return [String,NilClass] token, if present
+      #
+      # @since x.x.x
+      def csrf_token
+        if defined?(session)
+          session[CSRF_TOKEN]
+        elsif defined?(locals) && locals[:session]
+          locals[:session][CSRF_TOKEN]
+        end
       end
     end
   end

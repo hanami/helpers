@@ -54,6 +54,35 @@ describe Lotus::Helpers::FormHelper do
       actual = view.form_for(:book, action, class: 'form-horizonal').to_s
       actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizonal"></form>)
     end
+
+    describe "CSRF protection" do
+      let(:view)       { SessionFormHelperView.new(params, csrf_token) }
+      let(:csrf_token) { 'abc123' }
+
+      it "injects hidden field session is enabled" do
+        actual = view.form_for(:book, action, class: 'form-horizonal') { }
+        actual.to_s.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizonal">\n<input type="hidden" name="_csrf_token" value="#{ csrf_token }">\n</form>)
+      end
+
+      describe "with missing token" do
+        let(:csrf_token) { nil }
+
+        it "doesn't inject hidden field" do
+          actual = view.form_for(:book, action, class: 'form-horizonal') { }
+          actual.to_s.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizonal">\n\n</form>)
+        end
+      end
+
+      [:patch, :put, :delete].each do |verb|
+        it "it injects hidden field when Method Override (#{ verb }) is active" do
+          actual = view.form_for(:book, action, method: verb) do
+            text_field :title
+          end.to_s
+
+          actual.must_equal %(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="hidden" name="_method" value="#{ verb.to_s.upcase }">\n<input type="hidden" name="_csrf_token" value="#{ csrf_token }">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>)
+        end
+      end
+    end
   end
 
   #

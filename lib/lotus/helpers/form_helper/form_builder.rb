@@ -98,21 +98,23 @@ module Lotus
         #
         # @since x.x.x
         # @api private
-        def initialize(form, attributes, params = nil, &blk)
+        def initialize(form, attributes, context = nil, &blk)
           super()
 
-          @blk = blk
+          @context = context
+          @blk     = blk
 
           # Nested form
-          if params.nil? && attributes.is_a?(Values)
+          if @context.nil? && attributes.is_a?(Values)
             @values     = attributes
             @attributes = {}
             @name       = form
           else
             @form       = form
             @name       = form.name
-            @values     = Values.new(form.values, params)
+            @values     = Values.new(form.values, @context.params)
             @attributes = attributes
+            @csrf_token = csrf_token
           end
         end
 
@@ -668,7 +670,7 @@ module Lotus
         # @api private
         # @since x.x.x
         def options
-          Hash[name: @name, values: @values, verb: @verb]
+          Hash[name: @name, values: @values, verb: @verb, csrf_token: @csrf_token]
         end
 
         private
@@ -693,6 +695,14 @@ module Lotus
             @attributes[:method] = DEFAULT_METHOD
             @verb                = verb
           end
+        end
+
+        # Return CSRF Protection token from view context
+        #
+        # @api private
+        # @since x.x.x
+        def csrf_token
+          @context.csrf_token if @context.respond_to?(:csrf_token)
         end
 
         # Return a set of default HTML attributes

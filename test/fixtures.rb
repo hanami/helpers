@@ -284,6 +284,17 @@ class FormHelperView
   end
 end
 
+class SessionFormHelperView < FormHelperView
+  def initialize(params, csrf_token)
+    super(params)
+    @csrf_token = csrf_token
+  end
+
+  def session
+    { _csrf_token: @csrf_token }
+  end
+end
+
 class Address
   attr_reader :street
 
@@ -308,6 +319,16 @@ class DeliveryParams < Lotus::Action::Params
     param :address do
       param :street, type: String, presence: true
     end
+  end
+end
+
+class Session
+  def initialize(values)
+    @values = values.to_h
+  end
+
+  def [](key)
+    @values[key]
   end
 end
 

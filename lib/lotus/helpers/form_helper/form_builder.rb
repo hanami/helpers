@@ -501,6 +501,36 @@ module Lotus
           input(attributes)
         end
 
+        # Text-area input
+        #
+        # @param name [Symbol] the input name
+        # @param content [String] the content of the textarea
+        # @param attributes [Hash] HTML attributes to pass to the textarea tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     text_area :hobby
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby"></textarea>
+        # @example Set content
+        #   <%=
+        #     # ...
+        #     text_area :hobby, 'Football'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby">Football</textarea>
+        def text_area(name, content = nil, attributes = {})
+          attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
+          _content = content || _value(name)
+          textarea(_content, attributes)
+        end
+
         # Text input
         #
         # @param name [Symbol] the input name
@@ -787,4 +817,3 @@ module Lotus
     end
   end
 end
-

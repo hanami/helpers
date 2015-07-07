@@ -214,7 +214,7 @@ class EscapeView
   end
 end
 
-Book = Struct.new(:title)
+Book = Struct.new(:title, :description)
 User = Struct.new(:name, :website, :snippet)
 
 module TestView

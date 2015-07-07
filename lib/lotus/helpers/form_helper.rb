@@ -38,6 +38,7 @@ module Lotus
     #   * <tt>fields_for</tt>
     #   * <tt>form_for</tt>
     #   * <tt>label</tt>
+    #   * <tt>text_area</tt>
     #   * <tt>text_field</tt>
     #   * <tt>password_field</tt>
     #   * <tt>radio_button</tt>

@@ -16,7 +16,7 @@ module Lotus
         #
         # @since 0.2.1
         # @api private
-        HTML5_REQUIRED_CONSTRAINT = %('input' 'select' 'textarea' 'radio')
+        HTML5_REQUIRED_CONSTRAINT = %('input' 'select' 'textarea' 'radio').freeze
 
         # Initialize a new empty HTML node
         #
@@ -55,7 +55,7 @@ module Lotus
 
           @attributes.each do |name, value|
             # only present shortform `required` on certain elements
-            if HTML5_REQUIRED_CONSTRAINT.include? @name.to_s and name.to_s == 'required'
+            if name.to_s == 'required' && HTML5_REQUIRED_CONSTRAINT.include?(@name.to_s)
               result << %(#{ name })
             else
               result << %(#{ name }="#{ value }")

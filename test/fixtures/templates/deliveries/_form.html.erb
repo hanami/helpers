@@ -2,7 +2,7 @@
   form_for(form, class: 'form-horizontal') do
     div class: 'form-group' do
       label :customer
-      input_text :customer, class: 'form-control', placeholder: 'Customer', name: nil
+      input_text :customer, class: 'form-control', placeholder: 'Customer', name: nil, required: true
 
       hidden_field :customer_id
     end

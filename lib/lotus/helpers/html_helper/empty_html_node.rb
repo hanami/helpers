@@ -48,7 +48,11 @@ module Lotus
           result = [nil]
 
           @attributes.each do |name, value|
-            result << %(#{ name }="#{ value }")
+            if %('required' 'readonly' 'disabled' 'autofocus').include? name.to_s
+              result << %(#{ name })
+            else
+              result << %(#{ name }="#{ value }")
+            end
           end
 
           result.join(ATTRIBUTES_SEPARATOR)

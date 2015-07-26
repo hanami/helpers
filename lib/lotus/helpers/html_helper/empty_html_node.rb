@@ -12,6 +12,12 @@ module Lotus
         # @api private
         ATTRIBUTES_SEPARATOR = ' '.freeze
 
+        # HTML5 form elements where required should be reformated
+        #
+        # @since 0.2.1
+        # @api private
+        HTML5_REQUIRED_CONSTRAINT = %('input' 'select' 'textarea' 'radio')
+
         # Initialize a new empty HTML node
         #
         # @param name [Symbol,String] the name of the tag
@@ -48,8 +54,8 @@ module Lotus
           result = [nil]
 
           @attributes.each do |name, value|
-            # only allow shortform `required` on certain elements
-            if %('input' 'select' 'textarea').include? @name.to_s and name.to_s == 'required'
+            # only present shortform `required` on certain elements
+            if HTML5_REQUIRED_CONSTRAINT.include? @name.to_s and name.to_s == 'required'
               result << %(#{ name })
             else
               result << %(#{ name }="#{ value }")

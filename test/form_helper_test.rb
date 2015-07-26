@@ -762,6 +762,14 @@ describe Lotus::Helpers::FormHelper do
       actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
     end
 
+    it "allows to specify required constraint" do
+      actual = view.form_for(:book, action) do
+        text_area :description, nil, required: true
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" required>)
+    end
+
     describe "set content explicitly" do
       let(:content) { "A short description of the book" }
       it "allows to set content" do
@@ -833,6 +841,14 @@ describe Lotus::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<input type="text" name="book[title]" id="book-title" value="" class="form-control">)
+    end
+
+    it "allows to specify required constraint" do
+      actual = view.form_for(:book, action) do
+        text_field :title, required: true
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[title]" id="book-title" value="" required>)
     end
 
     describe "with filled params" do
@@ -948,6 +964,14 @@ describe Lotus::Helpers::FormHelper do
       actual.must_include %(<input type="radio" name="book[category]" value="Fiction" class="form-control">\n<input type="radio" name="book[category]" value="Non-Fiction" class="radio-button">)
     end
 
+    it "allows to specify required constraint" do
+      actual = view.form_for(:book, action) do
+        radio_button :category, 'Fiction', required: true
+      end.to_s
+
+      actual.must_include %(<input type="radio" name="book[category]" value="Fiction" required>)
+    end
+
     describe "with filled params" do
       let(:params) { Hash[book: { category: val }] }
       let(:val)    { 'Non-Fiction' }
@@ -1004,6 +1028,14 @@ describe Lotus::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
+    end
+
+    it "allows to specify required constraint" do
+      actual = view.form_for(:book, action) do
+        select :store, values, required: true
+      end.to_s
+
+      actual.must_include %(<select name="book[store]" id="book-store" required>)
     end
 
     describe "with filled params" do

@@ -48,7 +48,8 @@ module Lotus
           result = [nil]
 
           @attributes.each do |name, value|
-            if %('required' 'readonly' 'disabled' 'autofocus').include? name.to_s
+            # only allow shortform `required` on certain elements
+            if %('input' 'select' 'textarea').include? @name.to_s and name.to_s == 'required'
               result << %(#{ name })
             else
               result << %(#{ name }="#{ value }")

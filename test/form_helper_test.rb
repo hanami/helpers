@@ -542,7 +542,7 @@ describe Lotus::Helpers::FormHelper do
         email_field :publisher_email, multiple: true
       end.to_s
 
-      actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple="true">)
+      actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple="multiple">)
     end
 
     it "allows to specify HTML attributes" do
@@ -625,7 +625,7 @@ describe Lotus::Helpers::FormHelper do
         file_field :image_cover, multiple: true
       end.to_s
 
-      actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover" multiple="true">)
+      actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover" multiple="multiple">)
     end
 
     it "allows to specify single value for 'accept' attribute" do

@@ -144,4 +144,56 @@ CONTENT
       result.must_equal %(<meta http-equiv="refresh" content="23;url=http://lotusrb.org">)
     end
   end
+
+  ##############################################################################
+  # ATTRIBUTES                                                                 #
+  ##############################################################################
+
+  describe 'attributes' do
+    it 'handles no attribute list' do
+      result = @builder.input().to_s
+      result.must_equal('<input>')
+    end
+
+    it 'handles empty attribute list' do
+      result = @builder.input({}).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'handles nil attribute list' do
+      result = @builder.input(nil).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does not render boolean attribute when its value is false' do
+      result = @builder.input(required: false).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does not render boolean attribute when its value is nil' do
+      result = @builder.input(required: nil).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does render boolean attribute when its value is true' do
+      result = @builder.input(required: true).to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'does render boolean attribute when its value is trueish' do
+      result = @builder.input(required: 'yes').to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'also handles strings for detection of boolean attributes' do
+      result = @builder.input('required': true).to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'renders multiple attributes' do
+      result = @builder.input('required': true, 'something': 'bar').to_s
+      result.must_equal('<input required="required" something="bar">')
+    end
+
+  end
 end

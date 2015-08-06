@@ -186,12 +186,12 @@ CONTENT
     end
 
     it 'also handles strings for detection of boolean attributes' do
-      result = @builder.input('required': true).to_s
+      result = @builder.input('required' => true).to_s
       result.must_equal('<input required="required">')
     end
 
     it 'renders multiple attributes' do
-      result = @builder.input('required': true, 'something': 'bar').to_s
+      result = @builder.input('required' => true, 'something' => 'bar').to_s
       result.must_equal('<input required="required" something="bar">')
     end
 

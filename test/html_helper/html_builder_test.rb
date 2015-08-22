@@ -196,4 +196,29 @@ CONTENT
     end
 
   end
+
+  ##############################################################################
+  # TEXT
+  ##############################################################################
+
+  describe "regular text" do
+    it "renders plain text" do
+      result = @builder.text('Foo').to_s
+      result.must_equal('Foo')
+    end
+
+    it "renders plain text inside a tag" do
+      result = @builder.p do
+        span('Foo')
+        text('Bar')
+      end.to_s
+
+      result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
+    end
+
+    it "escapes HTML inside" do
+      result = @builder.text(%(<p>Foo</p>)).to_s
+      result.must_equal('&lt;p&gt;Foo&lt;&#x2F;p&gt;')
+    end
+  end
 end

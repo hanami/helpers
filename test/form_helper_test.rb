@@ -762,6 +762,14 @@ describe Lotus::Helpers::FormHelper do
       actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
     end
 
+    it "renders all HTML attributes along with the name and id" do
+      actual = view.form_for(:book, action) do
+        text_area :description, class: 'form-control', cols: '5'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
+    end
+
     describe "set content explicitly" do
       let(:content) { "A short description of the book" }
       it "allows to set content" do
@@ -794,6 +802,7 @@ describe Lotus::Helpers::FormHelper do
       end
     end
   end
+
   describe "#text_field" do
     it "renders" do
       actual = view.form_for(:book, action) do

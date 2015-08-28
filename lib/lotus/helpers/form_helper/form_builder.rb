@@ -526,6 +526,11 @@ module Lotus
         #   # Output:
         #   #  <textarea name="user[hobby]" id="user-hobby">Football</textarea>
         def text_area(name, content = nil, attributes = {})
+          if content.is_a? Hash
+            attributes = content
+            content = nil
+          end
+
           attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
           _content = content || _value(name)
           textarea(_content, attributes)

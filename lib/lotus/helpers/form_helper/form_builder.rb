@@ -517,6 +517,7 @@ module Lotus
         #
         #   # Output:
         #   #  <textarea name="user[hobby]" id="user-hobby"></textarea>
+        #
         # @example Set content
         #   <%=
         #     # ...

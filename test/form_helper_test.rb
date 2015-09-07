@@ -772,6 +772,7 @@ describe Lotus::Helpers::FormHelper do
 
     describe "set content explicitly" do
       let(:content) { "A short description of the book" }
+
       it "allows to set content" do
         actual = view.form_for(:book, action) do
           text_area :description, content

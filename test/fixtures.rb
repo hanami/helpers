@@ -463,6 +463,22 @@ class LinkTo
         strong 'External with html content'
       end
     end
+
+    def link_to_xss_content
+      link_to(%(<script>alert('xss')</script>), '/')
+    end
+
+    def link_to_xss_raw_content_block
+      link_to('/') do
+        %(<script>alert('xss2')</script>)
+      end
+    end
+
+    def link_to_xss_html_builder_content_block
+      link_to('/') do
+        p %(<script>alert('xss3')</script>)
+      end
+    end
   end
 
   class Routes
@@ -515,6 +531,12 @@ class LinkTo
 
   def link_to_without_args
     link_to
+  end
+
+  def link_to_without_args_and_empty_block
+    link_to do
+      # this block was left intentionally blank ;)
+    end
   end
 
   def link_to_with_only_content

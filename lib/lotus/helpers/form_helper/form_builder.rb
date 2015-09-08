@@ -526,15 +526,41 @@ module Lotus
         #
         #   # Output:
         #   #  <textarea name="user[hobby]" id="user-hobby">Football</textarea>
+        #
+        # @example Set content and HTML attributes
+        #   <%=
+        #     # ...
+        #     text_area :hobby, 'Football', class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control">Football</textarea>
+        #
+        # @example Omit content and specify HTML attributes
+        #   <%=
+        #     # ...
+        #     text_area :hobby, class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
+        #
+        # @example Force blank value
+        #   <%=
+        #     # ...
+        #     text_area :hobby, '', class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
         def text_area(name, content = nil, attributes = {})
-          if content.is_a? Hash
+          if content.respond_to?(:to_hash)
             attributes = content
-            content = nil
+            content    = nil
           end
 
           attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
-          _content = content || _value(name)
-          textarea(_content, attributes)
+          textarea(content || _value(name), attributes)
         end
 
         # Text input

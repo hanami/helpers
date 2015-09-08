@@ -762,9 +762,19 @@ describe Lotus::Helpers::FormHelper do
       actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
     end
 
-    it "renders all HTML attributes along with the name and id" do
+    it "allows to omit content" do
       actual = view.form_for(:book, action) do
         text_area :description, class: 'form-control', cols: '5'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
+    end
+
+    it "allows to omit content, by accepting Hash serializable options" do
+      options = Lotus::Utils::Hash.new(class: 'form-control', cols: 5)
+
+      actual = view.form_for(:book, action) do
+        text_area :description, options
       end.to_s
 
       actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
@@ -794,12 +804,36 @@ describe Lotus::Helpers::FormHelper do
         actual.must_include %(<textarea name="book[description]" id="book-description">#{val}</textarea>)
       end
 
-      it "allows to override 'value' attribute" do
+      it "renders with value, when only attributes are specified" do
+        actual = view.form_for(:book, action) do
+          text_area :description, class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control">#{val}</textarea>)
+      end
+
+      it "allows to override value" do
         actual = view.form_for(:book, action) do
           text_area :description, 'Just a simple description'
         end.to_s
 
         actual.must_include %(<textarea name="book[description]" id="book-description">Just a simple description</textarea>)
+      end
+
+      it "forces blank value" do
+        actual = view.form_for(:book, action) do
+          text_area :description, ''
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description"></textarea>)
+      end
+
+      it "forces blank value, when also attributes are specified" do
+        actual = view.form_for(:book, action) do
+          text_area :description, '', class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control"></textarea>)
       end
     end
   end

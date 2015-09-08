@@ -8,11 +8,11 @@ module Lotus
       class TextNode
         # Initialize a new text node
         #
-        # @param content [String] The content to be added.
+        # @param content [String,#to_s] The content to be added.
         #
         # @return [Lotus::Helpers::HtmlHelper::TextNode]
-        def initialize content
-          @content = content
+        def initialize(content)
+          @content = content.to_s
         end
 
         # Resolve and return the output

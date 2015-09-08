@@ -201,16 +201,35 @@ CONTENT
   # TEXT
   ##############################################################################
 
-  describe "regular text" do
+  describe "plain text" do
     it "renders plain text" do
       result = @builder.text('Foo').to_s
       result.must_equal('Foo')
+    end
+
+    it "accepts any object that respond to #to_s" do
+      result = @builder.text(23).to_s
+      result.must_equal('23')
     end
 
     it "renders plain text inside a tag" do
       result = @builder.p do
         span('Foo')
         text('Bar')
+      end.to_s
+
+      result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
+    end
+
+    it "ignores block" do
+      result = @builder.text('Foo') { p 'Bar' }.to_s
+      result.must_equal('Foo')
+    end
+
+    it "allows concatenation with raw string" do
+      result = @builder.p do
+        span('Foo') +
+          'Bar'
       end.to_s
 
       result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))

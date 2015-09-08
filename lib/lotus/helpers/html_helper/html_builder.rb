@@ -280,6 +280,10 @@ module Lotus
           self
         end
 
+        # @since x.x.x
+        # @api private
+        alias_method :+, :text
+
         # Resolves all the nodes and generates the markup
         #
         # @return [Lotus::Utils::Escape::SafeString] the output

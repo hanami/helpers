@@ -220,7 +220,7 @@ module Lotus
         #   %>
         #
         #  # Output:
-        #  #  <label for="book-extended-title">Extended Title</label>
+        #  #  <label for="book-extended-title">Extended title</label>
         #
         # @example Custom content
         #   <%=
@@ -230,6 +230,15 @@ module Lotus
         #
         #  # Output:
         #  #  <label for="book-extended-title">Title</label>
+        #
+        # @example Custom "for" attribute
+        #   <%=
+        #     # ...
+        #     label :extended_title, for: 'ext-title'
+        #   %>
+        #
+        #  # Output:
+        #  #  <label for="ext-title">Extended title</label>
         #
         # @example Nested fields usage
         #   <%=
@@ -245,7 +254,12 @@ module Lotus
         #  #  <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
         def label(content, attributes = {})
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
-          content    = Utils::String.new(content).titleize
+          content    = case content
+                       when String, Lotus::Utils::String
+                         content
+                       else
+                         Utils::String.new(content).capitalize
+                       end
 
           super(content, attributes)
         end
@@ -806,7 +820,12 @@ module Lotus
         # @api private
         # @since 0.2.0
         def _for(content, name)
-          _input_id(name || content)
+          case name
+          when String, Lotus::Utils::String
+            name
+          else
+            _input_id(name || content)
+          end
         end
 
         # Hidden field for check box

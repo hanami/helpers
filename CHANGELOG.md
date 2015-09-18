@@ -10,6 +10,9 @@ View helpers for Ruby applications
 ### Fixed
 - [Pascal Betz] Ensure boolean attributes in HTML forms to not be printed if their value is `nil` (eg. avoid to print `disabled=""`).
 
+### Changed
+- [Luca Guidi] Form `#label` helper outputs capitalized strings, instead of titleized (eg. `"Remember me"` instead of `"Remember Me"`).
+
 ## v0.2.0 - 2015-06-23
 ### Added
 - [Luca Guidi] Introduced `Lotus::Helpers::FormHelper`. HTML5 form generator (`#form_for`).

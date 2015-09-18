@@ -22,7 +22,7 @@ View helpers for Ruby applications
 
 ## Rubies
 
-__Lotus::Helpers__ supports Ruby (MRI) 2+ and JRuby 9000 or newer
+__Lotus::Helpers__ supports Ruby (MRI) 2+
 
 ## Installation
 

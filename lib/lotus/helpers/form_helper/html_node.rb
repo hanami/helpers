@@ -5,7 +5,7 @@ module Lotus
     module FormHelper
       # HTML form node
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       #
       # @see Lotus::Helpers::HtmlHelper::HtmlNode
@@ -19,7 +19,7 @@ module Lotus
         #
         # @return [Lotus::Helpers::FormHelper::HtmlNode]
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def initialize(name, content, attributes, options)
           super
@@ -38,7 +38,7 @@ module Lotus
         #
         # @return [String] the content
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::HtmlHelper::HtmlNode#content
@@ -50,7 +50,7 @@ module Lotus
 
         # Inject a hidden field to make Method Override possible
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def _method_override!
           return if @verb.nil?
@@ -63,7 +63,7 @@ module Lotus
 
         # Inject a hidden field for CSRF Protection token
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def _csrf_protection!
           return if @csrf_token.nil?

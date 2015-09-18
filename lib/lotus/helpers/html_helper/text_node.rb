@@ -3,7 +3,7 @@ module Lotus
     module HtmlHelper
       # Text node. Allows for text to be inserted between HTML tags.
       #
-      # @since x.x.x
+      # @since 0.2.5
       # @api private
       class TextNode
         # Initialize a new text node
@@ -11,6 +11,9 @@ module Lotus
         # @param content [String,#to_s] The content to be added.
         #
         # @return [Lotus::Helpers::HtmlHelper::TextNode]
+        #
+        # @since 0.2.5
+        # @api private
         def initialize(content)
           @content = content.to_s
         end
@@ -19,7 +22,7 @@ module Lotus
         #
         # @return [String] the output
         #
-        # @since x.x.x
+        # @since 0.2.5
         # @api private
         def to_s
           Utils::Escape.html(@content)

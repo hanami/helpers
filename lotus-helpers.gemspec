@@ -6,8 +6,8 @@ require 'lotus/helpers/version'
 Gem::Specification.new do |spec|
   spec.name          = 'lotus-helpers'
   spec.version       = Lotus::Helpers::VERSION
-  spec.authors       = ['Luca Guidi', 'Trung Lê']
-  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com']
+  spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
+  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
   spec.summary       = %q{Lotus helpers}
   spec.description   = %q{View helpers for Ruby applications}
   spec.homepage      = 'http://lotusrb.org'
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.0.0'
 
-  spec.add_dependency 'lotus-utils', '~> 0.5'
+  spec.add_dependency 'lotus-utils', '~> 0.5', '>= 0.5.2'
 
   spec.add_development_dependency 'bundler',  '~> 1.6'
   spec.add_development_dependency 'rake',     '~> 10.0'

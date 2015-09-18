@@ -280,7 +280,7 @@ module Lotus
           self
         end
 
-        # @since x.x.x
+        # @since 0.2.5
         # @api private
         alias_method :+, :text
 

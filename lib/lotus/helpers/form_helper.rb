@@ -45,7 +45,7 @@ module Lotus
     #   * <tt>select</tt>
     #   * <tt>submit</tt>
     #
-    # @since x.x.x
+    # @since 0.2.0
     #
     # @see Lotus::Helpers::FormHelper#form_for
     # @see Lotus::Helpers::HtmlHelper
@@ -78,13 +78,13 @@ module Lotus
     module FormHelper
       # Default HTTP method for form
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       DEFAULT_METHOD = 'POST'.freeze
 
       # Default charset
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       DEFAULT_CHARSET = 'utf-8'.freeze
 
@@ -92,29 +92,29 @@ module Lotus
       #
       # This key is shared with <tt>lotusrb</tt>, <tt>lotus-controller</tt>.
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       CSRF_TOKEN = :_csrf_token
 
       # Form object
       #
-      # @since x.x.x
+      # @since 0.2.0
       class Form
         # @return [Symbol] the form name
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         attr_reader :name
 
         # @return [String] the form action
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         attr_reader :url
 
         # @return [::Hash] the form values
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         attr_reader :values
 
@@ -143,7 +143,7 @@ module Lotus
         # @param attributes [Hash,NilClass] a Hash of attributes to pass to the
         #   <tt>form</tt> tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Pass A Value
         #   # Given the following view
@@ -207,7 +207,7 @@ module Lotus
         #
         # @return [String] the method for the action
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::DEFAULT_METHOD
@@ -235,7 +235,7 @@ module Lotus
       #
       # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
       #
-      # @since x.x.x
+      # @since 0.2.0
       #
       # @see Lotus::Helpers::FormHelper
       # @see Lotus::Helpers::FormHelper::Form
@@ -411,7 +411,7 @@ module Lotus
       #
       # @return [String,NilClass] token, if present
       #
-      # @since x.x.x
+      # @since 0.2.0
       def csrf_token
         if defined?(session)
           session[CSRF_TOKEN]

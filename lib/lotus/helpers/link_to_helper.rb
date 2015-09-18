@@ -9,7 +9,7 @@ module Lotus
     #
     # This helper can be used both in views and templates.
     #
-    # @since x.x.x
+    # @since 0.2.0
     module LinkToHelper
       include Lotus::Helpers::HtmlHelper
 
@@ -33,16 +33,12 @@ module Lotus
       #
       # @raise [ArgumentError] if the signature isn't respected
       #
-      # @since x.x.x
+      # @since 0.2.0
       #
       # @see Lotus::Helpers::HtmlHelper#html
       #
       # @example Both content and URL are strings
       #   <%= link_to('Home', '/') %>
-      #     # => <a href="/">Home</a>
-      #
-      # @example Content string with route helper
-      #   <%= link_to('Home', routes.path(:home)) %>
       #     # => <a href="/">Home</a>
       #
       # @example Content string with route helper

@@ -7,9 +7,11 @@ module Lotus
       # @api private
       class EmptyHtmlNode
         # List of attributes that get special treatment when rendering.
-        # @see http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attribute
-        # @since x.x.x
+        #
+        # @since 0.2.5
         # @api private
+        #
+        # @see http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attribute
         BOOLEAN_ATTRIBUTES = %w{allowfullscreen async autobuffer autofocus
           autoplay checked compact controls declare default defaultchecked
           defaultmuted defaultselected defer disabled draggable enabled

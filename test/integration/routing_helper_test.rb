@@ -6,6 +6,6 @@ describe 'Routing helper' do
   end
 
   it 'uses helper' do
-    @actual.must_equal %(/dashboard)
+    @actual.must_include %(/dashboard)
   end
 end

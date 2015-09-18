@@ -3,6 +3,7 @@ require 'lotus/utils/class_attribute'
 require 'lotus/utils/escape'
 require 'lotus/helpers/html_helper/empty_html_node'
 require 'lotus/helpers/html_helper/html_node'
+require 'lotus/helpers/html_helper/text_node'
 
 module Lotus
   module Helpers
@@ -252,6 +253,36 @@ module Lotus
           @nodes << EmptyHtmlNode.new(name, attributes)
           self
         end
+
+        # Defines a plain string of text. This particularly useful when you
+        # want to build more complex HTML.
+        #
+        # @param content [String] the text to be rendered.
+        #
+        # @return [self]
+        #
+        # @see Lotus::Helpers::HtmlHelper
+        # @see Lotus::Helpers::HtmlHelper::TextNode
+        #
+        # @example
+        #
+        #   html.label do
+        #     text "Option 1"
+        #     radio_button :option, 1
+        #   end
+        #
+        #   # <label>
+        #   #   Option 1
+        #   #   <input type="radio" name="option" value="1" />
+        #   # </label>
+        def text(content)
+          @nodes << TextNode.new(content)
+          self
+        end
+
+        # @since 0.2.5
+        # @api private
+        alias_method :+, :text
 
         # Resolves all the nodes and generates the markup
         #

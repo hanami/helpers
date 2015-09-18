@@ -8,19 +8,19 @@ module Lotus
     module FormHelper
       # Form builder
       #
-      # @since x.x.x
+      # @since 0.2.0
       #
       # @see Lotus::Helpers::HtmlHelper::HtmlBuilder
       class FormBuilder < ::Lotus::Helpers::HtmlHelper::HtmlBuilder
         # Set of HTTP methods that are understood by web browsers
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         BROWSER_METHODS = ['GET', 'POST'].freeze
 
         # Checked attribute value
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#radio_button
@@ -28,7 +28,7 @@ module Lotus
 
         # Selected attribute value for option
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#select
@@ -36,7 +36,7 @@ module Lotus
 
         # Separator for accept attribute of file input
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#file_input
@@ -44,7 +44,7 @@ module Lotus
 
         # Replacement for input id interpolation
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#_input_id
@@ -52,7 +52,7 @@ module Lotus
 
         # Replacement for input value interpolation
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#_value
@@ -60,7 +60,7 @@ module Lotus
 
         # Default value for unchecked check box
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
@@ -68,7 +68,7 @@ module Lotus
 
         # Default value for checked check box
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
@@ -96,7 +96,7 @@ module Lotus
         #
         # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def initialize(form, attributes, context = nil, &blk)
           super()
@@ -122,7 +122,7 @@ module Lotus
         #
         # @return [Lotus::Utils::Escape::SafeString] the output
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::HtmlHelper::HtmlBuilder#to_s
@@ -144,7 +144,7 @@ module Lotus
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -211,7 +211,7 @@ module Lotus
         # @param content [Symbol,String] the field name or a content string
         # @param attributes [Hash] HTML attributes to pass to the label tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -220,7 +220,7 @@ module Lotus
         #   %>
         #
         #  # Output:
-        #  #  <label for="book-extended-title">Extended Title</label>
+        #  #  <label for="book-extended-title">Extended title</label>
         #
         # @example Custom content
         #   <%=
@@ -230,6 +230,15 @@ module Lotus
         #
         #  # Output:
         #  #  <label for="book-extended-title">Title</label>
+        #
+        # @example Custom "for" attribute
+        #   <%=
+        #     # ...
+        #     label :extended_title, for: 'ext-title'
+        #   %>
+        #
+        #  # Output:
+        #  #  <label for="ext-title">Extended title</label>
         #
         # @example Nested fields usage
         #   <%=
@@ -245,7 +254,12 @@ module Lotus
         #  #  <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
         def label(content, attributes = {})
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
-          content    = Utils::String.new(content).titleize
+          content    = case content
+                       when String, Lotus::Utils::String
+                         content
+                       else
+                         Utils::String.new(content).capitalize
+                       end
 
           super(content, attributes)
         end
@@ -273,7 +287,7 @@ module Lotus
         # @option attributes [String] :checked_value (defaults to "1")
         # @option attributes [String] :unchecked_value (defaults to "0")
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -349,7 +363,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -368,7 +382,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -387,7 +401,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -406,7 +420,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -425,7 +439,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -444,7 +458,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -466,7 +480,7 @@ module Lotus
         # @param attributes [Hash] HTML attributes to pass to the input tag
         # @option attributes [String,Array] :accept Optional set of accepted MIME Types
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -501,12 +515,74 @@ module Lotus
           input(attributes)
         end
 
+        # Text-area input
+        #
+        # @param name [Symbol] the input name
+        # @param content [String] the content of the textarea
+        # @param attributes [Hash] HTML attributes to pass to the textarea tag
+        #
+        # @since 0.2.5
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     text_area :hobby
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby"></textarea>
+        #
+        # @example Set content
+        #   <%=
+        #     # ...
+        #     text_area :hobby, 'Football'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby">Football</textarea>
+        #
+        # @example Set content and HTML attributes
+        #   <%=
+        #     # ...
+        #     text_area :hobby, 'Football', class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control">Football</textarea>
+        #
+        # @example Omit content and specify HTML attributes
+        #   <%=
+        #     # ...
+        #     text_area :hobby, class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
+        #
+        # @example Force blank value
+        #   <%=
+        #     # ...
+        #     text_area :hobby, '', class: 'form-control'
+        #   %>
+        #
+        #   # Output:
+        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
+        def text_area(name, content = nil, attributes = {})
+          if content.respond_to?(:to_hash)
+            attributes = content
+            content    = nil
+          end
+
+          attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
+          textarea(content || _value(name), attributes)
+        end
+
         # Text input
         #
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -531,7 +607,7 @@ module Lotus
         # @param value [String] the input value
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -571,7 +647,7 @@ module Lotus
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -596,7 +672,7 @@ module Lotus
         # it automatically sets the <tt>selected</tt> attribute on the <tt><option></tt> tag.
         # This Lotus::Controller integration happens without any developer intervention.
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -649,7 +725,7 @@ module Lotus
         # @param content [String] The content
         # @param attributes [Hash] HTML attributes to pass to the button tag
         #
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @example Basic usage
         #   <%=
@@ -668,7 +744,7 @@ module Lotus
         # A set of options to pass to the sub form helpers.
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def options
           Hash[name: @name, values: @values, verb: @verb, csrf_token: @csrf_token]
         end
@@ -677,7 +753,7 @@ module Lotus
         # Check the current builder is top-level
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def toplevel?
           @attributes.any?
         end
@@ -685,7 +761,7 @@ module Lotus
         # Prepare for method override
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _method_override!
           verb = (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
 
@@ -700,7 +776,7 @@ module Lotus
         # Return CSRF Protection token from view context
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def csrf_token
           @context.csrf_token if @context.respond_to?(:csrf_token)
         end
@@ -708,7 +784,7 @@ module Lotus
         # Return a set of default HTML attributes
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _attributes(type, name, attributes)
           { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }.merge(attributes)
         end
@@ -716,7 +792,7 @@ module Lotus
         # Input <tt>name</tt> HTML attribute
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _input_name(name)
           "#{ @name }[#{ name }]"
         end
@@ -724,7 +800,7 @@ module Lotus
         # Input <tt>id</tt> HTML attribute
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _input_id(name)
           name = _input_name(name).gsub(/\[(?<token>[[[:word:]]\-]*)\]/, INPUT_ID_REPLACEMENT)
           Utils::String.new(name).dasherize
@@ -733,7 +809,7 @@ module Lotus
         # Input <tt>value</tt> HTML attribute
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _value(name)
           name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
           @values.get(name)
@@ -742,15 +818,20 @@ module Lotus
         # Input <tt>for</tt> HTML attribute
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         def _for(content, name)
-          _input_id(name || content)
+          case name
+          when String, Lotus::Utils::String
+            name
+          else
+            _input_id(name || content)
+          end
         end
 
         # Hidden field for check box
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
         def _hidden_field_for_check_box(name, attributes)
@@ -766,7 +847,7 @@ module Lotus
         # HTML attributes for check box
         #
         # @api private
-        # @since x.x.x
+        # @since 0.2.0
         #
         # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
         def _attributes_for_check_box(name, attributes)
@@ -787,4 +868,3 @@ module Lotus
     end
   end
 end
-

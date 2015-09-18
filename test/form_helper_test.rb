@@ -132,6 +132,35 @@ describe Lotus::Helpers::FormHelper do
   end
 
   #
+  # LABEL
+  #
+  describe '#label' do
+    it 'renders capitalized string' do
+      actual = view.form_for(:book, action) do
+        label :free_shipping
+      end.to_s
+
+      actual.must_include %(<label for="book-free-shipping">Free shipping</label>)
+    end
+
+    it 'accepts a string as custom content' do
+      actual = view.form_for(:book, action) do
+        label 'Free Shipping', for: :free_shipping
+      end.to_s
+
+      actual.must_include %(<label for="book-free-shipping">Free Shipping</label>)
+    end
+
+    it 'accepts a string as explicit "for" attribute' do
+      actual = view.form_for(:book, action) do
+        label :free_shipping, for: 'free-shipping'
+      end.to_s
+
+      actual.must_include %(<label for="free-shipping">Free shipping</label>)
+    end
+  end
+
+  #
   # INPUT FIELDS
   #
 
@@ -542,7 +571,7 @@ describe Lotus::Helpers::FormHelper do
         email_field :publisher_email, multiple: true
       end.to_s
 
-      actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple="true">)
+      actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple="multiple">)
     end
 
     it "allows to specify HTML attributes" do
@@ -625,7 +654,7 @@ describe Lotus::Helpers::FormHelper do
         file_field :image_cover, multiple: true
       end.to_s
 
-      actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover" multiple="true">)
+      actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover" multiple="multiple">)
     end
 
     it "allows to specify single value for 'accept' attribute" do
@@ -725,6 +754,115 @@ describe Lotus::Helpers::FormHelper do
         end.to_s
 
         actual.must_include %(<input type="hidden" name="book[author_id]" id="book-author-id" value="23">)
+      end
+    end
+  end
+
+  describe '#text_area' do
+    it "renders the element" do
+      actual = view.form_for(:book, action) do
+        text_area :description
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description"></textarea>)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        text_area :description, nil, id: 'desc'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="desc"></textarea>)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        text_area :description, nil, name: 'book[desc]'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[desc]" id="book-description"></textarea>)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:book, action) do
+        text_area :description, nil, class: 'form-control', cols: '5'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
+    end
+
+    it "allows to omit content" do
+      actual = view.form_for(:book, action) do
+        text_area :description, class: 'form-control', cols: '5'
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
+    end
+
+    it "allows to omit content, by accepting Hash serializable options" do
+      options = Lotus::Utils::Hash.new(class: 'form-control', cols: 5)
+
+      actual = view.form_for(:book, action) do
+        text_area :description, options
+      end.to_s
+
+      actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>)
+    end
+
+    describe "set content explicitly" do
+      let(:content) { "A short description of the book" }
+
+      it "allows to set content" do
+        actual = view.form_for(:book, action) do
+          text_area :description, content
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description">#{content}</textarea>)
+      end
+    end
+
+    describe "with filled params" do
+      let(:params) { Hash[book: {description: val}] }
+      let(:val) { "A short description of the book" }
+
+      it "renders with value" do
+        actual = view.form_for(:book, action) do
+          text_area :description
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description">#{val}</textarea>)
+      end
+
+      it "renders with value, when only attributes are specified" do
+        actual = view.form_for(:book, action) do
+          text_area :description, class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control">#{val}</textarea>)
+      end
+
+      it "allows to override value" do
+        actual = view.form_for(:book, action) do
+          text_area :description, 'Just a simple description'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description">Just a simple description</textarea>)
+      end
+
+      it "forces blank value" do
+        actual = view.form_for(:book, action) do
+          text_area :description, ''
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description"></textarea>)
+      end
+
+      it "forces blank value, when also attributes are specified" do
+        actual = view.form_for(:book, action) do
+          text_area :description, '', class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control"></textarea>)
       end
     end
   end

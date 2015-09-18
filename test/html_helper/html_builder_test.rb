@@ -144,4 +144,100 @@ CONTENT
       result.must_equal %(<meta http-equiv="refresh" content="23;url=http://lotusrb.org">)
     end
   end
+
+  ##############################################################################
+  # ATTRIBUTES                                                                 #
+  ##############################################################################
+
+  describe 'attributes' do
+    it 'handles no attribute list' do
+      result = @builder.input().to_s
+      result.must_equal('<input>')
+    end
+
+    it 'handles empty attribute list' do
+      result = @builder.input({}).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'handles nil attribute list' do
+      result = @builder.input(nil).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does not render boolean attribute when its value is false' do
+      result = @builder.input(required: false).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does not render boolean attribute when its value is nil' do
+      result = @builder.input(required: nil).to_s
+      result.must_equal('<input>')
+    end
+
+    it 'does render boolean attribute when its value is true' do
+      result = @builder.input(required: true).to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'does render boolean attribute when its value is trueish' do
+      result = @builder.input(required: 'yes').to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'also handles strings for detection of boolean attributes' do
+      result = @builder.input('required' => true).to_s
+      result.must_equal('<input required="required">')
+    end
+
+    it 'renders multiple attributes' do
+      result = @builder.input('required' => true, 'something' => 'bar').to_s
+      result.must_equal('<input required="required" something="bar">')
+    end
+
+  end
+
+  ##############################################################################
+  # TEXT
+  ##############################################################################
+
+  describe "plain text" do
+    it "renders plain text" do
+      result = @builder.text('Foo').to_s
+      result.must_equal('Foo')
+    end
+
+    it "accepts any object that respond to #to_s" do
+      result = @builder.text(23).to_s
+      result.must_equal('23')
+    end
+
+    it "renders plain text inside a tag" do
+      result = @builder.p do
+        span('Foo')
+        text('Bar')
+      end.to_s
+
+      result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
+    end
+
+    it "ignores block" do
+      result = @builder.text('Foo') { p 'Bar' }.to_s
+      result.must_equal('Foo')
+    end
+
+    it "allows concatenation with raw string" do
+      result = @builder.p do
+        span('Foo') +
+          'Bar'
+      end.to_s
+
+      result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
+    end
+
+    it "escapes HTML inside" do
+      result = @builder.text(%(<p>Foo</p>)).to_s
+      result.must_equal('&lt;p&gt;Foo&lt;&#x2F;p&gt;')
+    end
+  end
 end

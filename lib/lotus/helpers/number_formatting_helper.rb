@@ -8,7 +8,7 @@ module Lotus
     # By including <tt>Lotus::Helpers::NumberFormattingHelper</tt> it will
     # inject private method: <tt>format_number</tt>.
     #
-    # @since x.x.x
+    # @since 0.2.0
     module NumberFormattingHelper
       private
       # Format the given number, according to the options
@@ -29,10 +29,10 @@ module Lotus
       #
       # @raise [TypeError] if number can't be formatted
       #
-      # @since x.x.x
+      # @since 0.2.0
       #
       # @example
-      #   require 'lotus/helpers/number_formatter_helper'
+      #   require 'lotus/helpers/number_formatting_helper'
       #
       #   class Checkout
       #     include Lotus::Helpers::NumberFormattingHelper
@@ -66,14 +66,14 @@ module Lotus
 
       # Formatter
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       class Formatter
         # Regex to delimitate integer part of a number
         #
         # @return [Regexp] the delimitation regex
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::NumberFormatter::Formatter#delimitate
@@ -83,7 +83,7 @@ module Lotus
         #
         # @return [Regexp] the guessing regex
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::NumberFormatter::Formatter#to_number
@@ -93,7 +93,7 @@ module Lotus
         #
         # @return [String] default separator
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         DEFAULT_SEPARATOR  = '.'.freeze
 
@@ -101,7 +101,7 @@ module Lotus
         #
         # @return [String] default delimiter
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         DEFAULT_DELIMITER  = ','.freeze
 
@@ -109,7 +109,7 @@ module Lotus
         #
         # @return [String] default precision
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         DEFAULT_PRECISION  = 2
 
@@ -121,7 +121,7 @@ module Lotus
         # @option options [String] :separator fractional part delimiter
         # @option options [Integer] :precision rounding precision
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         #
         # @see Lotus::Helpers::NumberFormatter::Formatter::DEFAULT_DELIMITER
@@ -140,7 +140,7 @@ module Lotus
         #
         # @raise [TypeError] if number can't be formatted
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def format
           parts.join(@separator)
@@ -152,7 +152,7 @@ module Lotus
         #
         # @return [Array] parts
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def parts
           integer_part, fractional_part = to_str.split(DEFAULT_SEPARATOR)
@@ -163,7 +163,7 @@ module Lotus
         #
         # @return [String] delimitated string
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def delimitate(part)
           part.gsub(DELIMITATION_REGEX) { |digit| "#{digit}#{@delimiter}" }
@@ -175,7 +175,7 @@ module Lotus
         #
         # @raise [TypeError] if number can't be formatted
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def to_str
           to_number.to_s
@@ -187,7 +187,7 @@ module Lotus
         #
         # @raise [TypeError] if number can't be formatted
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def to_number
           case @number
@@ -205,7 +205,7 @@ module Lotus
         #
         # @return [Float,Complex,Rational,BigDecimal] rounded number, if applicable
         #
-        # @since x.x.x
+        # @since 0.2.0
         # @api private
         def rounded_number
           if @number.respond_to?(:round)

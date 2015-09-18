@@ -132,6 +132,35 @@ describe Lotus::Helpers::FormHelper do
   end
 
   #
+  # LABEL
+  #
+  describe '#label' do
+    it 'renders capitalized string' do
+      actual = view.form_for(:book, action) do
+        label :free_shipping
+      end.to_s
+
+      actual.must_include %(<label for="book-free-shipping">Free shipping</label>)
+    end
+
+    it 'accepts a string as custom content' do
+      actual = view.form_for(:book, action) do
+        label 'Free Shipping', for: :free_shipping
+      end.to_s
+
+      actual.must_include %(<label for="book-free-shipping">Free Shipping</label>)
+    end
+
+    it 'accepts a string as explicit "for" attribute' do
+      actual = view.form_for(:book, action) do
+        label :free_shipping, for: 'free-shipping'
+      end.to_s
+
+      actual.must_include %(<label for="free-shipping">Free shipping</label>)
+    end
+  end
+
+  #
   # INPUT FIELDS
   #
 

@@ -758,6 +758,93 @@ describe Lotus::Helpers::FormHelper do
     end
   end
 
+  describe '#number_field' do
+    it 'renders the element' do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, id: 'percent-read'
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="percent-read" value="">)
+    end
+
+    it "allows to override the 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, name: 'book[read]'
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[read]" id="book-percent-read" value="">)
+    end
+
+    it "allows to override the 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, value: '99'
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="99">)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="" class="form-control">)
+    end
+
+    it "allows to specify a 'min' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, min: 0
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="" min="0">)
+    end
+
+    it "allows to specify a 'max' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, max: 100
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="" max="100">)
+    end
+
+    it "allows to specify a 'step' attribute" do
+      actual = view.form_for(:book, action) do
+        number_field :percent_read, step: 5
+      end.to_s
+
+      actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="" step="5">)
+    end
+
+    describe "with filled params" do
+      let(:params) { Hash[book: { percent_read: val }] }
+      let(:val)    { 95 }
+
+      it "renders with value" do
+        actual = view.form_for(:book, action) do
+          number_field :percent_read
+        end.to_s
+
+        actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="95">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          number_field :percent_read, value: 50
+        end.to_s
+
+        actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="50">)
+      end
+    end
+  end
+
   describe '#text_area' do
     it "renders the element" do
       actual = view.form_for(:book, action) do

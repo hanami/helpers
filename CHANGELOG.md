@@ -4,8 +4,9 @@ View helpers for Ruby applications
 ## v0.2.5 - 2015-09-23
 ### Added
 - [Leonardo Saraiva] Improved support for HTML content in `#link_to` helper. It now accepts blocks to build markup inside an anchor tag.
-- [José Mota] Added `#text` for form builder
-- [Scott Le] Added `#text_area` for form builder
+- [José Mota] Added `#text` to the form builder
+- [Alex Wochna] Added `#number_field` to the form builder
+- [Scott Le] Added `#text_area` to the form builder
 
 ### Fixed
 - [Pascal Betz] Ensure boolean attributes in HTML forms to not be printed if their value is `nil` (eg. avoid to print `disabled=""`).

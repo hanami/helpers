@@ -515,6 +515,35 @@ module Lotus
           input(attributes)
         end
 
+        # Number input
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the number input
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     number_field :percent_read
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="number" name="book[percent_read]" id="book-percent-read" value="">
+        #
+        # You can also make use of the 'max', 'min', and 'step' attributes for
+        # the HTML5 number field.
+        #
+        # @example Advanced attributes
+        #   <%=
+        #     # ...
+        #     number_field :priority, min: 1, max: 10, step: 1
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="number" name="book[percent_read]" id="book-precent-read" value="" min="1" max="10" step="1">
+        def number_field(name, attributes = {})
+          input _attributes(:number, name, attributes)
+        end
+
         # Text-area input
         #
         # @param name [Symbol] the input name

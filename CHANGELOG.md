@@ -1,7 +1,7 @@
 # Lotus::Helpers
 View helpers for Ruby applications
 
-## v0.2.5 - 2015-09-23
+## v0.2.5 - 2015-09-30
 ### Added
 - [Leonardo Saraiva] Improved support for HTML content in `#link_to` helper. It now accepts blocks to build markup inside an anchor tag.
 - [José Mota] Added `#text` to the form builder

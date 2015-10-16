@@ -298,7 +298,7 @@ module Lotus
 
         # Encode the content with the given character encoding
         #
-        # @param [Encoding,String] The encoding or its string representation
+        # @param encoding [Encoding,String] the encoding or its string representation
         #
         # @return [String] the encoded string
         #

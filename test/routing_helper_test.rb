@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe Lotus::Helpers::RoutingHelper do
   before do
-    @template = Lotus::View::Template.new('test/fixtures/templates/full_stack/dashboard/index.html.erb')
+    @template = Lotus::View::Template.new('test/fixtures/templates/full_stack/dashboard/index.html.erb', 'utf-8')
   end
 
   describe 'when routing constant is defined' do

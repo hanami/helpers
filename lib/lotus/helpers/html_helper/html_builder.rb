@@ -296,6 +296,18 @@ module Lotus
           Utils::Escape::SafeString.new(@nodes.map(&:to_s).join(NEWLINE))
         end
 
+        # Encode the content with the given character encoding
+        #
+        # @param encoding [Encoding,String] the encoding or its string representation
+        #
+        # @return [String] the encoded string
+        #
+        # @since x.x.x
+        # @api private
+        def encode(encoding)
+          to_s.encode(encoding)
+        end
+
         # Check if there are nested nodes
         #
         # @return [TrueClass,FalseClass] the result of the check

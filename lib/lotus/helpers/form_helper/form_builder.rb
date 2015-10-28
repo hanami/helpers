@@ -807,7 +807,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         def csrf_token
-          @context.csrf_token if @context.respond_to?(:csrf_token)
+          @context.csrf_token if @context.respond_to?(:csrf_token) && @attributes[:method] != 'GET'
         end
 
         # Return a set of default HTML attributes

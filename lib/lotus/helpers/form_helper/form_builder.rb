@@ -114,6 +114,7 @@ module Lotus
             @name       = form.name
             @values     = Values.new(form.values, @context.params)
             @attributes = attributes
+            @method     = method
             @csrf_token = csrf_token
           end
         end
@@ -792,14 +793,16 @@ module Lotus
         # @api private
         # @since 0.2.0
         def _method_override!
-          verb = (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
-
-          if BROWSER_METHODS.include?(verb)
-            @attributes[:method] = verb
+          if BROWSER_METHODS.include?(@method)
+            @attributes[:method] = @method
           else
             @attributes[:method] = DEFAULT_METHOD
-            @verb                = verb
+            @verb                = @method
           end
+        end
+
+        def method
+          (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
         end
 
         # Return CSRF Protection token from view context
@@ -807,7 +810,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         def csrf_token
-          @context.csrf_token if @context.respond_to?(:csrf_token)
+          @context.csrf_token if @context.respond_to?(:csrf_token) && @method != 'GET'
         end
 
         # Return a set of default HTML attributes

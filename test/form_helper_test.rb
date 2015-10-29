@@ -73,6 +73,15 @@ describe Lotus::Helpers::FormHelper do
         end
       end
 
+      describe "with csrf_token on get verb" do
+        let(:csrf_token) { 'abcd-1234-xyz' }
+
+        it "doesn't inject hidden field" do
+          actual = view.form_for(:book, action, method: 'GET', class: 'form-horizonal') { }
+          actual.to_s.must_equal %(<form action="/books" method="GET" accept-charset="utf-8" id="book-form" class="form-horizonal">\n\n</form>)
+        end
+      end
+
       [:patch, :put, :delete].each do |verb|
         it "it injects hidden field when Method Override (#{ verb }) is active" do
           actual = view.form_for(:book, action, method: verb) do

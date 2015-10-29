@@ -106,16 +106,16 @@ module Lotus
 
           # Nested form
           if @context.nil? && attributes.is_a?(Values)
-            @values     = attributes
-            @attributes = {}
-            @name       = form
+            @values      = attributes
+            @attributes  = {}
+            @name        = form
           else
-            @form       = form
-            @name       = form.name
-            @values     = Values.new(form.values, @context.params)
-            @attributes = attributes
-            @method     = method
-            @csrf_token = csrf_token
+            @form        = form
+            @name        = form.name
+            @values      = Values.new(form.values, @context.params)
+            @attributes  = attributes
+            @verb_method = verb_method
+            @csrf_token  = csrf_token
           end
         end
 
@@ -793,15 +793,18 @@ module Lotus
         # @api private
         # @since 0.2.0
         def _method_override!
-          if BROWSER_METHODS.include?(@method)
-            @attributes[:method] = @method
+          if BROWSER_METHODS.include?(@verb_method)
+            @attributes[:method] = @verb_method
           else
             @attributes[:method] = DEFAULT_METHOD
-            @verb                = @method
+            @verb                = @verb_method
           end
         end
 
-        def method
+        # Return the method from attributes
+        #
+        # @api private
+        def verb_method
           (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
         end
 
@@ -810,7 +813,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         def csrf_token
-          @context.csrf_token if @context.respond_to?(:csrf_token) && @method != 'GET'
+          @context.csrf_token if @context.respond_to?(:csrf_token) && @verb_method != 'GET'
         end
 
         # Return a set of default HTML attributes

@@ -284,6 +284,19 @@ class FormHelperView
   end
 end
 
+class VideoHelperView
+  include Lotus::Helpers::VideoHelper
+  attr_reader :params
+
+  def initialize(params)
+    @params = Lotus::Action::Params.new(params)
+  end
+
+  def asset_path(url)
+    "/assets/#{url}"
+  end
+end
+
 class SessionFormHelperView < FormHelperView
   def initialize(params, csrf_token)
     super(params)

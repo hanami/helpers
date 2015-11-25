@@ -5,6 +5,7 @@ require 'lotus/helpers/routing_helper'
 require 'lotus/helpers/link_to_helper'
 require 'lotus/helpers/form_helper'
 require 'lotus/helpers/number_formatting_helper'
+require 'lotus/helpers/video_helper'
 
 module Lotus
   # View helpers for Ruby applications
@@ -27,6 +28,7 @@ module Lotus
         include Lotus::Helpers::LinkToHelper
         include Lotus::Helpers::FormHelper
         include Lotus::Helpers::NumberFormattingHelper
+        include Lotus::Helpers::VideoHelper
       end
     end
   end

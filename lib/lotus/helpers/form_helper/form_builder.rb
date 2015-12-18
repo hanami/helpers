@@ -18,6 +18,12 @@ module Lotus
         # @api private
         BROWSER_METHODS = ['GET', 'POST'].freeze
 
+        # Set of HTTP methods that should NOT generate CSRF token
+        #
+        # @since 0.2.0
+        # @api private
+        EXCLUDED_CSRF_METHODS = ['GET'].freeze
+
         # Checked attribute value
         #
         # @since 0.2.0
@@ -813,7 +819,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         def csrf_token
-          @context.csrf_token if @context.respond_to?(:csrf_token) && @verb_method != 'GET'
+          @context.csrf_token if @context.respond_to?(:csrf_token) && !EXCLUDED_CSRF_METHODS.include?(@verb_method)
         end
 
         # Return a set of default HTML attributes

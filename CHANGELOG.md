@@ -1,5 +1,12 @@
 # Lotus::Helpers
-View helpers for Ruby applications
+View helpers for Ruby web applications
+
+## v0.2.6 - (unreleased)
+### Added
+- [Shin-ichi Ueda] Added support for `<dd>` HTML tag
+
+### Fixed
+- [Rodrigo Panachi] Don't generate CSRF token hidden input for forms with `GET` method
 
 ## v0.2.5 - 2015-09-30
 ### Added

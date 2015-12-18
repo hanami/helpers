@@ -18,6 +18,12 @@ module Lotus
         # @api private
         BROWSER_METHODS = ['GET', 'POST'].freeze
 
+        # Set of HTTP methods that should NOT generate CSRF token
+        #
+        # @since 0.2.0
+        # @api private
+        EXCLUDED_CSRF_METHODS = ['GET'].freeze
+
         # Checked attribute value
         #
         # @since 0.2.0
@@ -106,15 +112,16 @@ module Lotus
 
           # Nested form
           if @context.nil? && attributes.is_a?(Values)
-            @values     = attributes
-            @attributes = {}
-            @name       = form
+            @values      = attributes
+            @attributes  = {}
+            @name        = form
           else
-            @form       = form
-            @name       = form.name
-            @values     = Values.new(form.values, @context.params)
-            @attributes = attributes
-            @csrf_token = csrf_token
+            @form        = form
+            @name        = form.name
+            @values      = Values.new(form.values, @context.params)
+            @attributes  = attributes
+            @verb_method = verb_method
+            @csrf_token  = csrf_token
           end
         end
 
@@ -792,14 +799,19 @@ module Lotus
         # @api private
         # @since 0.2.0
         def _method_override!
-          verb = (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
-
-          if BROWSER_METHODS.include?(verb)
-            @attributes[:method] = verb
+          if BROWSER_METHODS.include?(@verb_method)
+            @attributes[:method] = @verb_method
           else
             @attributes[:method] = DEFAULT_METHOD
-            @verb                = verb
+            @verb                = @verb_method
           end
+        end
+
+        # Return the method from attributes
+        #
+        # @api private
+        def verb_method
+          (@attributes.fetch(:method) { DEFAULT_METHOD }).to_s.upcase
         end
 
         # Return CSRF Protection token from view context
@@ -807,7 +819,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         def csrf_token
-          @context.csrf_token if @context.respond_to?(:csrf_token)
+          @context.csrf_token if @context.respond_to?(:csrf_token) && !EXCLUDED_CSRF_METHODS.include?(@verb_method)
         end
 
         # Return a set of default HTML attributes

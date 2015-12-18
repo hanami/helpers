@@ -28,10 +28,10 @@ module Lotus
     #   module Web::Views::Home
     #     class Index
     #       include Web::View
-    #     end
     #
-    #     def link_to_home
-    #       %(<a href="#{ routes.home_path }">Home</a>)
+    #       def link_to_home
+    #         %(<a href="#{ routes.home_path }">Home</a>)
+    #       end
     #     end
     #   end
     #

@@ -45,6 +45,7 @@ module Lotus
           'div',
           'dl',
           'dt',
+          'dd',
           'em',
           'fieldset',
           'figcaption',

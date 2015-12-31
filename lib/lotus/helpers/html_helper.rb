@@ -65,6 +65,15 @@ module Lotus
     #   #  hello
     #   #</div>
     #
+    #   # 8
+    #   html do
+    #     li 'Hello'
+    #     li 'Lotus'
+    #   end
+    #   # =>
+    #   #<li>Hello</li>
+    #   #<li>Lotus</li>
+    #
     #
     #
     # @example Complex markup
@@ -178,14 +187,20 @@ module Lotus
       private
       # Instantiate an HTML builder
       #
+      # @param blk [Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content block
+      #
       # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the HTML builder
       #
       # @since 0.1.0
       #
       # @see Lotus::Helpers::HtmlHelper
       # @see Lotus::Helpers::HtmlHelper::HtmlBuilder
-      def html
-        HtmlBuilder.new
+      def html(&blk)
+        if block_given?
+          HtmlBuilder.new.fragment(&blk)
+        else
+          HtmlBuilder.new
+        end
       end
     end
   end

@@ -146,6 +146,21 @@ CONTENT
   end
 
   ##############################################################################
+  # FRAGMENTS
+  ##############################################################################
+
+  describe 'fragment' do
+    it 'generates a html fragment' do
+      result = @builder.fragment do
+        span 'Hello'
+        span 'Lotus'
+      end.to_s
+
+      result.must_equal %(<span>Hello</span>\n<span>Lotus</span>)
+    end
+  end
+
+  ##############################################################################
   # ATTRIBUTES                                                                 #
   ##############################################################################
 

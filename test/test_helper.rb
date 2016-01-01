@@ -22,3 +22,15 @@ require 'lotus/helpers'
 require_relative './fixtures'
 
 Lotus::View.load!
+
+require 'stackprof'
+require 'minitest/around/spec'
+
+class Minitest::Test
+  def around(&example)
+    path = "/Users/anton/work/repositories/lotus/helpers/tmp/stackprof-test-#{Time.now.to_i}-#{rand(200)}.dump"
+    StackProf.run(mode: :object, out: path.to_s) do
+      example.call
+    end
+  end
+end

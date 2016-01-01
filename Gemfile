@@ -14,3 +14,6 @@ gem 'lotus-view',        '~> 0.5', github: 'lotus/view',        branch: '0.5.x'
 
 gem 'simplecov', require: false
 gem 'coveralls', require: false
+
+gem 'stackprof'
+gem 'minitest-around'

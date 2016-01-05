@@ -39,6 +39,25 @@ class HtmlView
     end
   end
 
+  def concatenation_of_multiple_fragments
+    html { div 'Hello' } + html { div 'Lotus' }
+  end
+
+  def concatenation_of_multiple_divs
+    html.div('Hello') + html.div('Lotus')
+  end
+
+  def concatenation_of_fragment_and_div
+    html { div 'Hello' } + html.div('Lotus')
+  end
+
+  def fragment_with_block_content
+    html do
+      div 'Hello'
+      div 'Lotus'
+    end
+  end
+
   def div_with_attr
     html.div(id: 'container')
   end

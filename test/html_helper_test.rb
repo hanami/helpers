@@ -33,6 +33,22 @@ describe Lotus::Helpers::HtmlHelper do
     @view.div_with_block_content_and_multiple_nested_calls.to_s.must_equal %(<form action="/users" method="POST">\n<div>\n<label for="user-first-name">First name</label>\n<input type="text" id="user-first-name" name="user[first_name]" value="L">\n</div>\n<input type="submit" value="Save changes">\n</form>)
   end
 
+  it 'returns a concatenation of multiple divs' do
+    @view.concatenation_of_multiple_divs.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+  end
+
+  it 'returns a concatenation of multiple fragments' do
+    @view.concatenation_of_multiple_fragments.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+  end
+
+  it 'returns a concatenation of fragment and div' do
+    @view.concatenation_of_fragment_and_div.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+  end
+
+  it 'returns a fragment with block content as string' do
+    @view.fragment_with_block_content.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+  end
+
   it 'returns a tag with attribute' do
     @view.div_with_attr.to_s.must_equal %(<div id="container"></div>)
   end

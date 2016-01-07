@@ -1,8 +1,9 @@
 # Lotus::Helpers
 View helpers for Ruby web applications
 
-## v0.2.6 - (unreleased)
+## v0.2.6 - 2016-01-12
 ### Added
+- [Cam Huynh] Added support for HTML helper (`#html`) block syntax (eg. `html { div('hello') }`)
 - [Shin-ichi Ueda] Added support for `<dd>` HTML tag
 
 ### Fixed

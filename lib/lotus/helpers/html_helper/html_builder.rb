@@ -3,6 +3,7 @@ require 'lotus/utils/class_attribute'
 require 'lotus/utils/escape'
 require 'lotus/helpers/html_helper/empty_html_node'
 require 'lotus/helpers/html_helper/html_node'
+require 'lotus/helpers/html_helper/html_fragment'
 require 'lotus/helpers/html_helper/text_node'
 
 module Lotus
@@ -232,6 +233,32 @@ module Lotus
           self
         end
 
+        # Define a HTML fragment
+        #
+        # @param blk [Proc] the optional nested content espressed as a block
+        #
+        # @return [self]
+        #
+        # @since 0.2.6
+        # @api public
+        #
+        # @see Lotus::Helpers::HtmlHelper
+        #
+        # @example
+        #   html.fragment('Lotus') # => Lotus
+        #
+        #   html do
+        #     p 'hello'
+        #     p 'lotus'
+        #   end
+        #   # =>
+        #     <p>hello</p>
+        #     <p>lotus</p>
+        def fragment(&blk)
+          @nodes << HtmlFragment.new(&blk)
+          self
+        end
+
         # Defines a custom empty tag
         #
         # @param name [Symbol,String] the name of the tag
@@ -303,7 +330,7 @@ module Lotus
         #
         # @return [String] the encoded string
         #
-        # @since x.x.x
+        # @since 0.2.5
         # @api private
         def encode(encoding)
           to_s.encode(encoding)

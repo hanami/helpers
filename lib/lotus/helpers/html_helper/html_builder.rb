@@ -235,7 +235,6 @@ module Lotus
 
         # Define a HTML fragment
         #
-        # @param content [String,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
         # @param blk [Proc] the optional nested content espressed as a block
         #
         # @return [self]
@@ -331,7 +330,7 @@ module Lotus
         #
         # @return [String] the encoded string
         #
-        # @since x.x.x
+        # @since 0.2.5
         # @api private
         def encode(encoding)
           to_s.encode(encoding)

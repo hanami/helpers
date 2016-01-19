@@ -1,11 +1,11 @@
-module Lotus
+module Hanami
   module Helpers
     # Number formatter
     #
     # You can include this module inside your view and
     # the view will have access all methods.
     #
-    # By including <tt>Lotus::Helpers::NumberFormattingHelper</tt> it will
+    # By including <tt>Hanami::Helpers::NumberFormattingHelper</tt> it will
     # inject private method: <tt>format_number</tt>.
     #
     # @since 0.2.0
@@ -32,10 +32,10 @@ module Lotus
       # @since 0.2.0
       #
       # @example
-      #   require 'lotus/helpers/number_formatting_helper'
+      #   require 'hanami/helpers/number_formatting_helper'
       #
       #   class Checkout
-      #     include Lotus::Helpers::NumberFormattingHelper
+      #     include Hanami::Helpers::NumberFormattingHelper
       #
       #     def total
       #       format_number 1999.99
@@ -76,7 +76,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::NumberFormatter::Formatter#delimitate
+        # @see Hanami::Helpers::NumberFormatter::Formatter#delimitate
         DELIMITATION_REGEX = /(\d)(?=(\d{3})+$)/
 
         # Regex to guess if the number is a integer
@@ -86,7 +86,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::NumberFormatter::Formatter#to_number
+        # @see Hanami::Helpers::NumberFormatter::Formatter#to_number
         INTEGER_REGEXP     = /\A[\d]+\z/
 
         # Default separator
@@ -124,9 +124,9 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::NumberFormatter::Formatter::DEFAULT_DELIMITER
-        # @see Lotus::Helpers::NumberFormatter::Formatter::DEFAULT_SEPARATOR
-        # @see Lotus::Helpers::NumberFormatter::Formatter::DEFAULT_PRECISION
+        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_DELIMITER
+        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_SEPARATOR
+        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_PRECISION
         def initialize(number, options)
           @number = number
           @delimiter = options.fetch(:delimiter, DEFAULT_DELIMITER)

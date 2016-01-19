@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Helpers
     module HtmlHelper
       # Text node. Allows for text to be inserted between HTML tags.
@@ -10,7 +10,7 @@ module Lotus
         #
         # @param content [String,#to_s] The content to be added.
         #
-        # @return [Lotus::Helpers::HtmlHelper::TextNode]
+        # @return [Hanami::Helpers::HtmlHelper::TextNode]
         #
         # @since 0.2.5
         # @api private

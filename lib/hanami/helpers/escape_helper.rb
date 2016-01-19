@@ -1,13 +1,13 @@
-require 'lotus/utils/escape'
+require 'hanami/utils/escape'
 
-module Lotus
+module Hanami
   module Helpers
     # Escape helpers
     #
     # You can include this module inside your view and 
     # the view will have access all methods.
     #
-    # By including <tt>Lotus::Helpers::EscapeHelper</tt> it will inject private
+    # By including <tt>Hanami::Helpers::EscapeHelper</tt> it will inject private
     # methods as markup escape utilities.
     #
     # @since 0.1.0
@@ -18,7 +18,7 @@ module Lotus
       # This should be used only for untrusted contents: user input.
       #
       # This should be used only for tag contents.
-      # To escape tag attributes please use <tt>Lotus::Helpers::EscapeHelper#escape_html_attribute</tt>.
+      # To escape tag attributes please use <tt>Hanami::Helpers::EscapeHelper#escape_html_attribute</tt>.
       #
       # @param input [String] the input
       #
@@ -26,13 +26,13 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Helpers::EscapeHelper#escape_html_attribute
+      # @see Hanami::Helpers::EscapeHelper#escape_html_attribute
       #
       # @example Basic usage
-      #   require 'lotus/helpers/escape_helper'
+      #   require 'hanami/helpers/escape_helper'
       #
       #   class MyView
-      #     include Lotus::Helpers::EscapeHelper
+      #     include Hanami::Helpers::EscapeHelper
       #
       #     def good_content
       #       h "hello"
@@ -55,10 +55,10 @@ module Lotus
       #   #
       #   # CONTENTS ARE AUTOMATICALLY ESCAPED
       #   #
-      #   require 'lotus/helpers'
+      #   require 'hanami/helpers'
       #
       #   class MyView
-      #     include Lotus::Helpers
+      #     include Hanami::Helpers
       #
       #     def evil_content
       #       html.div do
@@ -84,7 +84,7 @@ module Lotus
       # This should be used only for untrusted contents: user input.
       #
       # This can also be used to escape tag contents, but it's slower.
-      # For this purpose use <tt>Lotus::Helpers::EscapeHelper#escape_html</tt>.
+      # For this purpose use <tt>Hanami::Helpers::EscapeHelper#escape_html</tt>.
       #
       # @param input [String] the input
       #
@@ -92,13 +92,13 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Helpers::EscapeHelper#escape_html
+      # @see Hanami::Helpers::EscapeHelper#escape_html
       #
       # @example Basic usage
-      #   require 'lotus/helpers/escape_helper'
+      #   require 'hanami/helpers/escape_helper'
       #
       #   class MyView
-      #     include Lotus::Helpers::EscapeHelper
+      #     include Hanami::Helpers::EscapeHelper
       #
       #     def good_attribute
       #       attribute = "small"
@@ -125,10 +125,10 @@ module Lotus
       #   #
       #   # ATTRIBUTES AREN'T AUTOMATICALLY ESCAPED
       #   #
-      #   require 'lotus/helpers'
+      #   require 'hanami/helpers'
       #
       #   class MyView
-      #     include Lotus::Helpers
+      #     include Hanami::Helpers
       #
       #     def evil_attribute
       #       user_input_attribute = %(" onclick="javascript:alert('xss')" id=")
@@ -172,19 +172,19 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Utils::Escape.url
-      # @see Lotus::Utils::Escape::DEFAULT_URL_SCHEMES
+      # @see Hanami::Utils::Escape.url
+      # @see Hanami::Utils::Escape::DEFAULT_URL_SCHEMES
       #
       # @example Basic usage
-      #   require 'lotus/helpers/escape_helper'
+      #   require 'hanami/helpers/escape_helper'
       #
       #   class MyView
-      #     include Lotus::Helpers::EscapeHelper
+      #     include Hanami::Helpers::EscapeHelper
       #
       #     def good_url
-      #       url = "http://lotusrb.org"
+      #       url = "http://hanamirb.org"
       #
-      #       %(<a href="#{ hu(url) }">Lotus</a>
+      #       %(<a href="#{ hu(url) }">Hanami</a>
       #     end
       #
       #     def evil_url
@@ -197,16 +197,16 @@ module Lotus
       #   view = MyView.new
       #
       #   view.good_url
-      #     # => %(<a href="http://lotusrb.org">Lotus</a>)
+      #     # => %(<a href="http://hanamirb.org">Hanami</a>)
       #
       #   view.evil_url
       #     # => %(<a href="">Evil</a>)
       #
       # @example Custom schemes
-      #   require 'lotus/helpers/escape_helper'
+      #   require 'hanami/helpers/escape_helper'
       #
       #   class MyView
-      #     include Lotus::Helpers::EscapeHelper
+      #     include Hanami::Helpers::EscapeHelper
       #
       #     def ftp_link
       #       schemes = ['ftp', 'ftps']
@@ -234,15 +234,15 @@ module Lotus
       #
       # @param input [String] the input
       #
-      # @return [Lotus::Utils::Escape::SafeString] the string marked as safe string
+      # @return [Hanami::Utils::Escape::SafeString] the string marked as safe string
       #
       # @since 0.1.0
       #
       # @example
-      #   require 'lotus/helpers/escape_helper'
+      #   require 'hanami/helpers/escape_helper'
       #
       #   class MyView
-      #     include Lotus::Helpers::EscapeHelper
+      #     include Hanami::Helpers::EscapeHelper
       #
       #     def good_content
       #       raw "<p>hello</p>"

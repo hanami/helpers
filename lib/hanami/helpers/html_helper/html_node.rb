@@ -1,6 +1,6 @@
-require 'lotus/helpers/html_helper/empty_html_node'
+require 'hanami/helpers/html_helper/empty_html_node'
 
-module Lotus
+module Hanami
   module Helpers
     module HtmlHelper
       # HTML node
@@ -8,16 +8,16 @@ module Lotus
       # @since 0.1.0
       # @api private
       #
-      # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode
+      # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode
       class HtmlNode < EmptyHtmlNode
         # Initialize a new HTML node
         #
         # @param name [Symbol,String] the name of the tag
-        # @param content [String,Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
+        # @param content [String,Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
         # @param attributes [Hash,NilClass] the optional tag attributes
         # @param options [Hash] a optional set of data
         #
-        # @return [Lotus::Helpers::HtmlHelper::HtmlNode]
+        # @return [Hanami::Helpers::HtmlHelper::HtmlNode]
         def initialize(name, content, attributes, options = {})
           @builder = HtmlBuilder.new
           @name    = name
@@ -38,7 +38,7 @@ module Lotus
         # @since 0.1.0
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode#to_s
+        # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode#to_s
         def to_s
           %(#{ super }#{ content }</#{ @name }>)
         end

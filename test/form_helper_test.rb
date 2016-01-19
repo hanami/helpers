@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::FormHelper do
+describe Hanami::Helpers::FormHelper do
   let(:view)   { FormHelperView.new(params) }
   let(:params) { Hash[] }
   let(:action) { '/books' }
@@ -896,7 +896,7 @@ describe Lotus::Helpers::FormHelper do
     end
 
     it "allows to omit content, by accepting Hash serializable options" do
-      options = Lotus::Utils::Hash.new(class: 'form-control', cols: 5)
+      options = Hanami::Utils::Hash.new(class: 'form-control', cols: 5)
 
       actual = view.form_for(:book, action) do
         text_area :description, options

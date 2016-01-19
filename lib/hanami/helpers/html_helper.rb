@@ -1,10 +1,10 @@
-require 'lotus/helpers/html_helper/html_builder'
+require 'hanami/helpers/html_helper/html_builder'
 
-module Lotus
+module Hanami
   module Helpers
     # HTML builder
     #
-    # By including <tt>Lotus::Helpers::HtmlHelper</tt> it will inject one private method: <tt>html</tt>.
+    # By including <tt>Hanami::Helpers::HtmlHelper</tt> it will inject one private method: <tt>html</tt>.
     # This is a HTML5 markup builder.
     #
     # Features:
@@ -26,7 +26,7 @@ module Lotus
     #
     # @since 0.1.0
     #
-    # @see Lotus::Helpers::HtmlHelper#html
+    # @see Hanami::Helpers::HtmlHelper#html
     #
     # @example Usage
     #   # 1
@@ -68,11 +68,11 @@ module Lotus
     #   # 8
     #   html do
     #     li 'Hello'
-    #     li 'Lotus'
+    #     li 'Hanami'
     #   end
     #   # =>
     #   #<li>Hello</li>
-    #   #<li>Lotus</li>
+    #   #<li>Hanami</li>
     #
     #
     #
@@ -136,10 +136,10 @@ module Lotus
     #   # THE VIEW CAN BE A SIMPLE RUBY OBJECT
     #   #
     #
-    #   require 'lotus/helpers'
+    #   require 'hanami/helpers'
     #
     #   class MyView
-    #     include Lotus::Helpers::HtmlHelper
+    #     include Hanami::Helpers::HtmlHelper
     #
     #     # Generates
     #     # <aside id="sidebar">
@@ -158,15 +158,15 @@ module Lotus
     #   # LOCAL VARIABLES FROM VIEWS ARE AVAILABLE INSIDE THE NESTED BLOCKS OF HTML BUILDER
     #   #
     #
-    #   require 'lotus/view'
-    #   require 'lotus/helpers'
+    #   require 'hanami/view'
+    #   require 'hanami/helpers'
     #
     #   Book = Struct.new(:title)
     #
     #   module Books
     #     class Show
-    #       include Lotus::View
-    #       include Lotus::Helpers::HtmlHelper
+    #       include Hanami::View
+    #       include Hanami::Helpers::HtmlHelper
     #
     #       def title_widget
     #         html.div do
@@ -187,14 +187,14 @@ module Lotus
       private
       # Instantiate an HTML builder
       #
-      # @param blk [Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content block
+      # @param blk [Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content block
       #
-      # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the HTML builder
+      # @return [Hanami::Helpers::HtmlHelper::HtmlBuilder] the HTML builder
       #
       # @since 0.1.0
       #
-      # @see Lotus::Helpers::HtmlHelper
-      # @see Lotus::Helpers::HtmlHelper::HtmlBuilder
+      # @see Hanami::Helpers::HtmlHelper
+      # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
       def html(&blk)
         if block_given?
           HtmlBuilder.new.fragment(&blk)

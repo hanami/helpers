@@ -1,10 +1,10 @@
-require 'lotus/view'
-require 'lotus/controller'
-require 'lotus/helpers/html_helper'
-require 'lotus/helpers/escape_helper'
+require 'hanami/view'
+require 'hanami/controller'
+require 'hanami/helpers/html_helper'
+require 'hanami/helpers/escape_helper'
 
 class HtmlView
-  include Lotus::Helpers::HtmlHelper
+  include Hanami::Helpers::HtmlHelper
 
   def empty_div
     html.div
@@ -40,21 +40,21 @@ class HtmlView
   end
 
   def concatenation_of_multiple_fragments
-    html { div 'Hello' } + html { div 'Lotus' }
+    html { div 'Hello' } + html { div 'Hanami' }
   end
 
   def concatenation_of_multiple_divs
-    html.div('Hello') + html.div('Lotus')
+    html.div('Hello') + html.div('Hanami')
   end
 
   def concatenation_of_fragment_and_div
-    html { div 'Hello' } + html.div('Lotus')
+    html { div 'Hello' } + html.div('Hanami')
   end
 
   def fragment_with_block_content
     html do
       div 'Hello'
-      div 'Lotus'
+      div 'Hanami'
     end
   end
 
@@ -110,7 +110,7 @@ class HtmlView
 end
 
 class NumbersView
-  include Lotus::Helpers::NumberFormattingHelper
+  include Hanami::Helpers::NumberFormattingHelper
 
   def single_digit
     format_number 1
@@ -190,7 +190,7 @@ class NumbersView
 end
 
 class EscapeView
-  include Lotus::Helpers::EscapeHelper
+  include Hanami::Helpers::EscapeHelper
 
   def good_string
     escape_html "this is a good string"
@@ -209,7 +209,7 @@ class EscapeView
   end
 
   def good_url_string
-    escape_url "http://lotusrb.org"
+    escape_url "http://hanamirb.org"
   end
 
   def evil_url_string
@@ -229,7 +229,7 @@ class EscapeView
   end
 
   def url_string_alias
-    hu "http://lotusrb.org"
+    hu "http://hanamirb.org"
   end
 end
 
@@ -239,8 +239,8 @@ User = Struct.new(:name, :website, :snippet)
 module TestView
   def self.included(view)
     view.class_eval do
-      include Lotus::View
-      include Lotus::Helpers
+      include Hanami::View
+      include Hanami::Helpers
       root __dir__ + '/fixtures/templates'
     end
   end
@@ -295,11 +295,11 @@ module Users
 end
 
 class FormHelperView
-  include Lotus::Helpers::FormHelper
+  include Hanami::Helpers::FormHelper
   attr_reader :params
 
   def initialize(params)
-    @params = Lotus::Action::Params.new(params)
+    @params = Hanami::Action::Params.new(params)
   end
 end
 
@@ -332,7 +332,7 @@ class Delivery
   end
 end
 
-class DeliveryParams < Lotus::Action::Params
+class DeliveryParams < Hanami::Action::Params
   param :delivery do
     param :customer_id, type: Integer, presence: true
     param :address do
@@ -370,7 +370,7 @@ module FullStack
     end
 
     def self._escape(string)
-      Lotus::Utils::Escape::SafeString.new(string)
+      Hanami::Utils::Escape::SafeString.new(string)
     end
   end
 
@@ -448,7 +448,7 @@ class ViewWithoutRoutingHelper
 end
 
 class LinkTo
-  include Lotus::Helpers::LinkToHelper
+  include Hanami::Helpers::LinkToHelper
 
   class Index
     include TestView

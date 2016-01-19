@@ -18,7 +18,7 @@ end
 
 require 'minitest/autorun'
 $:.unshift 'lib'
-require 'lotus/helpers'
+require 'hanami/helpers'
 require_relative './fixtures'
 
-Lotus::View.load!
+Hanami::View.load!

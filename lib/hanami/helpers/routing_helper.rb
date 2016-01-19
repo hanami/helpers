@@ -1,9 +1,9 @@
-module Lotus
+module Hanami
   module Helpers
-    # Routing helper for full stack Lotus web applications.
+    # Routing helper for full stack Hanami web applications.
     #
     # For a given application called <tt>Web::Application</tt>, at runtime
-    # Lotus creates a routes factory called <tt>Web::Routes</tt>.
+    # Hanami creates a routes factory called <tt>Web::Routes</tt>.
     #
     # By including this module in a view, it makes that factory avaliable as
     # <tt>routes</tt>.
@@ -11,7 +11,7 @@ module Lotus
     # @since 0.1.0
     #
     # @example Basic usage in template
-    #   require 'lotus'
+    #   require 'hanami'
     #
     #   module Web::Views::Home
     #     class Index
@@ -23,7 +23,7 @@ module Lotus
     #   # <%= routes.home_path %>
     #
     # @example Basic usage in view
-    #   require 'lotus'
+    #   require 'hanami'
     #
     #   module Web::Views::Home
     #     class Index

@@ -7,10 +7,10 @@ unless ENV['TRAVIS']
   gem 'yard',   require: false
 end
 
-gem 'lotus-utils',       '~> 0.6', github: 'lotus/utils',       branch: '0.6.x'
-gem 'lotus-validations', '~> 0.4', github: 'lotus/validations', branch: '0.4.x'
-gem 'lotus-controller',  '~> 0.5', github: 'lotus/controller',  branch: '0.5.x'
-gem 'lotus-view',        '~> 0.5', github: 'lotus/view',        branch: '0.5.x'
+gem 'hanami-utils',       '~> 0.7', github: 'hanami/utils',       branch: '0.7.x'
+gem 'hanami-validations', '~> 0.5', github: 'hanami/validations', branch: '0.5.x'
+gem 'hanami-controller',  '~> 0.6', github: 'hanami/controller',  branch: '0.6.x'
+gem 'hanami-view',        '~> 0.6', github: 'hanami/view',        branch: '0.6.x'
 
 gem 'simplecov', require: false
 gem 'coveralls', require: false

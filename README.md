@@ -1,35 +1,35 @@
-# Lotus::Helpers
+# Hanami::Helpers
 
 View helpers for Ruby applications
 
 ## Status
 
-[![Gem Version](http://img.shields.io/gem/v/lotus-helpers.svg)](https://badge.fury.io/rb/lotus-helpers)
-[![Build Status](http://img.shields.io/travis/lotus/helpers/master.svg)](https://travis-ci.org/lotus/helpers?branch=master)
-[![Coverage](http://img.shields.io/coveralls/lotus/helpers/master.svg)](https://coveralls.io/r/lotus/helpers)
-[![Code Climate](http://img.shields.io/codeclimate/github/lotus/helpers.svg)](https://codeclimate.com/github/lotus/helpers)
-[![Dependencies](http://img.shields.io/gemnasium/lotus/helpers.svg)](https://gemnasium.com/lotus/helpers)
-[![Inline Docs](http://inch-ci.org/github/lotus/helpers.svg)](http://inch-ci.org/github/lotus/helpers)
+[![Gem Version](http://img.shields.io/gem/v/hanami-helpers.svg)](https://badge.fury.io/rb/hanami-helpers)
+[![Build Status](http://img.shields.io/travis/hanami/helpers/master.svg)](https://travis-ci.org/hanami/helpers?branch=master)
+[![Coverage](http://img.shields.io/coveralls/hanami/helpers/master.svg)](https://coveralls.io/r/hanami/helpers)
+[![Code Climate](http://img.shields.io/codeclimate/github/hanami/helpers.svg)](https://codeclimate.com/github/hanami/helpers)
+[![Dependencies](http://img.shields.io/gemnasium/hanami/helpers.svg)](https://gemnasium.com/hanami/helpers)
+[![Inline Docs](http://inch-ci.org/github/hanami/helpers.svg)](http://inch-ci.org/github/hanami/helpers)
 
 ## Contact
 
-* Home page: http://lotusrb.org
-* Mailing List: http://lotusrb.org/mailing-list
-* API Doc: http://rdoc.info/gems/lotus-helpers
-* Bugs/Issues: https://github.com/lotus/helpers/issues
-* Support: http://stackoverflow.com/questions/tagged/lotus-ruby
-* Chat: https://gitter.im/lotus/chat
+* Home page: http://hanamirb.org
+* Mailing List: http://hanamirb.org/mailing-list
+* API Doc: http://rdoc.info/gems/hanami-helpers
+* Bugs/Issues: https://github.com/hanami/helpers/issues
+* Support: http://stackoverflow.com/questions/tagged/hanami
+* Chat: https//chat.hanamirb.org
 
 ## Rubies
 
-__Lotus::Helpers__ supports Ruby (MRI) 2+
+__Hanami::Helpers__ supports Ruby (MRI) 2+
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'lotus-helpers'
+gem 'hanami-helpers'
 ```
 
 And then execute:
@@ -41,12 +41,12 @@ $ bundle
 Or install it yourself as:
 
 ```shell
-$ gem install lotus-helpers
+$ gem install hanami-helpers
 ```
 
 ## Usage
 
-`Lotus::Helpers` offers a set of utilities to enrich web views.
+`Hanami::Helpers` offers a set of utilities to enrich web views.
 
 ### HTML helper
 
@@ -57,7 +57,7 @@ View:
 ```ruby
 module Users
   class Show
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def sidebar
       html.aside(id: 'sidebar') do
@@ -126,7 +126,7 @@ View:
 ```ruby
 module Books
   class New
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def form
       form_for :book, routes.books_path do
@@ -161,7 +161,7 @@ Views:
 ```ruby
 module Books
   class New
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def form
       Form.new(:book, routes.books_path)
@@ -173,7 +173,7 @@ module Books
   end
 
   class Edit
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def form
       Form.new(:book, routes.book_path(id: book.id), {book: book}, {method: :patch})
@@ -237,7 +237,7 @@ View:
 ```ruby
 module Users
   class Show
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def home_page_link
       %(<a href="#{ hu(user.home_page_url) }" title="#{ ha(user.name} }'s website">#{ h(user.website_name) }</a>)
@@ -266,14 +266,14 @@ Output:
 
 ### Routing Helper
 
-Lotus and Lotus::Router integration (`#routes`).
+Hanami and Hanami::Router integration (`#routes`).
 
 View:
 
 ```ruby
 module Home
   class Index
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def link_to_home
       %(<a href="#{ routes.home_path }">Home</a>)
@@ -303,7 +303,7 @@ View:
 ```ruby
 module Home
   class Index
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def visitors_count
       format_number '1000'
@@ -326,7 +326,7 @@ Output:
 
 ## Philosophy
 
-All the Lotus helpers are modules to include.
+All the Hanami helpers are modules to include.
 
 Most of the time they inject **private** methods.
 This restriction prevents helper methods to be used on the outside (eg. in a template).
@@ -338,7 +338,7 @@ We want to encourage developers to use **meaningful** and **simple APIs** in the
 ```ruby
 module Users
   class Show
-    include Lotus::Helpers
+    include Hanami::Helpers
   end
 end
 ```
@@ -354,7 +354,7 @@ This style increases the complexity of the template and it makes testing hard.
 ```ruby
 module Users
   class Show
-    include Lotus::Helpers
+    include Hanami::Helpers
 
     def followers_count
       format_number user.followers_count
@@ -372,11 +372,11 @@ In order to test the value that will be printed becomes easier: `Users::Show#fol
 
 ## Versioning
 
-__Lotus::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)
+__Hanami::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Contributing
 
-1. Fork it ( https://github.com/lotus/helpers/fork )
+1. Fork it ( https://github.com/hanami/helpers/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -385,3 +385,4 @@ __Lotus::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)
 ## Copyright
 
 Copyright © 2014-2016 Luca Guidi – Released under MIT License
+This project was formerly known as Lotus (`lotus-helpers`).

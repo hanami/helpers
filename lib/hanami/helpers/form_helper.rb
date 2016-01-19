@@ -1,14 +1,14 @@
-require 'lotus/helpers/form_helper/form_builder'
+require 'hanami/helpers/form_helper/form_builder'
 
-module Lotus
+module Hanami
   module Helpers
     # Form builder
     #
-    # By including <tt>Lotus::Helpers::FormHelper</tt> it will inject one public method: <tt>form_for</tt>.
+    # By including <tt>Hanami::Helpers::FormHelper</tt> it will inject one public method: <tt>form_for</tt>.
     # This is a HTML5 form builder.
     #
     # To understand the general HTML5 builder syntax of this framework, please
-    # consider to have a look at <tt>Lotus::Helpers::HtmlHelper</tt> documentation.
+    # consider to have a look at <tt>Hanami::Helpers::HtmlHelper</tt> documentation.
     #
     # This builder is independent from any template engine.
     # This was hard to achieve without a compromise: the form helper should be
@@ -47,8 +47,8 @@ module Lotus
     #
     # @since 0.2.0
     #
-    # @see Lotus::Helpers::FormHelper#form_for
-    # @see Lotus::Helpers::HtmlHelper
+    # @see Hanami::Helpers::FormHelper#form_for
+    # @see Hanami::Helpers::HtmlHelper
     #
     # @example One output block (template)
     #   <%=
@@ -60,10 +60,10 @@ module Lotus
     #   %>
     #
     # @example Method (view)
-    #   require 'lotus/helpers'
+    #   require 'hanami/helpers'
     #
     #   class MyView
-    #     include Lotus::Helpers::FormHelper
+    #     include Hanami::Helpers::FormHelper
     #
     #     def my_form
     #       form_for :book, routes.books_path do
@@ -90,7 +90,7 @@ module Lotus
 
       # CSRF Token session key
       #
-      # This key is shared with <tt>lotusrb</tt>, <tt>lotus-controller</tt>.
+      # This key is shared with <tt>hanamirb</tt>, <tt>hanami-controller</tt>.
       #
       # @since 0.2.0
       # @api private
@@ -126,7 +126,7 @@ module Lotus
         # The keys of this Hash, MUST correspond to the structure of the (nested)
         # fields of the form.
         #
-        # For a given input where the <tt>name</tt> is `book[title]`, Lotus will
+        # For a given input where the <tt>name</tt> is `book[title]`, Hanami will
         # look for `:book` key in values.
         #
         # If the current params have the same key, it will be PREFERRED over the
@@ -210,7 +210,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::DEFAULT_METHOD
+        # @see Hanami::Helpers::FormHelper::DEFAULT_METHOD
         def verb
           @attributes.fetch(:method, DEFAULT_METHOD)
         end
@@ -229,17 +229,17 @@ module Lotus
       #
       # @overload form_for(form, attributes, &blk)
       #   Use Form
-      #   @param form [Lotus::Helpers::FormHelper::Form] a form object
+      #   @param form [Hanami::Helpers::FormHelper::Form] a form object
       #   @param attributes [Hash] HTML attributes to pass to the form tag and form values
       #   @param blk [Proc] A block that describes the contents of the form
       #
-      # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
+      # @return [Hanami::Helpers::FormHelper::FormBuilder] the form builder
       #
       # @since 0.2.0
       #
-      # @see Lotus::Helpers::FormHelper
-      # @see Lotus::Helpers::FormHelper::Form
-      # @see Lotus::Helpers::FormHelper::FormBuilder
+      # @see Hanami::Helpers::FormHelper
+      # @see Hanami::Helpers::FormHelper::Form
+      # @see Hanami::Helpers::FormHelper::FormBuilder
       #
       # @example Inline Values In Template
       #   <%=

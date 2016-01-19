@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::LinkToHelper do
+describe Hanami::Helpers::LinkToHelper do
   before do
     @view = LinkTo.new
   end

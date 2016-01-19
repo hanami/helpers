@@ -1,8 +1,8 @@
 require 'test_helper'
 
-describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
+describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
   before do
-    @builder = Lotus::Helpers::HtmlHelper::HtmlBuilder.new
+    @builder = Hanami::Helpers::HtmlHelper::HtmlBuilder.new
   end
 
   ##############################################################################
@@ -18,21 +18,21 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
 
   describe '<a>' do
     it 'generates a link' do
-      result = @builder.a('Lotus', href: 'http://lotusrb.org').to_s
-      result.must_equal %(<a href="http://lotusrb.org">Lotus</a>)
+      result = @builder.a('Hanami', href: 'http://hanamirb.org').to_s
+      result.must_equal %(<a href="http://hanamirb.org">Hanami</a>)
     end
 
     it 'generates a link with target' do
-      result = @builder.a('Lotus', href: 'http://lotusrb.org', target: '_blank').to_s
-      result.must_equal %(<a href="http://lotusrb.org" target="_blank">Lotus</a>)
+      result = @builder.a('Hanami', href: 'http://hanamirb.org', target: '_blank').to_s
+      result.must_equal %(<a href="http://hanamirb.org" target="_blank">Hanami</a>)
     end
 
     it 'generates a link with image' do
-      result = @builder.a('Lotus', href: 'http://lotusrb.org') do
+      result = @builder.a('Hanami', href: 'http://hanamirb.org') do
         img(src: '/images/logo.png')
       end.to_s
 
-      result.must_equal %(<a href="http://lotusrb.org">\n<img src="/images/logo.png">\n</a>)
+      result.must_equal %(<a href="http://hanamirb.org">\n<img src="/images/logo.png">\n</a>)
     end
   end
 
@@ -45,7 +45,7 @@ describe Lotus::Helpers::HtmlHelper::HtmlBuilder do
 
   describe '<addr>' do
     it 'generates an address' do
-      content = Lotus::Utils::Escape::SafeString.new(
+      content = Hanami::Utils::Escape::SafeString.new(
 <<-CONTENT
 Mozilla Foundation<br>
 1981 Landings Drive<br>
@@ -67,7 +67,7 @@ CONTENT
     end
 
     it 'generates a script tag with javascript code' do
-      result = @builder.script { Lotus::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
+      result = @builder.script { Hanami::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
       result.must_equal %(<script>\nalert("hello")\n</script>)
     end
   end
@@ -82,7 +82,7 @@ CONTENT
     end
 
     it 'generates a script tag with javascript code' do
-      result = @builder.script { Lotus::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
+      result = @builder.script { Hanami::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
       result.must_equal %(<script>\nalert("hello")\n</script>)
     end
   end
@@ -107,8 +107,8 @@ CONTENT
 
   describe '<img>' do
     it 'generates an image' do
-      result = @builder.img(src: '/images/logo.png', alt: 'Lotus logo').to_s
-      result.must_equal %(<img src="/images/logo.png" alt="Lotus logo">)
+      result = @builder.img(src: '/images/logo.png', alt: 'Hanami logo').to_s
+      result.must_equal %(<img src="/images/logo.png" alt="Hanami logo">)
     end
 
     it 'generates an image with size' do
@@ -139,9 +139,9 @@ CONTENT
 
     it 'generates a page refresh' do
       # RUBY_VERSION >= 2.2
-      # result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://lotusrb.org').to_s
-      result = @builder.meta(:'http-equiv' => 'refresh', content: '23;url=http://lotusrb.org').to_s
-      result.must_equal %(<meta http-equiv="refresh" content="23;url=http://lotusrb.org">)
+      # result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://hanamirb.org').to_s
+      result = @builder.meta(:'http-equiv' => 'refresh', content: '23;url=http://hanamirb.org').to_s
+      result.must_equal %(<meta http-equiv="refresh" content="23;url=http://hanamirb.org">)
     end
   end
 
@@ -153,10 +153,10 @@ CONTENT
     it 'generates a html fragment' do
       result = @builder.fragment do
         span 'Hello'
-        span 'Lotus'
+        span 'Hanami'
       end.to_s
 
-      result.must_equal %(<span>Hello</span>\n<span>Lotus</span>)
+      result.must_equal %(<span>Hello</span>\n<span>Hanami</span>)
     end
   end
 

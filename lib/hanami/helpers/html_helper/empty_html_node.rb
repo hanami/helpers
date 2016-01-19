@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Helpers
     module HtmlHelper
       # Empty HTML node
@@ -33,7 +33,7 @@ module Lotus
         # @param name [Symbol,String] the name of the tag
         # @param attributes [Hash,NilClass] the optional tag attributes
         #
-        # @return [Lotus::Helpers::HtmlHelper::EmptyHtmlNode]
+        # @return [Hanami::Helpers::HtmlHelper::EmptyHtmlNode]
         #
         # @since 0.1.0
         # @api private

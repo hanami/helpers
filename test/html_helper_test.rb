@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::HtmlHelper do
+describe Hanami::Helpers::HtmlHelper do
   before do
     @view = HtmlView.new
   end
@@ -34,19 +34,19 @@ describe Lotus::Helpers::HtmlHelper do
   end
 
   it 'returns a concatenation of multiple divs' do
-    @view.concatenation_of_multiple_divs.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+    @view.concatenation_of_multiple_divs.to_s.must_equal %(<div>Hello</div>\n<div>Hanami</div>)
   end
 
   it 'returns a concatenation of multiple fragments' do
-    @view.concatenation_of_multiple_fragments.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+    @view.concatenation_of_multiple_fragments.to_s.must_equal %(<div>Hello</div>\n<div>Hanami</div>)
   end
 
   it 'returns a concatenation of fragment and div' do
-    @view.concatenation_of_fragment_and_div.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+    @view.concatenation_of_fragment_and_div.to_s.must_equal %(<div>Hello</div>\n<div>Hanami</div>)
   end
 
   it 'returns a fragment with block content as string' do
-    @view.fragment_with_block_content.to_s.must_equal %(<div>Hello</div>\n<div>Lotus</div>)
+    @view.fragment_with_block_content.to_s.must_equal %(<div>Hello</div>\n<div>Hanami</div>)
   end
 
   it 'returns a tag with attribute' do

@@ -1,6 +1,6 @@
-require 'lotus/utils/hash'
+require 'hanami/utils/hash'
 
-module Lotus
+module Hanami
   module Helpers
     module FormHelper
       class Values

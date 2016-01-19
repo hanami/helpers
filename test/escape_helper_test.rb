@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::EscapeHelper do
+describe Hanami::Helpers::EscapeHelper do
   before do
     @view = EscapeView.new
   end
@@ -38,7 +38,7 @@ describe Lotus::Helpers::EscapeHelper do
   end
 
   it 'autoscape url evil string' do
-    @view.good_url_string.must_equal %(http://lotusrb.org)
+    @view.good_url_string.must_equal %(http://hanamirb.org)
   end
 
   it "don't autoscape url evil string" do
@@ -49,8 +49,8 @@ describe Lotus::Helpers::EscapeHelper do
     @view.raw_string.must_equal %(<div>I'm a raw string</div>)
   end
 
-  it 'raw string is a Lotus::Helpers::Escape::SafeString class' do
-    @view.raw_string.class.must_equal Lotus::Utils::Escape::SafeString
+  it 'raw string is a Hanami::Helpers::Escape::SafeString class' do
+    @view.raw_string.class.must_equal Hanami::Utils::Escape::SafeString
   end
 
   it "html helper alias" do
@@ -62,6 +62,6 @@ describe Lotus::Helpers::EscapeHelper do
   end
 
   it "url helper alias" do
-    @view.url_string_alias.must_equal %(http://lotusrb.org)
+    @view.url_string_alias.must_equal %(http://hanamirb.org)
   end
 end

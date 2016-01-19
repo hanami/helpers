@@ -1,6 +1,6 @@
-require 'lotus/helpers/html_helper/html_node'
+require 'hanami/helpers/html_helper/html_node'
 
-module Lotus
+module Hanami
   module Helpers
     module FormHelper
       # HTML form node
@@ -8,16 +8,16 @@ module Lotus
       # @since 0.2.0
       # @api private
       #
-      # @see Lotus::Helpers::HtmlHelper::HtmlNode
-      class HtmlNode < ::Lotus::Helpers::HtmlHelper::HtmlNode
+      # @see Hanami::Helpers::HtmlHelper::HtmlNode
+      class HtmlNode < ::Hanami::Helpers::HtmlHelper::HtmlNode
         # Initialize a new HTML form node
         #
         # @param name [Symbol,String] the name of the tag
-        # @param content [String,Proc,Lotus::Helpers::HtmlHelper::FormBuilder,NilClass] the optional content
+        # @param content [String,Proc,Hanami::Helpers::HtmlHelper::FormBuilder,NilClass] the optional content
         # @param attributes [Hash,NilClass] the optional tag attributes
         # @param options [Hash] a set of data
         #
-        # @return [Lotus::Helpers::FormHelper::HtmlNode]
+        # @return [Hanami::Helpers::FormHelper::HtmlNode]
         #
         # @since 0.2.0
         # @api private
@@ -41,7 +41,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::HtmlNode#content
+        # @see Hanami::Helpers::HtmlHelper::HtmlNode#content
         def content
           _method_override!
           _csrf_protection!

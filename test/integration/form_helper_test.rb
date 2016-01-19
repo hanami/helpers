@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'Form helper' do
   describe 'form with huge ERB block' do
     before do
-      @params  = Lotus::Action::Params.new({})
+      @params  = Hanami::Action::Params.new({})
       @session = Session.new(_csrf_token: 'l23')
       @actual  = FullStack::Views::Sessions::New.render(format: :html, params: @params, session: @session)
     end

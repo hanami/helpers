@@ -1,12 +1,12 @@
-require 'lotus/utils' # RUBY_VERSION >= '2.2'
-require 'lotus/utils/class_attribute'
-require 'lotus/utils/escape'
-require 'lotus/helpers/html_helper/empty_html_node'
-require 'lotus/helpers/html_helper/html_node'
-require 'lotus/helpers/html_helper/html_fragment'
-require 'lotus/helpers/html_helper/text_node'
+require 'hanami/utils' # RUBY_VERSION >= '2.2'
+require 'hanami/utils/class_attribute'
+require 'hanami/utils/escape'
+require 'hanami/helpers/html_helper/empty_html_node'
+require 'hanami/helpers/html_helper/html_node'
+require 'hanami/helpers/html_helper/html_fragment'
+require 'hanami/helpers/html_helper/text_node'
 
-module Lotus
+module Hanami
   module Helpers
     module HtmlHelper
       # HTML Builder
@@ -18,7 +18,7 @@ module Lotus
         # @since 0.1.0
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::HtmlNode
+        # @see Hanami::Helpers::HtmlHelper::HtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
         CONTENT_TAGS = [
           'a',
@@ -123,7 +123,7 @@ module Lotus
         # @since 0.1.0
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode
+        # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
         EMPTY_TAGS = [
           'area',
@@ -171,11 +171,11 @@ module Lotus
         include Utils::ClassAttribute
 
         class_attribute :html_node
-        self.html_node = ::Lotus::Helpers::HtmlHelper::HtmlNode
+        self.html_node = ::Hanami::Helpers::HtmlHelper::HtmlNode
 
         # Initialize a new builder
         #
-        # @return [Lotus::Helpers::HtmlHelper::HtmlBuilder] the builder
+        # @return [Hanami::Helpers::HtmlHelper::HtmlBuilder] the builder
         #
         # @since 0.1.0
         # @api private
@@ -189,7 +189,7 @@ module Lotus
         # Define a custom tag
         #
         # @param name [Symbol,String] the name of the tag
-        # @param content [String,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
+        # @param content [String,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
         # @param attributes [Hash,NilClass] the optional tag attributes
         # @param blk [Proc] the optional nested content espressed as a block
         #
@@ -198,7 +198,7 @@ module Lotus
         # @since 0.1.0
         # @api public
         #
-        # @see Lotus::Helpers::HtmlHelper
+        # @see Hanami::Helpers::HtmlHelper
         #
         # @example
         #   html.tag(:custom) # => <custom></custom>
@@ -242,18 +242,18 @@ module Lotus
         # @since 0.2.6
         # @api public
         #
-        # @see Lotus::Helpers::HtmlHelper
+        # @see Hanami::Helpers::HtmlHelper
         #
         # @example
-        #   html.fragment('Lotus') # => Lotus
+        #   html.fragment('Hanami') # => Hanami
         #
         #   html do
         #     p 'hello'
-        #     p 'lotus'
+        #     p 'hanami'
         #   end
         #   # =>
         #     <p>hello</p>
-        #     <p>lotus</p>
+        #     <p>hanami</p>
         def fragment(&blk)
           @nodes << HtmlFragment.new(&blk)
           self
@@ -269,7 +269,7 @@ module Lotus
         # @since 0.1.0
         # @api public
         #
-        # @see Lotus::Helpers::HtmlHelper
+        # @see Hanami::Helpers::HtmlHelper
         #
         # @example
         #   html.empty_tag(:xr) # => <xr>
@@ -289,8 +289,8 @@ module Lotus
         #
         # @return [self]
         #
-        # @see Lotus::Helpers::HtmlHelper
-        # @see Lotus::Helpers::HtmlHelper::TextNode
+        # @see Hanami::Helpers::HtmlHelper
+        # @see Hanami::Helpers::HtmlHelper::TextNode
         #
         # @example
         #
@@ -314,12 +314,12 @@ module Lotus
 
         # Resolves all the nodes and generates the markup
         #
-        # @return [Lotus::Utils::Escape::SafeString] the output
+        # @return [Hanami::Utils::Escape::SafeString] the output
         #
         # @since 0.1.0
         # @api private
         #
-        # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Escape/SafeString
+        # @see http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape/SafeString
         def to_s
           Utils::Escape::SafeString.new(@nodes.map(&:to_s).join(NEWLINE))
         end

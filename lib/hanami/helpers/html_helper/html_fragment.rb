@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Helpers
     module HtmlHelper
       # HTML Fragment
@@ -6,13 +6,13 @@ module Lotus
       # @since 0.2.6
       # @api private
       #
-      # @see Lotus::Helpers::HtmlHelper::HtmlFragment
+      # @see Hanami::Helpers::HtmlHelper::HtmlFragment
       class HtmlFragment
         # Initialize a HTML Fragment
         #
-        # @param blk [Proc,Lotus::Helpers::HtmlHelper::HtmlBuilder,NilClass] the content block
+        # @param blk [Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the content block
         #
-        # @return [Lotus::Helpers::HtmlHelper::HtmlFragment]
+        # @return [Hanami::Helpers::HtmlHelper::HtmlFragment]
         def initialize(&blk)
           @builder = HtmlBuilder.new
           @blk = blk
@@ -25,7 +25,7 @@ module Lotus
         # @since 0.2.6
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::EmptyHtmlNode#to_s
+        # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode#to_s
         def to_s
           content.to_s
         end

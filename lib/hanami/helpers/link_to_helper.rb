@@ -1,17 +1,17 @@
-require 'lotus/helpers/html_helper'
+require 'hanami/helpers/html_helper'
 
-module Lotus
+module Hanami
   module Helpers
     # LinkTo Helper
     #
-    # Including <tt>Lotus::Helpers::LinkTo</tt> will include the
+    # Including <tt>Hanami::Helpers::LinkTo</tt> will include the
     # <tt>link_to</tt> public method.
     #
     # This helper can be used both in views and templates.
     #
     # @since 0.2.0
     module LinkToHelper
-      include Lotus::Helpers::HtmlHelper
+      include Hanami::Helpers::HtmlHelper
 
       # Generates an anchor tag for the given arguments.
       #
@@ -35,7 +35,7 @@ module Lotus
       #
       # @since 0.2.0
       #
-      # @see Lotus::Helpers::HtmlHelper#html
+      # @see Hanami::Helpers::HtmlHelper#html
       #
       # @example Both content and URL are strings
       #   <%= link_to('Home', '/') %>

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Helpers::NumberFormattingHelper do
+describe Hanami::Helpers::NumberFormattingHelper do
   before do
     @view = NumbersView.new
   end

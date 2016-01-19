@@ -1,17 +1,17 @@
-require 'lotus/helpers/form_helper/html_node'
-require 'lotus/helpers/form_helper/values'
-require 'lotus/helpers/html_helper/html_builder'
-require 'lotus/utils/string'
+require 'hanami/helpers/form_helper/html_node'
+require 'hanami/helpers/form_helper/values'
+require 'hanami/helpers/html_helper/html_builder'
+require 'hanami/utils/string'
 
-module Lotus
+module Hanami
   module Helpers
     module FormHelper
       # Form builder
       #
       # @since 0.2.0
       #
-      # @see Lotus::Helpers::HtmlHelper::HtmlBuilder
-      class FormBuilder < ::Lotus::Helpers::HtmlHelper::HtmlBuilder
+      # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
+      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder
         # Set of HTTP methods that are understood by web browsers
         #
         # @since 0.2.0
@@ -29,7 +29,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#radio_button
+        # @see Hanami::Helpers::FormHelper::FormBuilder#radio_button
         CHECKED = 'checked'.freeze
 
         # Selected attribute value for option
@@ -37,7 +37,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#select
+        # @see Hanami::Helpers::FormHelper::FormBuilder#select
         SELECTED = 'selected'.freeze
 
         # Separator for accept attribute of file input
@@ -45,7 +45,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#file_input
+        # @see Hanami::Helpers::FormHelper::FormBuilder#file_input
         ACCEPT_SEPARATOR = ','.freeze
 
         # Replacement for input id interpolation
@@ -53,7 +53,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#_input_id
+        # @see Hanami::Helpers::FormHelper::FormBuilder#_input_id
         INPUT_ID_REPLACEMENT = '-\k<token>'.freeze
 
         # Replacement for input value interpolation
@@ -61,7 +61,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#_value
+        # @see Hanami::Helpers::FormHelper::FormBuilder#_value
         INPUT_VALUE_REPLACEMENT = '.\k<token>'.freeze
 
         # Default value for unchecked check box
@@ -69,7 +69,7 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         DEFAULT_UNCHECKED_VALUE = '0'.freeze
 
         # Default value for checked check box
@@ -77,30 +77,30 @@ module Lotus
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         DEFAULT_CHECKED_VALUE = '1'.freeze
 
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
 
-        self.html_node = ::Lotus::Helpers::FormHelper::HtmlNode
+        self.html_node = ::Hanami::Helpers::FormHelper::HtmlNode
 
         # Instantiate a form builder
         #
         # @overload initialize(form, attributes, params, &blk)
         #   Top level form
-        #   @param form [Lotus::Helpers:FormHelper::Form] the form
+        #   @param form [Hanami::Helpers:FormHelper::Form] the form
         #   @param attributes [::Hash] a set of HTML attributes
-        #   @param params [Lotus::Action::Params] request params
+        #   @param params [Hanami::Action::Params] request params
         #   @param blk [Proc] a block that describes the contents of the form
         #
         # @overload initialize(form, attributes, params, &blk)
         #   Nested form
-        #   @param form [Lotus::Helpers:FormHelper::Form] the form
-        #   @param attributes [Lotus::Helpers::FormHelper::Values] user defined
+        #   @param form [Hanami::Helpers:FormHelper::Form] the form
+        #   @param attributes [Hanami::Helpers::FormHelper::Values] user defined
         #     values
         #   @param blk [Proc] a block that describes the contents of the form
         #
-        # @return [Lotus::Helpers::FormHelper::FormBuilder] the form builder
+        # @return [Hanami::Helpers::FormHelper::FormBuilder] the form builder
         #
         # @since 0.2.0
         # @api private
@@ -127,13 +127,13 @@ module Lotus
 
         # Resolves all the nodes and generates the markup
         #
-        # @return [Lotus::Utils::Escape::SafeString] the output
+        # @return [Hanami::Utils::Escape::SafeString] the output
         #
         # @since 0.2.0
         # @api private
         #
-        # @see Lotus::Helpers::HtmlHelper::HtmlBuilder#to_s
-        # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Escape/SafeString
+        # @see Hanami::Helpers::HtmlHelper::HtmlBuilder#to_s
+        # @see http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape/SafeString
         def to_s
           if toplevel?
             _method_override!
@@ -262,7 +262,7 @@ module Lotus
         def label(content, attributes = {})
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content
-                       when String, Lotus::Utils::String
+                       when String, Hanami::Utils::String
                          content
                        else
                          Utils::String.new(content).capitalize
@@ -637,7 +637,7 @@ module Lotus
         #
         # If request params have a value that corresponds to the given value,
         # it automatically sets the <tt>checked</tt> attribute.
-        # This Lotus::Controller integration happens without any developer intervention.
+        # This Hanami::Controller integration happens without any developer intervention.
         #
         # @param name [Symbol] the input name
         # @param value [String] the input value
@@ -706,7 +706,7 @@ module Lotus
         #
         # If request params have a value that corresponds to one of the given values,
         # it automatically sets the <tt>selected</tt> attribute on the <tt><option></tt> tag.
-        # This Lotus::Controller integration happens without any developer intervention.
+        # This Hanami::Controller integration happens without any developer intervention.
         #
         # @since 0.2.0
         #
@@ -862,7 +862,7 @@ module Lotus
         # @since 0.2.0
         def _for(content, name)
           case name
-          when String, Lotus::Utils::String
+          when String, Hanami::Utils::String
             name
           else
             _input_id(name || content)
@@ -874,7 +874,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         def _hidden_field_for_check_box(name, attributes)
           if attributes[:value].nil? || !attributes[:unchecked_value].nil?
             input({
@@ -890,7 +890,7 @@ module Lotus
         # @api private
         # @since 0.2.0
         #
-        # @see Lotus::Helpers::FormHelper::FormBuilder#check_box
+        # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         def _attributes_for_check_box(name, attributes)
           attributes = {
             type:  :checkbox,

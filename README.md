@@ -22,7 +22,7 @@ View helpers for Ruby applications
 
 ## Rubies
 
-__Hanami::Helpers__ supports Ruby (MRI) 2+
+__Hanami::Helpers__ supports Ruby (MRI) 2.2+
 
 ## Installation
 
@@ -385,4 +385,5 @@ __Hanami::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)
 ## Copyright
 
 Copyright © 2014-2016 Luca Guidi – Released under MIT License
+
 This project was formerly known as Lotus (`lotus-helpers`).

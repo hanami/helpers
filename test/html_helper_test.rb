@@ -95,7 +95,7 @@ describe Hanami::Helpers::HtmlHelper do
 
   describe 'with link_to helper' do
     before do
-      @view = HtmlAndLinkTo.new
+      @view = HtmlAndHtml.new
     end
 
     it 'returns two links in div' do
@@ -104,6 +104,10 @@ describe Hanami::Helpers::HtmlHelper do
 
     it 'returns span and link in div' do
       @view.span_and_link_to_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<a href=\"posts\">Posts</a>\n</div>)
+    end
+
+    it 'returns two spans in div' do
+      @view.two_spans_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<span>world</span>\n</div>)
     end
   end
 end

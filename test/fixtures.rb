@@ -570,7 +570,7 @@ class LinkTo
 
 end
 
-class HtmlAndLinkTo
+class HtmlAndHtml
   include Hanami::Helpers::HtmlHelper
   include Hanami::Helpers::LinkToHelper
 
@@ -585,6 +585,13 @@ class HtmlAndLinkTo
     html.div do
       span 'hello'
       link_to('Comments', 'comments')
+    end
+  end
+
+  def two_spans_in_div
+    html.div do
+      span 'hello'
+      html.span 'world'
     end
   end
 end

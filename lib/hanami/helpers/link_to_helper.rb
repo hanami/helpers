@@ -128,7 +128,7 @@ module Hanami
           raise ArgumentError
         end
 
-        html.a(blk || content, options).to_s
+        html.a(blk || content, options)
       end
     end
   end

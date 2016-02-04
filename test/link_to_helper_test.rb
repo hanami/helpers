@@ -6,31 +6,31 @@ describe Hanami::Helpers::LinkToHelper do
   end
 
   it 'returns a link to posts' do
-    @view.link_to_posts.must_equal %(<a href="/posts/">Posts</a>)
+    @view.link_to_posts.to_s.must_equal %(<a href="/posts/">Posts</a>)
   end
 
   it 'returns a link to a post' do
-    @view.link_to_post.must_equal %(<a href="/post/1">Post</a>)
+    @view.link_to_post.to_s.must_equal %(<a href="/post/1">Post</a>)
   end
 
   it 'returns a link with a class' do
-    @view.link_to_with_class.must_equal %(<a class="first" href="/posts/">Post</a>)
+    @view.link_to_with_class.to_s.must_equal %(<a class="first" href="/posts/">Post</a>)
   end
 
   it 'returns a link with id' do
-    @view.link_to_with_id.must_equal %(<a id="posts__link" href="/posts/">Post</a>)
+    @view.link_to_with_id.to_s.must_equal %(<a id="posts__link" href="/posts/">Post</a>)
   end
 
   it 'returns a link relative link' do
-    @view.link_to_relative_posts.must_equal %(<a href="posts">Posts</a>)
+    @view.link_to_relative_posts.to_s.must_equal %(<a href="posts">Posts</a>)
   end
 
   it 'returns a link with html content' do
-    @view.link_to_with_html_content.must_equal %(<a href="/posts/">\n<strong>Post</strong>\n</a>)
+    @view.link_to_with_html_content.to_s.must_equal %(<a href="/posts/">\n<strong>Post</strong>\n</a>)
   end
 
   it 'returns a link with html content, id and class' do
-    @view.link_to_with_html_content_id_and_class.must_equal %(<a id="posts__link" class="first" href="/posts/">\n<strong>Post</strong>\n</a>)
+    @view.link_to_with_html_content_id_and_class.to_s.must_equal %(<a id="posts__link" class="first" href="/posts/">\n<strong>Post</strong>\n</a>)
   end
 
   it 'raises an exception link with content and html content' do

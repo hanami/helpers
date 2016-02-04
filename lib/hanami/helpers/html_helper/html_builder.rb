@@ -289,9 +289,6 @@ module Hanami
         #
         # @return [self]
         #
-        # @since 0.1.0
-        # @api public
-        #
         # @see Hanami::Helpers::HtmlHelper
         # @see Hanami::Helpers::HtmlHelper::TextNode
         #
@@ -308,56 +305,6 @@ module Hanami
         #   # </label>
         def text(content)
           @nodes << TextNode.new(content)
-          self
-        end
-
-        # Returns self
-        #
-        # @return [self]
-        #
-        # @since x.x.x
-        # @api public
-        #
-        # @see Hanami::Helpers::HtmlHelper
-        # @see Hanami::Helpers::HtmlHelper::TextNode
-        #
-        # @example
-        #
-        #   html.label do
-        #     p 'hello'
-        #     html.span 'hanami'
-        #   end
-        #
-        #   # <label>
-        #   #   <p>hello</p>
-        #   #   <span>hanami</span>
-        #   # </label>
-        def html
-          self
-        end
-
-        # Alias for link_to helper
-        #
-        # @return [self]
-        #
-        # @since x.x.x
-        # @api public
-        #
-        # @see Hanami::Helpers::LinkToHelper
-        #
-        # @example
-        #
-        #   html.label do
-        #     p 'hello'
-        #     link_to('Posts', 'posts')
-        #   end
-        #
-        #   # <label>
-        #   #   <p>hello</p>
-        #   #   <a href=\"posts\">Posts</a>
-        #   # </label>
-        def link_to(content, url = nil, options = {}, &blk)
-          link_to_builder(content, url, options, &blk)
           self
         end
 
@@ -397,29 +344,6 @@ module Hanami
         # @api private
         def nested?
           @nodes.any?
-        end
-
-        # Simple builder helper with returns HtmlBuilder
-        # instance with a tag.
-        #
-        # @return [self] the result of the check
-        #
-        # @since x.x.x
-        # @api private
-        def link_to_builder(content, url, options, &blk)
-          if block_given?
-            options = url || {}
-            url     = content
-            content = nil
-          end
-
-          begin
-            options[:href] = url or raise ArgumentError
-          rescue TypeError
-            raise ArgumentError
-          end
-
-          a(blk || content, options)
         end
 
         # Resolve the context for nested contents

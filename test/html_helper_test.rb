@@ -103,7 +103,7 @@ describe Hanami::Helpers::HtmlHelper do
     end
 
     it 'returns span and link in div' do
-      @view.span_and_link_to_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<a href=\"posts\">Posts</a>\n</div>)
+      @view.span_and_link_to_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<a href=\"comments\">Comments</a>\n</div>)
     end
   end
 end

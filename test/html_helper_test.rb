@@ -92,4 +92,22 @@ describe Hanami::Helpers::HtmlHelper do
   it 'autoescapes nested blocks' do
     @view.evil_nested_block_content.to_s.must_equal %(<div>\n<p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p>\n</div>)
   end
+
+  describe 'with link_to helper' do
+    before do
+      @view = HtmlAndHtml.new
+    end
+
+    it 'returns two links in div' do
+      @view.two_links_to_in_div.to_s.must_equal %(<div>\n<a href=\"comments\">Comments</a>\n<a href=\"posts\">Posts</a>\n</div>)
+    end
+
+    it 'returns span and link in div' do
+      @view.span_and_link_to_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<a href=\"posts\">Posts</a>\n</div>)
+    end
+
+    it 'returns two spans in div' do
+      @view.two_spans_in_div.to_s.must_equal %(<div>\n<span>hello</span>\n<span>world</span>\n</div>)
+    end
+  end
 end

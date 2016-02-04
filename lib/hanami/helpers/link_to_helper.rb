@@ -116,19 +116,7 @@ module Hanami
       #   <%= link_to 'Home' %>
       #     # => ArgumentError
       def link_to(content, url = nil, options = {}, &blk)
-        if block_given?
-          options = url || {}
-          url     = content
-          content = nil
-        end
-
-        begin
-          options[:href] = url or raise ArgumentError
-        rescue TypeError
-          raise ArgumentError
-        end
-
-        html.a(blk || content, options).to_s
+        html.link_to_builder(content, url, options, &blk).to_s
       end
     end
   end

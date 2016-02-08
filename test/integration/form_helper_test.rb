@@ -1,6 +1,10 @@
 require 'test_helper'
 
 describe 'Form helper' do
+  before do
+    Hanami::View.load!
+  end
+
   describe 'form with huge ERB block' do
     before do
       @params  = Hanami::Action::Params.new({})

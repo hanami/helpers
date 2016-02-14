@@ -486,6 +486,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         # @option attributes [String,Array] :accept Optional set of accepted MIME Types
+        # @option attributes [TrueClass,FalseClass] :multiple Optional, allow multiple file upload
         #
         # @since 0.2.0
         #
@@ -515,6 +516,15 @@ module Hanami
         #
         #   # Output:
         #   #  <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
+        #
+        # @example Accepted multiple file upload (as array)
+        #   <%=
+        #     # ...
+        #     file_field :resume, multiple: true
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
           attributes = { type: :file, name: _input_name(name), id: _input_id(name) }.merge(attributes)

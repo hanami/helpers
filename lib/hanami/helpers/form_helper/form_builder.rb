@@ -751,11 +751,27 @@ module Hanami
         #   #    <option value="it" selected="selected">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
+        #
+        # @example Include blank option
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, options: { include_blank: true}
+        #   %>
+        #
+        #   # Output:
+        #   #  <select name="book[store]" id="book-store">
+        #   #    <option></option>
+        #   #    <option value="it">Italy</option>
+        #   #    <option value="us">United States</option>
+        #   #  </select>
         def select(name, values, attributes = {})
           options    = attributes.delete(:options) || {}
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
 
           super(attributes) do
+            option if options.delete(:include_blank)
+
             values.each do |value, content|
               if _value(name) == value
                 option(content, {value: value, selected: SELECTED}.merge(options))

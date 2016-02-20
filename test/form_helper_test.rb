@@ -1175,6 +1175,14 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
     end
 
+    it "allows include_blank option" do
+      actual = view.form_for(:book, action) do
+        select :store, values, options: { include_blank: true }
+      end.to_s
+
+      actual.must_include %(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+    end
+
     describe "with filled params" do
       let(:params) { Hash[book: { store: val }] }
       let(:val)    { 'it' }

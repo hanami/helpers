@@ -28,22 +28,24 @@ module Hanami
     #
     # Supported tags and inputs:
     #
+    #   * <tt>check_box</tt>
     #   * <tt>color_field</tt>
     #   * <tt>date_field</tt>
     #   * <tt>datetime_field</tt>
     #   * <tt>datetime_local_field</tt>
     #   * <tt>email_field</tt>
-    #   * <tt>hidden_field</tt>
-    #   * <tt>file_field</tt>
     #   * <tt>fields_for</tt>
+    #   * <tt>file_field</tt>
     #   * <tt>form_for</tt>
+    #   * <tt>hidden_field</tt>
     #   * <tt>label</tt>
-    #   * <tt>text_area</tt>
-    #   * <tt>text_field</tt>
+    #   * <tt>number_field</tt>
     #   * <tt>password_field</tt>
     #   * <tt>radio_button</tt>
     #   * <tt>select</tt>
     #   * <tt>submit</tt>
+    #   * <tt>text_area</tt>
+    #   * <tt>text_field</tt>
     #
     # @since 0.2.0
     #

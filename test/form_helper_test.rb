@@ -1133,7 +1133,7 @@ describe Hanami::Helpers::FormHelper do
   end
 
   describe "#select" do
-    let(:values) { Hash['it' => 'Italy', 'us' => 'United States'] }
+    let(:values) { Hash['Italy' => 'it', 'United States' => 'us'] }
 
     it "renders" do
       actual = view.form_for(:book, action) do

@@ -711,7 +711,7 @@ module Hanami
         #
         # @param name [Symbol] the input name
         # @param values [Hash] a Hash to generate <tt><option></tt> tags.
-        #   Keys correspond to <tt>value</tt> and values correspond to the content.
+        #   Values correspond to <tt>value</tt> and keys correspond to the content.
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
         # If request params have a value that corresponds to one of the given values,
@@ -723,7 +723,7 @@ module Hanami
         # @example Basic usage
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values
         #   %>
         #
@@ -756,7 +756,7 @@ module Hanami
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
 
           super(attributes) do
-            values.each do |value, content|
+            values.each do |content, value|
               if _value(name) == value
                 option(content, {value: value, selected: SELECTED}.merge(options))
               else

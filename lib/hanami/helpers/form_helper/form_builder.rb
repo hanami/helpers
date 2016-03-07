@@ -769,38 +769,79 @@ module Hanami
         # Datalist input
         #
         # @param name [Symbol] the input name
-        # @param values [Hash] a Hash to generate <tt><option></tt> tags of datalist.
-        #   Keys correspond to <tt>value</tt> and values correspond to the content.
+        # @param values [Array,Hash] a collection that is transformed into <tt><option></tt> tags.
         # @param list [String] the name of list for the text input, it's also the id of datalist
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since 0.3.1
+        # @since x.x.x
         #
-        # @example Basic usage
+        # @example Basic Usage
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = ['Italy', 'United States']
         #     datalist :stores, values, 'books'
         #   %>
         #
         #   # Output:
-        #   #  <input type="text" name="book[store]" id="book-store" list="books">
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
         #   #  <datalist id="books">
         #   #    <option value="Italy"></option>
         #   #    <option value="United States"></option>
         #   #  </datalist>
+        #
+        # @example Options As Hash
+        #   <%=
+        #     # ...
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
+        #     datalist :stores, values, 'books'
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books">
+        #   #    <option value="Italy">it</option>
+        #   #    <option value="United States">us</option>
+        #   #  </datalist>
+        #
+        # @example Specify Custom Attributes For Datalist Input
+        #   <%=
+        #     # ...
+        #     values = ['Italy', 'United States']
+        #     datalist :stores, values, 'books', datalist: { class: 'form-control' }
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books" class="form-control">
+        #   #    <option value="Italy"></option>
+        #   #    <option value="United States"></option>
+        #   #  </datalist>
+        #
+        # @example Specify Custom Attributes For Options List
+        #   <%=
+        #     # ...
+        #     values = ['Italy', 'United States']
+        #     datalist :stores, values, 'books', options: { class: 'form-control' }
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books">
+        #   #    <option value="Italy" class="form-control"></option>
+        #   #    <option value="United States" class="form-control"></option>
+        #   #  </datalist>
         def datalist(name, values, list, attributes = {})
-          options  = attributes.delete(:options) || {}
-          datalist = attributes.delete(:datalist) || {}
-          attributes = { type: 'text', name: _input_name(name), id: _input_id(name), list: list }.merge(attributes)
+          attrs    = attributes.dup
+          options  = attrs.delete(:options)  || {}
+          datalist = attrs.delete(:datalist) || {}
 
-          # remove 'id' attribute
-          datalist = { id: list }.merge(datalist)
+          attrs[:list]  = list
+          datalist[:id] = list
 
-          input(attributes)
+          text_field(name, attrs)
           super(datalist) do
             values.each do |value, content|
-              option(value, {value: content}.merge(options))
+              option(content, {value: value}.merge(options))
             end
           end
         end

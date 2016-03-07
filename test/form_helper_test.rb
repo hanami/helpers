@@ -1183,6 +1183,14 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
     end
 
+    it "allows prompt option" do
+      actual = view.form_for(:book, action) do
+        select :store, values, options: { prompt: 'Select City' }
+      end.to_s
+
+      actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select City</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+    end
+
     describe "with filled params" do
       let(:params) { Hash[book: { store: val }] }
       let(:val)    { 'it' }

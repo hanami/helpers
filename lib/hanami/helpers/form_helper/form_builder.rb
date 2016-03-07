@@ -756,7 +756,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values, options: { include_blank: true}
+        #     select :stores, values, options: {include_blank: true}
         #   %>
         #
         #   # Output:
@@ -765,12 +765,29 @@ module Hanami
         #   #    <option value="it">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
+        #
+        # @example Prompt option
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, options: {prompt: 'Select a City'}
+        #   %>
+        #
+        #   # Output:
+        #   #  <select name="book[store]" id="book-store">
+        #   #    <option>Select a City</option>
+        #   #    <option value="it">Italy</option>
+        #   #    <option value="us">United States</option>
+        #   #  </select>
         def select(name, values, attributes = {})
-          options    = attributes.delete(:options) || {}
-          attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          options      = attributes.delete(:options) { {} }
+          attributes   = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          blank_value  = options.delete(:include_blank)
+          prompt_value = options.delete(:prompt)
 
           super(attributes) do
-            option if options.delete(:include_blank)
+            option if blank_value
+            option(prompt_value) if prompt_value
 
             values.each do |value, content|
               if _value(name) == value

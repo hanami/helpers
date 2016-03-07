@@ -1188,4 +1188,56 @@ describe Hanami::Helpers::FormHelper do
       end
     end
   end
+
+  describe "#datalist" do
+    let(:values) { Hash['it' => 'Italy', 'us' => 'United States'] }
+
+    it "renders" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" list="books">\n<datalist id="books">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
+    end
+
+    it "just allows to override 'id' attribute of the text input" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', id: 'store'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="store" list="books">\n<datalist id="books">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', name: 'store'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="store" id="book-store" list="books">\n<datalist id="books">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" list="books" class="form-control">\n<datalist id="books">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes for options" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', options: { class: 'form-option' }
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" list="books">\n<datalist id="books">\n<option value="Italy" class="form-option">it</option>\n<option value="United States" class="form-option">us</option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes for datalist" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', datalist: { class: 'form-option' }
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" list="books">\n<datalist id="books" class="form-option">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
+    end
+  end
 end

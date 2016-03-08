@@ -990,7 +990,7 @@ module Hanami
           }.merge(attributes)
 
           value = _value(name)
-          attributes[:checked] = CHECKED if value &&
+          attributes[:checked] = CHECKED if !value.nil? &&
             ( value == attributes[:value] || value.include?(attributes[:value]) )
 
           attributes

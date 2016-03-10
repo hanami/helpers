@@ -5,6 +5,9 @@ View helpers for Ruby web applications
 ### Changed
 – [Luca Guidi] Drop support for Ruby 2.0 and 2.1
 
+### Fixed
+– [Nikolay Shebanov] Explicitly require some `hanami-utils` dependencies
+
 ## v0.3.0 - 2016-01-22
 ### Changed
 - [Luca Guidi] Renamed the project

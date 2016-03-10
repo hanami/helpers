@@ -1,3 +1,5 @@
+require 'hanami/utils/string'
+
 module Hanami
   module Helpers
     # Routing helper for full stack Hanami web applications.

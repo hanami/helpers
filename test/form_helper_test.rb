@@ -1237,6 +1237,37 @@ describe Hanami::Helpers::FormHelper do
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
       end
     end
+
+    describe "with prompt option" do
+      it "allows string" do
+        actual = view.form_for(:book, action) do
+          select :store, values, options: { prompt: 'Select a store' }
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      it "allows blank string" do
+        actual = view.form_for(:book, action) do
+          select :store, values, options: { prompt: '' }
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "with filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values, options: { prompt: 'Select a store' }
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
+    end
   end
 
   describe "#datalist" do

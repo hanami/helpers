@@ -3,6 +3,12 @@ require 'hanami/controller'
 require 'hanami/helpers/html_helper'
 require 'hanami/helpers/escape_helper'
 
+Store = Struct.new(:code, :label) do
+  def to_ary
+    [label, code]
+  end
+end
+
 class HtmlView
   include Hanami::Helpers::HtmlHelper
 

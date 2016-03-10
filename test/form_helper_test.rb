@@ -1133,7 +1133,7 @@ describe Hanami::Helpers::FormHelper do
   end
 
   describe "#select" do
-    let(:values) { Hash['it' => 'Italy', 'us' => 'United States'] }
+    let(:values) { Hash['Italy' => 'it', 'United States' => 'us'] }
 
     it "renders" do
       actual = view.form_for(:book, action) do
@@ -1173,6 +1173,56 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
+    end
+
+    describe "with values an structured Array of values" do
+      let(:values) { [['Italy', 'it'], ['United States', 'us']] }
+
+      it "renders" do
+        actual = view.form_for(:book, action) do
+          select :store, values
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "and filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
+    end
+
+    describe "with values an Array of objects" do
+      let(:values) { [Store.new('it', 'Italy'), Store.new('us', 'United States')] }
+
+      it "renders" do
+        actual = view.form_for(:book, action) do
+          select :store, values
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "and filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
     end
 
     describe "with filled params" do

@@ -1,3 +1,5 @@
+require 'hanami/utils/kernel'
+
 module Hanami
   module Helpers
     # Number formatter

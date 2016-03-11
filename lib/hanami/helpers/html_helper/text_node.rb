@@ -1,3 +1,5 @@
+require 'hanami/utils/escape'
+
 module Hanami
   module Helpers
     module HtmlHelper

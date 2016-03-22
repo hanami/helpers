@@ -60,7 +60,7 @@ module Hanami
         # @since 0.1.0
         # @api private
         def attributes
-          return if @attributes.nil?
+          return unless defined?(@attributes) && !@attributes.nil?
           result = ''
 
           @attributes.each do |attribute_name, value|

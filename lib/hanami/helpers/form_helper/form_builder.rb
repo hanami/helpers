@@ -107,8 +107,10 @@ module Hanami
         def initialize(form, attributes, context = nil, &blk)
           super()
 
-          @context = context
-          @blk     = blk
+          @context    = context
+          @blk        = blk
+          @verb       = nil
+          @csrf_token = nil
 
           # Nested form
           if @context.nil? && attributes.is_a?(Values)

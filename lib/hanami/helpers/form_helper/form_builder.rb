@@ -107,8 +107,10 @@ module Hanami
         def initialize(form, attributes, context = nil, &blk)
           super()
 
-          @context = context
-          @blk     = blk
+          @context    = context
+          @blk        = blk
+          @verb       = nil
+          @csrf_token = nil
 
           # Nested form
           if @context.nil? && attributes.is_a?(Values)
@@ -486,6 +488,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         # @option attributes [String,Array] :accept Optional set of accepted MIME Types
+        # @option attributes [TrueClass,FalseClass] :multiple Optional, allow multiple file upload
         #
         # @since 0.2.0
         #
@@ -515,6 +518,15 @@ module Hanami
         #
         #   # Output:
         #   #  <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
+        #
+        # @example Accepted multiple file upload (as array)
+        #   <%=
+        #     # ...
+        #     file_field :resume, multiple: true
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
           attributes = { type: :file, name: _input_name(name), id: _input_id(name) }.merge(attributes)
@@ -701,7 +713,7 @@ module Hanami
         #
         # @param name [Symbol] the input name
         # @param values [Hash] a Hash to generate <tt><option></tt> tags.
-        #   Keys correspond to <tt>value</tt> and values correspond to the content.
+        #   Values correspond to <tt>value</tt> and keys correspond to the content.
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
         # If request params have a value that corresponds to one of the given values,
@@ -713,7 +725,7 @@ module Hanami
         # @example Basic usage
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values
         #   %>
         #
@@ -741,17 +753,114 @@ module Hanami
         #   #    <option value="it" selected="selected">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
+        #
+        # @example Prompt option
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, options: {prompt: 'Select a store'}
+        #   %>
+        #
+        #   # Output:
+        #   #  <select name="book[store]" id="book-store">
+        #   #    <option>Select a store</option>
+        #   #    <option value="it">Italy</option>
+        #   #    <option value="us">United States</option>
+        #   #  </select>
         def select(name, values, attributes = {})
-          options    = attributes.delete(:options) || {}
+          options    = attributes.delete(:options) { {} }
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          prompt     = options.delete(:prompt)
 
           super(attributes) do
-            values.each do |value, content|
+            option(prompt) unless prompt.nil?
+
+            values.each do |content, value|
               if _value(name) == value
                 option(content, {value: value, selected: SELECTED}.merge(options))
               else
                 option(content, {value: value}.merge(options))
               end
+            end
+          end
+        end
+
+        # Datalist input
+        #
+        # @param name [Symbol] the input name
+        # @param values [Array,Hash] a collection that is transformed into <tt><option></tt> tags.
+        # @param list [String] the name of list for the text input, it's also the id of datalist
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic Usage
+        #   <%=
+        #     # ...
+        #     values = ['Italy', 'United States']
+        #     datalist :stores, values, 'books'
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books">
+        #   #    <option value="Italy"></option>
+        #   #    <option value="United States"></option>
+        #   #  </datalist>
+        #
+        # @example Options As Hash
+        #   <%=
+        #     # ...
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
+        #     datalist :stores, values, 'books'
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books">
+        #   #    <option value="Italy">it</option>
+        #   #    <option value="United States">us</option>
+        #   #  </datalist>
+        #
+        # @example Specify Custom Attributes For Datalist Input
+        #   <%=
+        #     # ...
+        #     values = ['Italy', 'United States']
+        #     datalist :stores, values, 'books', datalist: { class: 'form-control' }
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books" class="form-control">
+        #   #    <option value="Italy"></option>
+        #   #    <option value="United States"></option>
+        #   #  </datalist>
+        #
+        # @example Specify Custom Attributes For Options List
+        #   <%=
+        #     # ...
+        #     values = ['Italy', 'United States']
+        #     datalist :stores, values, 'books', options: { class: 'form-control' }
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   #  <datalist id="books">
+        #   #    <option value="Italy" class="form-control"></option>
+        #   #    <option value="United States" class="form-control"></option>
+        #   #  </datalist>
+        def datalist(name, values, list, attributes = {})
+          attrs    = attributes.dup
+          options  = attrs.delete(:options)  || {}
+          datalist = attrs.delete(:datalist) || {}
+
+          attrs[:list]  = list
+          datalist[:id] = list
+
+          text_field(name, attrs)
+          super(datalist) do
+            values.each do |value, content|
+              option(content, {value: value}.merge(options))
             end
           end
         end
@@ -900,7 +1009,7 @@ module Hanami
           }.merge(attributes)
 
           value = _value(name)
-          attributes[:checked] = CHECKED if value &&
+          attributes[:checked] = CHECKED if !value.nil? &&
             ( value == attributes[:value] || value.include?(attributes[:value]) )
 
           attributes

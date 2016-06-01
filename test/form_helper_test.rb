@@ -1133,7 +1133,7 @@ describe Hanami::Helpers::FormHelper do
   end
 
   describe "#select" do
-    let(:values) { Hash['it' => 'Italy', 'us' => 'United States'] }
+    let(:values) { Hash['Italy' => 'it', 'United States' => 'us'] }
 
     it "renders" do
       actual = view.form_for(:book, action) do
@@ -1175,6 +1175,56 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
     end
 
+    describe "with values an structured Array of values" do
+      let(:values) { [['Italy', 'it'], ['United States', 'us']] }
+
+      it "renders" do
+        actual = view.form_for(:book, action) do
+          select :store, values
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "and filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
+    end
+
+    describe "with values an Array of objects" do
+      let(:values) { [Store.new('it', 'Italy'), Store.new('us', 'United States')] }
+
+      it "renders" do
+        actual = view.form_for(:book, action) do
+          select :store, values
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "and filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
+    end
+
     describe "with filled params" do
       let(:params) { Hash[book: { store: val }] }
       let(:val)    { 'it' }
@@ -1185,6 +1235,101 @@ describe Hanami::Helpers::FormHelper do
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+    end
+
+    describe "with prompt option" do
+      it "allows string" do
+        actual = view.form_for(:book, action) do
+          select :store, values, options: { prompt: 'Select a store' }
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      it "allows blank string" do
+        actual = view.form_for(:book, action) do
+          select :store, values, options: { prompt: '' }
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe "with filled params" do
+        let(:params) { Hash[book: { store: val }] }
+        let(:val)    { 'it' }
+
+        it "renders with value" do
+          actual = view.form_for(:book, action) do
+            select :store, values, options: { prompt: 'Select a store' }
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
+      end
+    end
+  end
+
+  describe "#datalist" do
+    let(:values) { ['Italy', 'United States'] }
+
+    it "renders" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>)
+    end
+
+    it "just allows to override 'id' attribute of the text input" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', id: 'store'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="store" value="" list="books">\n<datalist id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', name: 'store'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="store" id="book-store" value="" list="books">\n<datalist id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" value="" class="form-control" list="books">\n<datalist id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes for options" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', options: { class: 'form-option' }
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist id="books">\n<option value="Italy" class="form-option"></option>\n<option value="United States" class="form-option"></option>\n</datalist>)
+    end
+
+    it "allows to specify HTML attributes for datalist" do
+      actual = view.form_for(:book, action) do
+        datalist :store, values, 'books', datalist: { class: 'form-option' }
+      end.to_s
+
+      actual.must_include %(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist class="form-option" id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>)
+    end
+
+    describe "with a Hash of values" do
+      let(:values) { Hash['Italy' => 'it', 'United States' => 'us'] }
+
+      it "renders" do
+        actual = view.form_for(:book, action) do
+          datalist :store, values, 'books'
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist id="books">\n<option value="Italy">it</option>\n<option value="United States">us</option>\n</datalist>)
       end
     end
   end

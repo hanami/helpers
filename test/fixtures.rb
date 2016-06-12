@@ -339,10 +339,12 @@ class Delivery
 end
 
 class DeliveryParams < Hanami::Action::Params
-  param :delivery do
-    param :customer_id, type: Integer, presence: true
-    param :address do
-      param :street, type: String, presence: true
+  params do 
+    required(:delivery).schema do
+      required(:customer_id).filled(:int?)
+      required(:address).schema do
+        required(:street).filled(:str?)
+      end
     end
   end
 end

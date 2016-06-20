@@ -7,7 +7,7 @@ describe 'Form helper' do
 
   describe 'form with huge ERB block' do
     before do
-      @params  = Hanami::Action::Params.new({})
+      @params  = Hanami::Action::BaseParams.new({})
       @session = Session.new(_csrf_token: 'l23')
       @actual  = FullStack::Views::Sessions::New.render(format: :html, params: @params, session: @session)
     end

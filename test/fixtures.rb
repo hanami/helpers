@@ -305,7 +305,7 @@ class FormHelperView
   attr_reader :params
 
   def initialize(params)
-    @params = Hanami::Action::Params.new(params)
+    @params = Hanami::Action::BaseParams.new(params)
   end
 end
 
@@ -339,10 +339,12 @@ class Delivery
 end
 
 class DeliveryParams < Hanami::Action::Params
-  param :delivery do
-    param :customer_id, type: Integer, presence: true
-    param :address do
-      param :street, type: String, presence: true
+  params do
+    required(:delivery).schema do
+      required(:customer_id, :int).filled
+      required(:address).schema do
+        required(:street, :string).filled
+      end
     end
   end
 end

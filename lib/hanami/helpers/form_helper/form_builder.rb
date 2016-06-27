@@ -771,12 +771,15 @@ module Hanami
           options    = attributes.delete(:options) { {} }
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
           prompt     = options.delete(:prompt)
+          selected   = options.delete(:selected)
 
           super(attributes) do
             option(prompt) unless prompt.nil?
 
             values.each do |content, value|
-              if _value(name) == value
+              if selected == value
+                option(content, {value: value, selected: SELECTED}.merge(options))
+              elsif _value(name) == value
                 option(content, {value: value, selected: SELECTED}.merge(options))
               else
                 option(content, {value: value}.merge(options))

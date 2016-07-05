@@ -1268,6 +1268,19 @@ describe Hanami::Helpers::FormHelper do
         end
       end
     end
+
+    describe "with selected attribute" do
+      let(:params) { Hash[book: { store: val }] }
+      let(:val)    { 'it' }
+
+      it "sets the selected attribute" do
+        actual = view.form_for(:book, action) do
+          select :store, values, options: { selected: val }
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+    end
   end
 
   describe "#datalist" do

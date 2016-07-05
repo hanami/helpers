@@ -767,16 +767,30 @@ module Hanami
         #   #    <option value="it">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
+        #
+        # @example Selected option
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, options: {selected: book.store}
+        #   %>
+        #
+        #   # Output:
+        #   #  <select name="book[store]" id="book-store">
+        #   #    <option value="it" selected="selected">Italy</option>
+        #   #    <option value="us">United States</option>
+        #   #  </select>
         def select(name, values, attributes = {})
           options    = attributes.delete(:options) { {} }
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
           prompt     = options.delete(:prompt)
+          selected   = options.delete(:selected)
 
           super(attributes) do
             option(prompt) unless prompt.nil?
 
             values.each do |content, value|
-              if _value(name) == value
+              if selected == value || _value(name) == value
                 option(content, {value: value, selected: SELECTED}.merge(options))
               else
                 option(content, {value: value}.merge(options))

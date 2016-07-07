@@ -171,7 +171,7 @@ class NumbersView
   end
 
   def big_decimal
-    format_number BigDecimal.new("0.0001"), precision: 4
+    format_number BigDecimal.new('0.0001'), precision: 4
   end
 
   def complex
@@ -191,7 +191,7 @@ class NumbersView
   end
 
   def nan
-    format_number 0.0/0
+    format_number 0.0 / 0
   end
 end
 
@@ -199,7 +199,7 @@ class EscapeView
   include Hanami::Helpers::EscapeHelper
 
   def good_string
-    escape_html "this is a good string"
+    escape_html 'this is a good string'
   end
 
   def evil_string
@@ -215,7 +215,7 @@ class EscapeView
   end
 
   def good_url_string
-    escape_url "http://hanamirb.org"
+    escape_url 'http://hanamirb.org'
   end
 
   def evil_url_string
@@ -227,7 +227,7 @@ class EscapeView
   end
 
   def html_string_alias
-    h "this is a good string"
+    h 'this is a good string'
   end
 
   def html_attribute_string_alias
@@ -235,7 +235,7 @@ class EscapeView
   end
 
   def url_string_alias
-    hu "http://hanamirb.org"
+    hu 'http://hanamirb.org'
   end
 end
 
@@ -290,7 +290,7 @@ module Users
       html.div(id: 'details') do
         ul do
           li do
-            a('website', href: hu(user.website), title: "#{ ha(user.name) }'s website")
+            a('website', href: hu(user.website), title: "#{ha(user.name)}'s website")
           end
 
           li raw(user.snippet)
@@ -362,7 +362,7 @@ end
 module FullStack
   class Routes
     def self.path(name)
-      _escape "/#{ name }"
+      _escape "/#{name}"
     end
 
     def self.sessions_path
@@ -374,7 +374,7 @@ module FullStack
     end
 
     def self.delivery_path(attrs = {})
-      _escape "/deliveries/#{ attrs.fetch(:id) }"
+      _escape "/deliveries/#{attrs.fetch(:id)}"
     end
 
     def self._escape(string)
@@ -434,7 +434,7 @@ module FullStack
         def form
           Form.new(:delivery,
                    routes.delivery_path(id: delivery.id),
-                   {delivery: delivery}, {method: :patch})
+                   { delivery: delivery }, method: :patch)
         end
 
         def submit_label
@@ -575,7 +575,6 @@ class LinkTo
       strong 'Post'
     end
   end
-
 end
 
 class HtmlAndLinkTo

@@ -185,6 +185,7 @@ module Hanami
     #     #    </div>
     module HtmlHelper
       private
+
       # Instantiate an HTML builder
       #
       # @param blk [Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content block

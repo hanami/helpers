@@ -34,6 +34,7 @@ module Hanami
         end
 
         private
+
         # Resolve the (nested) content
         #
         # @return [String] the content
@@ -68,9 +69,9 @@ module Hanami
         def _csrf_protection!
           return if @csrf_token.nil?
 
-          _csrf_token = @csrf_token
+          csrf_token = @csrf_token
           @builder.resolve do
-            input(type: :hidden, name: FormHelper::CSRF_TOKEN, value: _csrf_token)
+            input(type: :hidden, name: FormHelper::CSRF_TOKEN, value: csrf_token)
           end
         end
       end

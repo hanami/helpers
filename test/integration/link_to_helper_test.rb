@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe 'Escape helper' do
   before do
-    @user   = LinkTo.new()
+    @user   = LinkTo.new
     @actual = LinkTo::Index.render(format: :html)
   end
 

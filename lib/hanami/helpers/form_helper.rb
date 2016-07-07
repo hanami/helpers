@@ -397,13 +397,13 @@ module Hanami
       #     # </form>
       def form_for(name, url, options = {}, &blk)
         form = if name.is_a?(Form)
-          options = url
-          name
-        else
-          Form.new(name, url, options.delete(:values))
-        end
+                 options = url
+                 name
+               else
+                 Form.new(name, url, options.delete(:values))
+               end
 
-        attributes = { action: form.url, method: form.verb, :'accept-charset' => DEFAULT_CHARSET, id: "#{ form.name }-form" }.merge(options)
+        attributes = { action: form.url, method: form.verb, :'accept-charset' => DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(options)
         FormBuilder.new(form, attributes, self, &blk)
       end
 

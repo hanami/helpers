@@ -11,8 +11,8 @@ describe 'Html helper' do
   end
 
   it 'raises an error when referencing an unknown local variable' do
-    -> {
+    lambda do
       Books::Error.render(format: :html, book: @book)
-    }.must_raise NoMethodError
+    end.must_raise NoMethodError
   end
 end

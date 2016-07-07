@@ -2,8 +2,15 @@
 View helpers for Ruby web applications
 
 ## v0.4.0 - (unreleased)
+### Added
+- [Luca Guidi] Allow `link_to` to be concat with other helpers. Eg `link_to(...) + link_to(...)`, `span(...) + link_to(...)`.
+- [Anton Davydov] Support blank `<option>` tag for `select` form helper. Eg. `select :store, [...], options: { prompt: '' }`
+- [Sebastjan Hribar] Support selected `<option>` for `select` form helper. Eg. `select :store, [...], options: { selected: 'it' }`
+- [Cang Ta] Added `datalist` form helper
+
 ### Changed
-– [Luca Guidi] Drop support for Ruby 2.0 and 2.1
+– [Luca Guidi] Drop support for Ruby 2.0 and 2.1. Official support for JRuby 9.0.5.0+.
+- [Luca Guidi] Inverted options (label, value) for `select` form helper. Now the syntax is `select :store, { 'Italy' => 'it', 'United States' => 'us' }`
 
 ### Fixed
 – [Nikolay Shebanov] Explicitly require some `hanami-utils` dependencies

@@ -53,15 +53,15 @@ describe Hanami::Helpers::EscapeHelper do
     @view.raw_string.class.must_equal Hanami::Utils::Escape::SafeString
   end
 
-  it "html helper alias" do
+  it 'html helper alias' do
     @view.html_string_alias.must_equal %(this is a good string)
   end
 
-  it "html attribute helper alias" do
+  it 'html attribute helper alias' do
     @view.html_attribute_string_alias.must_equal %(<a title='foo'>link</a>)
   end
 
-  it "url helper alias" do
+  it 'url helper alias' do
     @view.url_string_alias.must_equal %(http://hanamirb.org)
   end
 end

@@ -11,4 +11,5 @@ gem 'hanami-validations', '~> 0.6', github: 'hanami/validations', branch: '0.6.x
 gem 'hanami-controller',  '~> 0.7', github: 'hanami/controller',  branch: '0.7.x'
 gem 'hanami-view',        '~> 0.7', github: 'hanami/view',        branch: '0.7.x'
 
-gem 'coveralls', require: false
+gem 'rubocop', '~> 0.41', require: false
+gem 'coveralls',          require: false

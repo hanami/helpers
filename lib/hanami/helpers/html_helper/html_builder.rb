@@ -12,7 +12,7 @@ module Hanami
       # HTML Builder
       #
       # @since 0.1.0
-      class HtmlBuilder
+      class HtmlBuilder # rubocop:disable Metrics/ClassLength
         # HTML5 content tags
         #
         # @since 0.1.0
@@ -20,103 +20,103 @@ module Hanami
         #
         # @see Hanami::Helpers::HtmlHelper::HtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        CONTENT_TAGS = [
-          'a',
-          'abbr',
-          'address',
-          'article',
-          'aside',
-          'audio',
-          'b',
-          'bdi',
-          'bdo',
-          'blockquote',
-          'body',
-          'button',
-          'canvas',
-          'caption',
-          'cite',
-          'code',
-          'colgroup',
-          'data',
-          'datalist',
-          'del',
-          'details',
-          'dfn',
-          'div',
-          'dl',
-          'dt',
-          'dd',
-          'em',
-          'fieldset',
-          'figcaption',
-          'figure',
-          'footer',
-          'form',
-          'h1',
-          'h2',
-          'h3',
-          'h4',
-          'h5',
-          'h6',
-          'head',
-          'header',
-          'i',
-          'iframe',
-          'ins',
-          'kbd',
-          'label',
-          'legend',
-          'li',
-          'link',
-          'main',
-          'map',
-          'mark',
-          'math',
-          'menu',
-          'meter',
-          'nav',
-          'noscript',
-          'object',
-          'ol',
-          'optgroup',
-          'option',
-          'output',
-          'p',
-          'pre',
-          'progress',
-          'q',
-          'rp',
-          'rt',
-          'ruby',
-          's',
-          'samp',
-          'script',
-          'section',
-          'select',
-          'small',
-          'span',
-          'strong',
-          'style',
-          'sub',
-          'summary',
-          'sup',
-          'svg',
-          'table',
-          'tbody',
-          'td',
-          'template',
-          'textarea',
-          'tfoot',
-          'th',
-          'thead',
-          'time',
-          'title',
-          'tr',
-          'u',
-          'ul',
-          'video',
-        ].freeze
+        CONTENT_TAGS = %w(
+          a
+          abbr
+          address
+          article
+          aside
+          audio
+          b
+          bdi
+          bdo
+          blockquote
+          body
+          button
+          canvas
+          caption
+          cite
+          code
+          colgroup
+          data
+          datalist
+          del
+          details
+          dfn
+          div
+          dl
+          dt
+          dd
+          em
+          fieldset
+          figcaption
+          figure
+          footer
+          form
+          h1
+          h2
+          h3
+          h4
+          h5
+          h6
+          head
+          header
+          i
+          iframe
+          ins
+          kbd
+          label
+          legend
+          li
+          link
+          main
+          map
+          mark
+          math
+          menu
+          meter
+          nav
+          noscript
+          object
+          ol
+          optgroup
+          option
+          output
+          p
+          pre
+          progress
+          q
+          rp
+          rt
+          ruby
+          s
+          samp
+          script
+          section
+          select
+          small
+          span
+          strong
+          style
+          sub
+          summary
+          sup
+          svg
+          table
+          tbody
+          td
+          template
+          textarea
+          tfoot
+          th
+          thead
+          time
+          title
+          tr
+          u
+          ul
+          video
+        ).freeze
 
         # HTML5 empty tags
         #
@@ -125,24 +125,24 @@ module Hanami
         #
         # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        EMPTY_TAGS = [
-          'area',
-          'base',
-          'br',
-          'col',
-          'embed',
-          'hr',
-          'img',
-          'input',
-          'keygen',
-          'link',
-          'menuitem',
-          'meta',
-          'param',
-          'source',
-          'track',
-          'wbr',
-        ].freeze
+        EMPTY_TAGS = %w(
+          area
+          base
+          br
+          col
+          embed
+          hr
+          img
+          input
+          keygen
+          link
+          menuitem
+          meta
+          param
+          source
+          track
+          wbr
+        ).freeze
 
         # New line separator
         #
@@ -152,8 +152,8 @@ module Hanami
 
         CONTENT_TAGS.each do |tag|
           class_eval %{
-            def #{ tag }(content = nil, attributes = nil, &blk)
-              @nodes << self.class.html_node.new(:#{ tag }, blk || content, attributes || content, options)
+            def #{tag}(content = nil, attributes = nil, &blk)
+              @nodes << self.class.html_node.new(:#{tag}, blk || content, attributes || content, options)
               self
             end
           }
@@ -161,8 +161,8 @@ module Hanami
 
         EMPTY_TAGS.each do |tag|
           class_eval %{
-            def #{ tag }(attributes = nil)
-              @nodes << EmptyHtmlNode.new(:#{ tag }, attributes)
+            def #{tag}(attributes = nil)
+              @nodes << EmptyHtmlNode.new(:#{tag}, attributes)
               self
             end
           }
@@ -310,7 +310,7 @@ module Hanami
 
         # @since 0.2.5
         # @api private
-        alias_method :+, :text
+        alias + text
 
         # Resolves all the nodes and generates the markup
         #

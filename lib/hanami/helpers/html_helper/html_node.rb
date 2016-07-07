@@ -19,7 +19,7 @@ module Hanami
         # @param options [Hash] a optional set of data
         #
         # @return [Hanami::Helpers::HtmlHelper::HtmlNode]
-        def initialize(name, content, attributes, options = {})
+        def initialize(name, content, attributes, _options = {})
           @builder = HtmlBuilder.new
           @name    = name
           @content = case content
@@ -41,25 +41,26 @@ module Hanami
         #
         # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode#to_s
         def to_s
-          %(#{ super }#{ content }</#{ @name }>)
+          %(#{super}#{content}</#{@name}>)
         end
 
         private
+
         # Resolve the (nested) content
         #
         # @return [String] the content
         #
         # @since 0.1.0
         # @api private
-        def content
+        def content # rubocop:disable Metrics/MethodLength
           case @content
           when Proc
             result = @builder.resolve(&@content)
 
             if @builder.nested?
-              "\n#{ @builder }\n"
+              "\n#{@builder}\n"
             else
-              "\n#{ Utils::Escape.html(result) }\n"
+              "\n#{Utils::Escape.html(result)}\n"
             end
           else
             Utils::Escape.html(@content)

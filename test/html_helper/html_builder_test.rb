@@ -46,17 +46,17 @@ describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
   describe '<addr>' do
     it 'generates an address' do
       content = Hanami::Utils::Escape::SafeString.new(
-<<-CONTENT
+        <<-CONTENT
 Mozilla Foundation<br>
 1981 Landings Drive<br>
 Building K<br>
 Mountain View, CA 94043-0801<br>
 USA
 CONTENT
-)
+      )
 
       result = @builder.address(content).to_s
-      result.must_equal %(<address>#{ content }</address>)
+      result.must_equal %(<address>#{content}</address>)
     end
   end
 
@@ -166,7 +166,7 @@ CONTENT
 
   describe 'attributes' do
     it 'handles no attribute list' do
-      result = @builder.input().to_s
+      result = @builder.input.to_s
       result.must_equal('<input>')
     end
 
@@ -209,25 +209,24 @@ CONTENT
       result = @builder.input('required' => true, 'something' => 'bar').to_s
       result.must_equal('<input required="required" something="bar">')
     end
-
   end
 
   ##############################################################################
   # TEXT
   ##############################################################################
 
-  describe "plain text" do
-    it "renders plain text" do
+  describe 'plain text' do
+    it 'renders plain text' do
       result = @builder.text('Foo').to_s
       result.must_equal('Foo')
     end
 
-    it "accepts any object that respond to #to_s" do
+    it 'accepts any object that respond to #to_s' do
       result = @builder.text(23).to_s
       result.must_equal('23')
     end
 
-    it "renders plain text inside a tag" do
+    it 'renders plain text inside a tag' do
       result = @builder.p do
         span('Foo')
         text('Bar')
@@ -236,12 +235,12 @@ CONTENT
       result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
     end
 
-    it "ignores block" do
+    it 'ignores block' do
       result = @builder.text('Foo') { p 'Bar' }.to_s
       result.must_equal('Foo')
     end
 
-    it "allows concatenation with raw string" do
+    it 'allows concatenation with raw string' do
       result = @builder.p do
         span('Foo') +
           'Bar'
@@ -250,7 +249,7 @@ CONTENT
       result.must_equal(%(<p>\n<span>Foo</span>\nBar\n</p>))
     end
 
-    it "escapes HTML inside" do
+    it 'escapes HTML inside' do
       result = @builder.text(%(<p>Foo</p>)).to_s
       result.must_equal('&lt;p&gt;Foo&lt;&#x2F;p&gt;')
     end

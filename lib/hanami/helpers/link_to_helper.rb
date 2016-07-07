@@ -115,7 +115,7 @@ module Hanami
       # @example With only content
       #   <%= link_to 'Home' %>
       #     # => ArgumentError
-      def link_to(content, url = nil, options = {}, &blk)
+      def link_to(content, url = nil, options = {}, &blk) # rubocop:disable Metrics/MethodLength
         if block_given?
           options = url || {}
           url     = content

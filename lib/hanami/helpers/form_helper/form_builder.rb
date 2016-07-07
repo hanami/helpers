@@ -11,18 +11,18 @@ module Hanami
       # @since 0.2.0
       #
       # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
-      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder
+      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder # rubocop:disable Metrics/ClassLength
         # Set of HTTP methods that are understood by web browsers
         #
         # @since 0.2.0
         # @api private
-        BROWSER_METHODS = ['GET', 'POST'].freeze
+        BROWSER_METHODS = %w(GET POST).freeze
 
         # Set of HTTP methods that should NOT generate CSRF token
         #
         # @since 0.2.0
         # @api private
-        EXCLUDED_CSRF_METHODS = ['GET'].freeze
+        EXCLUDED_CSRF_METHODS = %w(GET).freeze
 
         # Checked attribute value
         #
@@ -104,7 +104,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def initialize(form, attributes, context = nil, &blk)
+        def initialize(form, attributes, context = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super()
 
           @context    = context
@@ -363,7 +363,7 @@ module Hanami
         #   #  <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
         #   #  <input type="checkbox" name="book[languages][]" value="english">
         def check_box(name, attributes = {})
-          _hidden_field_for_check_box(    name, attributes)
+          _hidden_field_for_check_box(name, attributes)
           input _attributes_for_check_box(name, attributes)
         end
 
@@ -621,7 +621,7 @@ module Hanami
             content    = nil
           end
 
-          attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
+          attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
           textarea(content || _value(name), attributes)
         end
 
@@ -643,7 +643,7 @@ module Hanami
         def text_field(name, attributes = {})
           input _attributes(:text, name, attributes)
         end
-        alias_method :input_text, :text_field
+        alias input_text text_field
 
         # Radio input
         #
@@ -780,7 +780,7 @@ module Hanami
         #   #    <option value="it" selected="selected">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
-        def select(name, values, attributes = {})
+        def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }
           attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
           prompt     = options.delete(:prompt)
@@ -791,9 +791,9 @@ module Hanami
 
             values.each do |content, value|
               if selected == value || _value(name) == value
-                option(content, {value: value, selected: SELECTED}.merge(options))
+                option(content, { value: value, selected: SELECTED }.merge(options))
               else
-                option(content, {value: value}.merge(options))
+                option(content, { value: value }.merge(options))
               end
             end
           end
@@ -863,7 +863,7 @@ module Hanami
         #   #    <option value="Italy" class="form-control"></option>
         #   #    <option value="United States" class="form-control"></option>
         #   #  </datalist>
-        def datalist(name, values, list, attributes = {})
+        def datalist(name, values, list, attributes = {}) # rubocop:disable Metrics/MethodLength
           attrs    = attributes.dup
           options  = attrs.delete(:options)  || {}
           datalist = attrs.delete(:datalist) || {}
@@ -874,7 +874,7 @@ module Hanami
           text_field(name, attrs)
           super(datalist) do
             values.each do |value, content|
-              option(content, {value: value}.merge(options))
+              option(content, { value: value }.merge(options))
             end
           end
         end
@@ -900,6 +900,7 @@ module Hanami
         end
 
         protected
+
         # A set of options to pass to the sub form helpers.
         #
         # @api private
@@ -909,6 +910,7 @@ module Hanami
         end
 
         private
+
         # Check the current builder is top-level
         #
         # @api private
@@ -958,7 +960,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _input_name(name)
-          "#{ @name }[#{ name }]"
+          "#{@name}[#{name}]"
         end
 
         # Input <tt>id</tt> HTML attribute
@@ -1000,11 +1002,11 @@ module Hanami
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         def _hidden_field_for_check_box(name, attributes)
           if attributes[:value].nil? || !attributes[:unchecked_value].nil?
-            input({
+            input(
               type:  :hidden,
               name:  attributes[:name] || _input_name(name),
               value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
-            })
+            )
           end
         end
 
@@ -1024,7 +1026,7 @@ module Hanami
 
           value = _value(name)
           attributes[:checked] = CHECKED if !value.nil? &&
-            ( value == attributes[:value] || value.include?(attributes[:value]) )
+                                            (value == attributes[:value] || value.include?(attributes[:value]))
 
           attributes
         end

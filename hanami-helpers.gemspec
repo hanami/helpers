@@ -8,12 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = Hanami::Helpers::VERSION
   spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
   spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
-  spec.summary       = %q{Hanami helpers}
-  spec.description   = %q{View helpers for Ruby applications}
+  spec.summary       = 'Hanami helpers'
+  spec.description   = 'View helpers for Ruby applications'
   spec.homepage      = 'http://hanamirb.org'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -- lib/* CHANGELOG.md LICENSE.md README.md hanami-helpers.gemspec`.split($/)
+  spec.files         = `git ls-files -- lib/* CHANGELOG.md LICENSE.md README.md hanami-helpers.gemspec`.split($/) # rubocop:disable Style/SpecialGlobalVars
+
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']

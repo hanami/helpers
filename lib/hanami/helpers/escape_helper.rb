@@ -4,7 +4,7 @@ module Hanami
   module Helpers
     # Escape helpers
     #
-    # You can include this module inside your view and 
+    # You can include this module inside your view and
     # the view will have access all methods.
     #
     # By including <tt>Hanami::Helpers::EscapeHelper</tt> it will inject private
@@ -13,6 +13,7 @@ module Hanami
     # @since 0.1.0
     module EscapeHelper
       private
+
       # Escape the given HTML tag content.
       #
       # This should be used only for untrusted contents: user input.
@@ -75,7 +76,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias_method :h, :escape_html
+      alias h escape_html
 
       # Escape the given HTML tag attribute.
       #
@@ -147,7 +148,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias_method :ha, :escape_html_attribute
+      alias ha escape_html_attribute
 
       # Escape an URL to be used in HTML attributes
       #
@@ -225,7 +226,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias_method :hu, :escape_url
+      alias hu escape_url
 
       # Bypass escape.
       #

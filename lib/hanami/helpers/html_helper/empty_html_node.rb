@@ -12,15 +12,54 @@ module Hanami
         # @api private
         #
         # @see http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attribute
-        BOOLEAN_ATTRIBUTES = %w{allowfullscreen async autobuffer autofocus
-          autoplay checked compact controls declare default defaultchecked
-          defaultmuted defaultselected defer disabled draggable enabled
-          formnovalidate hidden indeterminate inert ismap itemscope loop
-          multiple muted nohref noresize noshade novalidate nowrap open
-          pauseonexit pubdate readonly required reversed scoped seamless
-          selected sortable spellcheck translate truespeed typemustmatch
+        BOOLEAN_ATTRIBUTES = %w(
+          allowfullscreen
+          async
+          autobuffer
+          autofocus
+          autoplay
+          checked
+          compact
+          controls
+          declare
+          default
+          defaultchecked
+          defaultmuted
+          defaultselected
+          defer
+          disabled
+          draggable
+          enabled
+          formnovalidate
+          hidden
+          indeterminate
+          inert
+          ismap
+          itemscope
+          loop
+          multiple
+          muted
+          nohref
+          noresize
+          noshade
+          novalidate
+          nowrap
+          open
+          pauseonexit
+          pubdate
+          readonly
+          required
+          reversed
+          scoped
+          seamless
+          selected
+          sortable
+          spellcheck
+          translate
+          truespeed
+          typemustmatch
           visible
-        }.freeze
+        ).freeze
 
         # Attributes separator
         #
@@ -49,10 +88,11 @@ module Hanami
         # @since 0.1.0
         # @api private
         def to_s
-          %(<#{ @name }#{attributes}>)
+          %(<#{@name}#{attributes}>)
         end
 
         private
+
         # Resolve the attributes
         #
         # @return [String,NilClass] the tag attributes
@@ -79,12 +119,12 @@ module Hanami
         end
 
         # Do not render boolean attributes when their value is _false_.
-        def boolean_attribute(attribute_name, value)
-          %(#{ATTRIBUTES_SEPARATOR}#{ attribute_name }="#{ attribute_name }")
+        def boolean_attribute(attribute_name, _value)
+          %(#{ATTRIBUTES_SEPARATOR}#{attribute_name}="#{attribute_name}")
         end
 
         def attribute(attribute_name, value)
-          %(#{ATTRIBUTES_SEPARATOR}#{ attribute_name }="#{ value }")
+          %(#{ATTRIBUTES_SEPARATOR}#{attribute_name}="#{value}")
         end
       end
     end

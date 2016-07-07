@@ -38,7 +38,7 @@ module Hanami
           if @builder.nested?
             @builder.to_s
           else
-            "#{ Utils::Escape.html(result) }"
+            Utils::Escape.html(result)
           end
         end
       end

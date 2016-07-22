@@ -16,7 +16,7 @@ module Hanami
         # @param name [Symbol,String] the name of the tag
         # @param content [String,Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
         # @param attributes [Hash,NilClass] the optional tag attributes
-        # @param options [Hash] a optional set of data
+        # @param _options [Hash] a optional set of data
         #
         # @return [Hanami::Helpers::HtmlHelper::HtmlNode]
         def initialize(name, content, attributes, _options = {})

@@ -806,7 +806,7 @@ module Hanami
         # @param list [String] the name of list for the text input, it's also the id of datalist
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 0.4.0
         #
         # @example Basic Usage
         #   <%=

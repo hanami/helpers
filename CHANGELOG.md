@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v0.4.0 - (unreleased)
+## v0.4.0 - 2016-07-22
 ### Added
 - [Luca Guidi] Allow `link_to` to be concat with other helpers. Eg `link_to(...) + link_to(...)`, `span(...) + link_to(...)`.
 - [Anton Davydov] Support blank `<option>` tag for `select` form helper. Eg. `select :store, [...], options: { prompt: '' }`

@@ -110,7 +110,7 @@ module Hanami
 
         # Default precision
         #
-        # @return [String] default precision
+        # @return [Integer] default precision
         #
         # @since 0.2.0
         # @api private

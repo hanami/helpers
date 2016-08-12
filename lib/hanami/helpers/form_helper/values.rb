@@ -67,7 +67,7 @@ module Hanami
         # @api private
         def _get_from_params(key)
           if @params.respond_to?(:dig)
-            @params.dig(*key.to_s.split(GET_SEPARATOR).map(&:to_sym))
+            @params.dig(*key.to_s.split(GET_SEPARATOR).map!(&:to_sym))
           else
             @params.get(key)
           end

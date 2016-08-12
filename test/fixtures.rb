@@ -305,7 +305,21 @@ class FormHelperView
   attr_reader :params
 
   def initialize(params)
-    @params = Hanami::Action::BaseParams.new(params)
+    @params = _build_params(params)
+  end
+
+  private
+
+  def _build_params(params)
+    parameters = params.to_h
+
+    # Randomly use Hanami::Action::BaseParams or the given raw Hash in order to
+    # simulate Hash usage during the test setup unit tests in Hanami projects.
+    if parameters.respond_to?(:dig)
+      [true, false].sample ? Hanami::Action::BaseParams.new(parameters) : parameters
+    else
+      Hanami::Action::BaseParams.new(parameters)
+    end
   end
 end
 

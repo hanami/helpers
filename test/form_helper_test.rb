@@ -311,6 +311,18 @@ describe Hanami::Helpers::FormHelper do
           actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true" checked="checked">)
         end
       end
+
+      describe 'checked_value is boolean' do
+        let(:params) { Hash[book: { free_shipping: 'true' }] }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping, checked_value: true
+          end.to_s
+
+          actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true" checked="checked">)
+        end
+      end
     end
 
     describe 'automatic values' do
@@ -1398,16 +1410,32 @@ describe Hanami::Helpers::FormHelper do
     end
 
     describe 'with filled params' do
-      let(:params) { Hash[book: { category: val }] }
-      let(:val)    { 'Non-Fiction' }
+      describe 'string value' do
+        let(:params) { Hash[book: { category: val }] }
+        let(:val)    { 'Non-Fiction' }
 
-      it 'renders with value' do
-        actual = view.form_for(:book, action) do
-          radio_button :category, 'Fiction'
-          radio_button :category, 'Non-Fiction'
-        end.to_s
+        it 'renders with value' do
+          actual = view.form_for(:book, action) do
+            radio_button :category, 'Fiction'
+            radio_button :category, 'Non-Fiction'
+          end.to_s
 
-        actual.must_include %(<input type="radio" name="book[category]" value="Fiction">\n<input type="radio" name="book[category]" value="Non-Fiction" checked="checked">)
+          actual.must_include %(<input type="radio" name="book[category]" value="Fiction">\n<input type="radio" name="book[category]" value="Non-Fiction" checked="checked">)
+        end
+      end
+
+      describe 'decimal value' do
+        let(:params) { Hash[book: { price: val }] }
+        let(:val)    { '20.0' }
+
+        it 'renders with value' do
+          actual = view.form_for(:book, action) do
+            radio_button :price, 10.0
+            radio_button :price, 20.0
+          end.to_s
+
+          actual.must_include %(<input type="radio" name="book[price]" value="10.0">\n<input type="radio" name="book[price]" value="20.0" checked="checked">)
+        end
       end
     end
   end
@@ -1580,15 +1608,31 @@ describe Hanami::Helpers::FormHelper do
       end
 
       describe 'with filled params' do
-        let(:params) { Hash[book: { store: val }] }
-        let(:val)    { 'it' }
+        describe 'string values' do
+          let(:params) { Hash[book: { store: val }] }
+          let(:val)    { 'it' }
 
-        it 'renders with value' do
-          actual = view.form_for(:book, action) do
-            select :store, option_values, options: { prompt: 'Select a store' }
-          end.to_s
+          it 'renders with value' do
+            actual = view.form_for(:book, action) do
+              select :store, option_values, options: { prompt: 'Select a store' }
+            end.to_s
 
-          actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+            actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+          end
+        end
+
+        describe 'integer values' do
+          let(:values) { Hash['Brave new world' => 1, 'Solaris' => 2] }
+          let(:params) { Hash[bookshelf: { book: val }] }
+          let(:val)    { '1' }
+
+          it 'renders' do
+            actual = view.form_for(:bookshelf, action) do
+              select :book, values
+            end.to_s
+
+            actual.must_include %(<select name="bookshelf[book]" id="bookshelf-book">\n<option value="1" selected="selected">Brave new world</option>\n<option value="2">Solaris</option>\n</select>)
+          end
         end
       end
     end

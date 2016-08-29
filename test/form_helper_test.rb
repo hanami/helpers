@@ -288,6 +288,18 @@ describe Hanami::Helpers::FormHelper do
         end
       end
     end
+
+    describe 'automatic values' do
+      let(:values) { Hash[book: OpenStruct.new(free_shipping: true)] }
+
+      it "renders with 'checked' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          check_box :free_shipping, checked_value: true
+        end.to_s
+
+        actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true" checked="checked">)
+      end
+    end
   end
 
   describe '#color_field' do

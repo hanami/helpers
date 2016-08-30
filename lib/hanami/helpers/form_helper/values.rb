@@ -36,6 +36,7 @@ module Hanami
         # @since 0.5.0
         # @api private
         def _get_from_params(*keys)
+          keys.map! { |key| key.to_s =~ /\A\d+\z/ ? key.to_s.to_i : key }
           @params.dig(*keys)
         end
 
@@ -50,6 +51,7 @@ module Hanami
 
             result = case result
                      when Utils::Hash, ::Hash        then result[k]
+                     when Array                      then result[k.to_s.to_i]
                      when ->(r) { r.respond_to?(k) } then result.public_send(k)
                      end
           end

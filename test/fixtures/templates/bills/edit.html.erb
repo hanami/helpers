@@ -1,0 +1,16 @@
+<%=
+  form_for(form, class: 'form-horizontal') do
+    fieldset do
+      legend 'Addresses'
+
+      structured_fields_for :addresses do |i|
+        div class: 'form-group' do
+          label :street
+          input_text :street, class: 'form-control', placeholder: 'Street'
+        end
+      end
+    end
+
+    submit submit_label, class: 'btn btn-default'
+  end
+%>

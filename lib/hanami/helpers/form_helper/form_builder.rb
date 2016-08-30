@@ -203,6 +203,48 @@ module Hanami
           @name = current_name
         end
 
+        # Nested structures
+        #
+        # Used in conjunction with field_for, the
+        # It supports infinite levels of nesting.
+        #
+        # @param name [Symbol] the nested name, it's used to generate input
+        #   names, ids, and to lookup params to fill values.
+        #
+        # @example Basic usage
+        #   <%=
+        #     form_for :delivery, routes.deliveries_path do
+        #       text_field :customer_name
+        #
+        #       structured_fields_for :addresses do
+        #         text_field :street
+        #       end
+        #
+        #       submit 'Create'
+        #     end
+        #   %>
+        #
+        #   Output:
+        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
+        #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-0-street" value="">
+        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-1-street" value="">
+        #     #
+        #     #   <button type="submit">Create</button>
+        #     # </form>
+        #
+        def structured_fields_for(name, &block)
+          current_name = @name
+          base_value = _value(name)
+          @name = _input_name(name)
+
+          base_value.size.times do |index|
+            _nested_field_for_index(index, &block)
+          end
+        ensure
+          @name = current_name
+        end
+
         # Label tag
         #
         # The first param <tt>content</tt> can be a <tt>Symbol</tt> that represents
@@ -957,7 +999,8 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }.merge!(attributes)
+          attrs = { type: type, name: _cleaned_input_name(name), id: _input_id(name), value: _value(name) }
+          attrs.merge!(attributes)
           attrs[:value] = Hanami::Utils::Escape.html(attrs[:value])
           attrs
         end
@@ -968,6 +1011,10 @@ module Hanami
         # @since 0.2.0
         def _input_name(name)
           "#{@name}[#{name}]"
+        end
+
+        def _cleaned_input_name(name)
+          _input_name(name).gsub(/\[\d+\]/, '[]')
         end
 
         # Input <tt>id</tt> HTML attribute
@@ -1058,6 +1105,19 @@ module Hanami
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||
             input_value.is_a?(Array) && input_value.include?(value))
+        end
+
+        # Subroutine for nested structures
+        #
+        # @api private
+        #
+        # @see Hanami::Helpers::FormHelper::FormBuilder#structured_fields_for
+        def _nested_field_for_index(index)
+          current_name = @name
+          @name = _input_name(index)
+          yield(index)
+        ensure
+          @name = current_name
         end
       end
     end

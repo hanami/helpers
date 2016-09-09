@@ -80,7 +80,7 @@ describe 'Form helper' do
       before do
         @address  = Address.new(street: '5th Ave')
         @delivery = Delivery.new(id: 1, customer_id: 23, address: @address)
-        @params   = DeliveryParams.new(delivery: { address: { street: nil } })
+        @params   = DeliveryParams.new(delivery: { address: { street: '' } })
         @session  = Session.new(_csrf_token: 's14')
         @params.valid? # trigger validations
 

@@ -238,7 +238,7 @@ module Hanami
           base_value = _value(name)
           @name = _input_name(name)
 
-          base_value.size.times do |index|
+          base_value.count.times do |index|
             _nested_field_for_index(index, &block)
           end
         ensure

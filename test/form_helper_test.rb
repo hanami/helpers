@@ -275,6 +275,18 @@ describe Hanami::Helpers::FormHelper do
         end
       end
 
+      describe 'with a boolean argument' do
+        let(:val) { true }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" checked="checked">)
+        end
+      end
+
       describe 'when multiple params are present' do
         let(:params) { Hash[book: { languages: ['italian'] }] }
 

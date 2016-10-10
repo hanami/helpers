@@ -780,9 +780,22 @@ module Hanami
         #   #    <option value="it" selected="selected">Italy</option>
         #   #    <option value="us">United States</option>
         #   #  </select>
+        #
+        # @example Multiple select
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, multiple: true
+        #   %>
+        #
+        #   # Output:
+        #   # <select name="book[store][]" id="book-store" multiple="multiple">
+        #   #   <option value="it">Italy</option>
+        #   #    <option value="us">United States</option>
+        #   #  </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }
-          attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)
           prompt     = options.delete(:prompt)
           selected   = options.delete(:selected)
 
@@ -790,7 +803,7 @@ module Hanami
             option(prompt) unless prompt.nil?
 
             values.each do |content, value|
-              if selected == value || _value(name) == value
+              if _select_option_selected?(value, selected, _value(name), attributes[:multiple])
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))
@@ -1029,6 +1042,17 @@ module Hanami
                                             (value == attributes[:value] || value.include?(attributes[:value]))
 
           attributes
+        end
+
+        def _select_input_name(name, multiple)
+          select_name = _input_name(name)
+          select_name = "#{select_name}[]" if multiple
+          select_name
+        end
+
+        def _select_option_selected?(value, selected, input_value, multiple)
+          value == selected || (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
+            value == input_value || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
       end
     end

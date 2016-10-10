@@ -1175,6 +1175,24 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
     end
 
+    describe "with option 'multiple'" do
+      it 'renders' do
+        actual = view.form_for(:book, action) do
+          select :store, values, multiple: true
+        end.to_s
+
+        actual.must_include %(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      it 'allows to select values' do
+        actual = view.form_for(:book, action) do
+          select :store, values, multiple: true, options: { selected: %w(it us) }
+        end.to_s
+
+        actual.must_include %(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it" selected="selected">Italy</option>\n<option value="us" selected="selected">United States</option>\n</select>)
+      end
+    end
+
     describe 'with values an structured Array of values' do
       let(:values) { [%w(Italy it), ['United States', 'us']] }
 

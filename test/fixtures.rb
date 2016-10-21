@@ -375,25 +375,31 @@ end
 
 module FullStack
   class Routes
-    def self.path(name)
+    def path(name)
       _escape "/#{name}"
     end
 
-    def self.sessions_path
+    def sessions_path
       _escape '/sessions'
     end
 
-    def self.deliveries_path
+    def deliveries_path
       _escape '/deliveries'
     end
 
-    def self.delivery_path(attrs = {})
+    def delivery_path(attrs = {})
       _escape "/deliveries/#{attrs.fetch(:id)}"
     end
 
-    def self._escape(string)
+    private
+
+    def _escape(string)
       Hanami::Utils::Escape::SafeString.new(string)
     end
+  end
+
+  def self.routes
+    Routes.new
   end
 
   module Views

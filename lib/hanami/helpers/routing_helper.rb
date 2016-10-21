@@ -5,7 +5,7 @@ module Hanami
     # Routing helper for full stack Hanami web applications.
     #
     # For a given application called <tt>Web::Application</tt>, at runtime
-    # Hanami creates a routes factory called <tt>Web::Routes</tt>.
+    # Hanami creates a routes factory called <tt>Web.routes</tt>.
     #
     # By including this module in a view, it makes that factory avaliable as
     # <tt>routes</tt>.
@@ -41,7 +41,7 @@ module Hanami
     #   # <%= link_to_home %>
     module RoutingHelper
       def self.included(base)
-        factory = "#{Utils::String.new(base).namespace}::Routes"
+        factory = "#{Utils::String.new(base).namespace}.routes"
 
         base.class_eval <<-END_EVAL, __FILE__, __LINE__
           def routes

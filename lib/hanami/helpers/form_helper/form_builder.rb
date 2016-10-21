@@ -1001,13 +1001,13 @@ module Hanami
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         def _hidden_field_for_check_box(name, attributes)
-          if attributes[:value].nil? || !attributes[:unchecked_value].nil?
-            input(
-              type:  :hidden,
-              name:  attributes[:name] || _input_name(name),
-              value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
-            )
-          end
+          return unless attributes[:value].nil? || !attributes[:unchecked_value].nil?
+
+          input(
+            type:  :hidden,
+            name:  attributes[:name] || _input_name(name),
+            value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
+          )
         end
 
         # HTML attributes for check box

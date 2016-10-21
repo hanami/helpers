@@ -1,6 +1,13 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: false
 Metrics/LineLength:
   Enabled: false
 Style/AndOr:
   Enabled: false
 Style/MethodMissing:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - "test/**/*_test.rb" # Minitest syntax generates this false positive

@@ -1,6 +1,16 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v0.5.0 - (unreleased)
+### Added
+- [Marion Duprey] Allow `select` form helper to generate a multiple select (via `multiple: true` option)
+
+### Fixed
+- [Luca Guidi] Ensure `form_for` to be compatible with params passed as `Hash`. This is useful for unit tests.
+
+### Changed
+- [Luca Guidi] Official support for Ruby: MRI 2.3+ and JRuby 9.1.5.0+
+
 ## v0.4.0 - 2016-07-22
 ### Added
 - [Luca Guidi] Allow `link_to` to be concat with other helpers. Eg `link_to(...) + link_to(...)`, `span(...) + link_to(...)`.

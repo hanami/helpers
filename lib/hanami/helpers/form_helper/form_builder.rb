@@ -1043,10 +1043,16 @@ module Hanami
           select_name
         end
 
+        # TODO: this has to be refactored
+        #
+        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
           value == selected || (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
             value == input_value || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
+        # rubocop:enable Metrics/PerceivedComplexity
+        # rubocop:enable Metrics/CyclomaticComplexity
       end
     end
   end

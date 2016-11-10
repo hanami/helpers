@@ -34,7 +34,6 @@ describe 'Form helper' do
       before do
         @params  = DeliveryParams.new(delivery: { address: { street: '5th Ave' } })
         @session = Session.new(_csrf_token: 'm15')
-        @params.valid? # trigger validations
 
         @actual = FullStack::Views::Deliveries::New.render(format: :html, params: @params, session: @session)
       end
@@ -66,7 +65,6 @@ describe 'Form helper' do
         @delivery = Delivery.new(id: 1, customer_id: 23, address: @address)
         @params   = DeliveryParams.new(delivery: { address: { street: 'Mulholland Drive' } })
         @session  = Session.new(_csrf_token: 's14')
-        @params.valid? # trigger validations
 
         @actual = FullStack::Views::Deliveries::Edit.render(format: :html, delivery: @delivery, params: @params, session: @session)
       end
@@ -82,7 +80,6 @@ describe 'Form helper' do
         @delivery = Delivery.new(id: 1, customer_id: 23, address: @address)
         @params   = DeliveryParams.new(delivery: { address: { street: '' } })
         @session  = Session.new(_csrf_token: 's14')
-        @params.valid? # trigger validations
 
         @actual = FullStack::Views::Deliveries::Edit.render(format: :html, delivery: @delivery, params: @params, session: @session)
       end

@@ -56,14 +56,6 @@ module Hanami
         # @see Hanami::Helpers::FormHelper::FormBuilder#_input_id
         INPUT_ID_REPLACEMENT = '-\k<token>'.freeze
 
-        # Replacement for input value interpolation
-        #
-        # @since 0.2.0
-        # @api private
-        #
-        # @see Hanami::Helpers::FormHelper::FormBuilder#_value
-        INPUT_VALUE_REPLACEMENT = '.\k<token>'.freeze
-
         # Default value for unchecked check box
         #
         # @since 0.2.0
@@ -977,8 +969,9 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _value(name)
-          name = _input_name(name).gsub(/\[(?<token>[[:word:]]*)\]/, INPUT_VALUE_REPLACEMENT)
-          @values.get(name)
+          @values.get(
+            *_input_name(name).split(/[\[\]]+/).map(&:to_sym)
+          )
         end
 
         # Input <tt>for</tt> HTML attribute

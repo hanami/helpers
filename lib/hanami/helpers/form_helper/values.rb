@@ -18,7 +18,7 @@ module Hanami
         # @since 0.2.0
         # @api private
         def initialize(values, params)
-          @values = Utils::Hash.new(values || {}).stringify!
+          @values = Utils::Hash.new(values || {}).symbolize!
           @params = params
         end
 
@@ -26,8 +26,8 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def get(key)
-          _get_from_params(key) || _get_from_values(key)
+        def get(*keys)
+          _get_from_params(*keys) || _get_from_values(*keys)
         end
 
         private
@@ -65,21 +65,17 @@ module Hanami
         #
         # @since x.x.x
         # @api private
-        def _get_from_params(key)
-          if @params.respond_to?(:dig)
-            @params.dig(*key.to_s.split(GET_SEPARATOR).map!(&:to_sym))
-          else
-            @params.get(key)
-          end
+        def _get_from_params(*keys)
+          @params.dig(*keys)
         end
 
         # @since 0.2.0
         # @api private
-        def _get_from_values(key)
-          initial_key, *keys = key.to_s.split(GET_SEPARATOR)
-          result             = @values[initial_key]
+        def _get_from_values(*keys)
+          head, *tail = *keys
+          result      = @values[head]
 
-          Array(keys).each do |k|
+          tail.each do |k|
             break if result.nil?
 
             result = if result.respond_to?(k) # rubocop:disable Style/IfUnlessModifier

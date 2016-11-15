@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v0.5.0 - (unreleased)
+## v0.5.0 - 2016-11-15
 ### Added
 - [Marion Duprey] Allow `select` form helper to generate a multiple select (via `multiple: true` option)
 

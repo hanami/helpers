@@ -183,7 +183,7 @@ module Hanami
         def to_str
           number = to_number
           if precision_requested_explicity?
-            "%.#{precision}f" % number
+            Kernel.format("%.#{precision}f", number)
           else
             number.to_s
           end

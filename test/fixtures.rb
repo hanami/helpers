@@ -142,6 +142,14 @@ class NumbersView
     format_number 3.141592, precision: 4
   end
 
+  def precision_higher_than_numbers_precision
+    format_number 3.14, precision: 4
+  end
+
+  def zero_precision
+    format_number 3.14, precision: 0
+  end
+
   def mixed_digits
     format_number 5002.007, precision: 3
   end

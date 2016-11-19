@@ -678,7 +678,7 @@ module Hanami
         #   #  <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, attributes = {})
           attributes = { type: :radio, name: _input_name(name), value: value }.merge(attributes)
-          attributes[:checked] = CHECKED if _value(name) == value
+          attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
           input(attributes)
         end
 
@@ -1050,7 +1050,7 @@ module Hanami
         # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
           value == selected || (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            value == input_value || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+            value.to_s == input_value.to_s || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity

@@ -359,21 +359,29 @@ class SessionFormHelperView < FormHelperView
 end
 
 class Address
+  attr_reader :attributes
   attr_reader :street
 
   def initialize(attributes = {})
-    @street = attributes[:street]
+    @attributes = attributes
+    @street     = attributes[:street]
   end
+
+  alias to_hash attributes
 end
 
 class Delivery
+  attr_reader :attributes
   attr_reader :id, :customer_id, :address
 
   def initialize(attributes = {})
+    @attributes  = attributes
     @id          = attributes[:id]
     @customer_id = attributes[:customer_id]
     @address     = attributes[:address]
   end
+
+  alias to_hash attributes
 end
 
 class DeliveryParams < Hanami::Action::Params

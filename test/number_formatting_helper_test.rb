@@ -33,6 +33,14 @@ describe Hanami::Helpers::NumberFormattingHelper do
     @view.precision_format.must_equal '3.1416'
   end
 
+  it 'returns string padded with zeros' do
+    @view.precision_higher_than_numbers_precision.must_equal '3.1400'
+  end
+
+  it 'returns string with no decimal part' do
+    @view.zero_precision.must_equal '3'
+  end
+
   it 'returns string with "." delimiter and "," separator' do
     @view.euro_format.must_equal '1.234,12'
   end

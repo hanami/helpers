@@ -182,7 +182,7 @@ module Hanami
         # @api private
         def to_str
           number = to_number
-          if precision_requested_explicity?
+          if precision_requested_explicitly?
             Kernel.format("%.#{precision}f", number)
           else
             number.to_s
@@ -224,7 +224,7 @@ module Hanami
         #
         # @since 1.0.0
         # @api private
-        def precision_requested_explicity?
+        def precision_requested_explicitly?
           !@precision.nil?
         end
 

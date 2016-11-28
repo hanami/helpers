@@ -1409,20 +1409,6 @@ describe Hanami::Helpers::FormHelper do
 
         actual.must_include %(<input type="radio" name="book[category]" value="Fiction">\n<input type="radio" name="book[category]" value="Non-Fiction" checked="checked">)
       end
-
-      describe 'decimal value' do
-        let(:params) { Hash[book: { price: val }] }
-        let(:val)    { '20.0' }
-
-        it 'renders with value' do
-          actual = view.form_for(:book, action) do
-            radio_button :price, 10.0
-            radio_button :price, 20.0
-          end.to_s
-
-          actual.must_include %(<input type="radio" name="book[price]" value="10.0">\n<input type="radio" name="book[price]" value="20.0" checked="checked">)
-        end
-      end
     end
   end
 
@@ -1603,20 +1589,6 @@ describe Hanami::Helpers::FormHelper do
           end.to_s
 
           actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
-        end
-
-        describe 'integer values' do
-          let(:values) { Hash['Brave new world' => 1, 'Solaris' => 2] }
-          let(:params) { Hash[bookshelf: { book: val }] }
-          let(:val)    { '1' }
-
-          it 'renders' do
-            actual = view.form_for(:bookshelf, action) do
-              select :book, values
-            end.to_s
-
-            actual.must_include %(<select name="bookshelf[book]" id="bookshelf-book">\n<option value="1" selected="selected">Brave new world</option>\n<option value="2">Solaris</option>\n</select>)
-          end
         end
       end
     end

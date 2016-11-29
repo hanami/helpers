@@ -48,8 +48,9 @@ module Hanami
           tail.each do |k|
             break if result.nil?
 
-            result = if result.respond_to?(k) # rubocop:disable Style/IfUnlessModifier
-                       result.public_send(k)
+            result = case result
+                     when Utils::Hash, ::Hash        then result[k]
+                     when ->(r) { r.respond_to?(k) } then result.public_send(k)
                      end
           end
 

@@ -726,7 +726,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :stores, values
+        #     select :store, values
         #   %>
         #
         #   # Output:
@@ -745,7 +745,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values
+        #     select :store, values
         #   %>
         #
         #   # Output:
@@ -758,7 +758,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values, options: {prompt: 'Select a store'}
+        #     select :store, values, options: {prompt: 'Select a store'}
         #   %>
         #
         #   # Output:
@@ -772,7 +772,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values, options: {selected: book.store}
+        #     select :store, values, options: {selected: book.store}
         #   %>
         #
         #   # Output:

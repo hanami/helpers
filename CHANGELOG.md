@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v0.5.1 - 2016-12-20
+## v0.5.1 - 2016-12-19
 ### Fixed
 - [Alex Coles] Ensure `#form_for`'s `values:` to accept `Hanami::Entity` instances
 - [Ksenia Zalesnaya & Marion Duprey] Ensure checkboxes to check/uncheck when a boolean is passed as value

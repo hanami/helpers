@@ -1,6 +1,12 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v0.5.1 - 2016-12-20
+### Fixed
+- [Alex Coles] Ensure `#form_for`'s `values:` to accept `Hanami::Entity` instances
+- [Ksenia Zalesnaya & Marion Duprey] Ensure checkboxes to check/uncheck when a boolean is passed as value
+- [Paweł Świątkowski] Ensure `#format_number` to respect given precision
+
 ## v0.5.0 - 2016-11-15
 ### Added
 - [Marion Duprey] Allow `select` form helper to generate a multiple select (via `multiple: true` option)

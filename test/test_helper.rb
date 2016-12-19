@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'ostruct'
 
 if ENV['COVERALL']
   require 'coveralls'

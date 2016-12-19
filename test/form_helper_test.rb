@@ -275,6 +275,18 @@ describe Hanami::Helpers::FormHelper do
         end
       end
 
+      describe 'with a boolean argument' do
+        let(:val) { true }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" checked="checked">)
+        end
+      end
+
       describe 'when multiple params are present' do
         let(:params) { Hash[book: { languages: ['italian'] }] }
 
@@ -285,6 +297,34 @@ describe Hanami::Helpers::FormHelper do
           end.to_s
 
           actual.must_include %(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian" checked="checked">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">)
+        end
+      end
+
+      describe 'checked_value is boolean' do
+        let(:params) { Hash[book: { free_shipping: 'true' }] }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping, checked_value: true
+          end.to_s
+
+          actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true" checked="checked">)
+        end
+      end
+    end
+
+    describe 'automatic values' do
+      describe 'checkbox' do
+        describe 'value boolean, helper boolean, values differ' do
+          let(:values) { Hash[book: OpenStruct.new(free_shipping: false)] }
+
+          it 'renders' do
+            actual = view.form_for(:book, action, values: values) do
+              check_box :free_shipping, checked_value: true
+            end.to_s
+
+            actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true">)
+          end
         end
       end
     end

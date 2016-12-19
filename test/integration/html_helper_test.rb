@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe 'Html helper' do
   before do
-    @book   = Book.new('The Work of Art in the Age of Mechanical Reproduction')
+    @book   = Book.new(title: 'The Work of Art in the Age of Mechanical Reproduction')
     @actual = Books::Show.render(format: :html, book: @book)
   end
 

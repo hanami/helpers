@@ -134,7 +134,7 @@ module Hanami
           @number = number
           @delimiter = options.fetch(:delimiter, DEFAULT_DELIMITER)
           @separator = options.fetch(:separator, DEFAULT_SEPARATOR)
-          @precision = options.fetch(:precision, DEFAULT_PRECISION)
+          @precision = options.fetch(:precision, nil)
         end
 
         # Format number according to the specified options
@@ -181,7 +181,12 @@ module Hanami
         # @since 0.2.0
         # @api private
         def to_str
-          to_number.to_s
+          number = to_number
+          if precision_requested_explicitly?
+            Kernel.format("%.#{precision}f", number)
+          else
+            number.to_s
+          end
         end
 
         # Numeric coercion
@@ -203,6 +208,26 @@ module Hanami
           end
         end
 
+        # Returns precision with a fallback to default value
+        #
+        # @return [Numeric] precision
+        #
+        # @since 1.0.0
+        # @api private
+        def precision
+          @precision || DEFAULT_PRECISION
+        end
+
+        # Checks if precision was requested in options
+        #
+        # @return [TrueClass,FalseClass] the result of the check
+        #
+        # @since 1.0.0
+        # @api private
+        def precision_requested_explicitly?
+          !@precision.nil?
+        end
+
         # Round number in case we need to return a <tt>Float</tt> representation.
         # If <tt>@number</tt> doesn't respond to <tt>#round</tt> return the number as it is.
         #
@@ -212,7 +237,7 @@ module Hanami
         # @api private
         def rounded_number
           if @number.respond_to?(:round)
-            @number.round(@precision)
+            @number.round(precision)
           else
             @number
           end

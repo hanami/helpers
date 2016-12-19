@@ -718,7 +718,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :stores, values
+        #     select :store, values
         #   %>
         #
         #   # Output:
@@ -737,7 +737,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values
+        #     select :store, values
         #   %>
         #
         #   # Output:
@@ -750,7 +750,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values, options: {prompt: 'Select a store'}
+        #     select :store, values, options: {prompt: 'Select a store'}
         #   %>
         #
         #   # Output:
@@ -764,7 +764,7 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :stores, values, options: {selected: book.store}
+        #     select :store, values, options: {selected: book.store}
         #   %>
         #
         #   # Output:
@@ -1030,9 +1030,7 @@ module Hanami
             value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
           }.merge(attributes)
 
-          value = _value(name)
-          attributes[:checked] = CHECKED if !value.nil? &&
-                                            (value == attributes[:value] || value.include?(attributes[:value]))
+          attributes[:checked] = CHECKED if _check_box_checked?(attributes[:value], _value(name))
 
           attributes
         end
@@ -1053,6 +1051,12 @@ module Hanami
         end
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity
+
+        def _check_box_checked?(value, input_value)
+          !input_value.nil? &&
+            (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||
+            input_value.is_a?(Array) && input_value.include?(value))
+        end
       end
     end
   end

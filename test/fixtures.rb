@@ -2,11 +2,20 @@ require 'hanami/view'
 require 'hanami/controller'
 require 'hanami/helpers/html_helper'
 require 'hanami/helpers/escape_helper'
+require 'dry/struct'
+
+module Types
+  include Dry::Types.module
+end
 
 Store = Struct.new(:code, :label) do
   def to_ary
     [label, code]
   end
+end
+
+class Signup < Dry::Struct
+  attribute :password, Types::String.optional
 end
 
 class HtmlView
@@ -142,6 +151,14 @@ class NumbersView
     format_number 3.141592, precision: 4
   end
 
+  def precision_higher_than_numbers_precision
+    format_number 3.14, precision: 4
+  end
+
+  def zero_precision
+    format_number 3.14, precision: 0
+  end
+
   def mixed_digits
     format_number 5002.007, precision: 3
   end
@@ -239,7 +256,22 @@ class EscapeView
   end
 end
 
-Book = Struct.new(:title, :description)
+class Book < Dry::Struct
+  constructor_type :weak
+
+  attribute :title,           Types::String.optional
+  attribute :description,     Types::String.optional
+  attribute :author_id,       Types::Form::Int.optional
+  attribute :category,        Types::String.optional
+  attribute :cover,           Types::String.optional
+  attribute :image_cover,     Types::String.optional
+  attribute :percent_read,    Types::Form::Int.optional
+  attribute :published_at,    Types::String.optional
+  attribute :publisher_email, Types::String.optional
+  attribute :release_date,    Types::Form::Date.optional
+  attribute :store,           Types::String.optional
+end
+
 User = Struct.new(:name, :website, :snippet)
 
 module TestView

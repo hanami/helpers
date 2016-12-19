@@ -275,6 +275,18 @@ describe Hanami::Helpers::FormHelper do
         end
       end
 
+      describe 'with a boolean argument' do
+        let(:val) { true }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping
+          end.to_s
+
+          actual.must_include %(<input type="hidden" name="book[free_shipping]" value="0">\n<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="1" checked="checked">)
+        end
+      end
+
       describe 'when multiple params are present' do
         let(:params) { Hash[book: { languages: ['italian'] }] }
 
@@ -285,6 +297,34 @@ describe Hanami::Helpers::FormHelper do
           end.to_s
 
           actual.must_include %(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian" checked="checked">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">)
+        end
+      end
+
+      describe 'checked_value is boolean' do
+        let(:params) { Hash[book: { free_shipping: 'true' }] }
+
+        it "renders with 'checked' attribute" do
+          actual = view.form_for(:book, action) do
+            check_box :free_shipping, checked_value: true
+          end.to_s
+
+          actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true" checked="checked">)
+        end
+      end
+    end
+
+    describe 'automatic values' do
+      describe 'checkbox' do
+        describe 'value boolean, helper boolean, values differ' do
+          let(:values) { Hash[book: OpenStruct.new(free_shipping: false)] }
+
+          it 'renders' do
+            actual = view.form_for(:book, action, values: values) do
+              check_box :free_shipping, checked_value: true
+            end.to_s
+
+            actual.must_include %(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="true">)
+          end
         end
       end
     end
@@ -329,6 +369,27 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<input type="color" name="book[cover]" id="book-cover" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(cover: val)] }
+      let(:val) { '#d3397e' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          color_field :cover
+        end.to_s
+
+        actual.must_include %(<input type="color" name="book[cover]" id="book-cover" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          color_field :cover, value: '#000000'
+        end.to_s
+
+        actual.must_include %(<input type="color" name="book[cover]" id="book-cover" value="#000000">)
+      end
     end
 
     describe 'with filled params' do
@@ -394,6 +455,27 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="date" name="book[release_date]" id="book-release-date" value="" class="form-control">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(release_date: val)] }
+      let(:val)    { '2014-06-23' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          date_field :release_date
+        end.to_s
+
+        actual.must_include %(<input type="date" name="book[release_date]" id="book-release-date" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          date_field :release_date, value: '2015-03-23'
+        end.to_s
+
+        actual.must_include %(<input type="date" name="book[release_date]" id="book-release-date" value="2015-03-23">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { release_date: val }] }
       let(:val)    { '2014-06-23' }
@@ -455,6 +537,27 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<input type="datetime" name="book[published_at]" id="book-published-at" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(published_at: val)] }
+      let(:val)    { '2015-02-19T12:56:31Z' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          datetime_field :published_at
+        end.to_s
+
+        actual.must_include %(<input type="datetime" name="book[published_at]" id="book-published-at" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          datetime_field :published_at, value: '2015-02-19T12:50:36Z'
+        end.to_s
+
+        actual.must_include %(<input type="datetime" name="book[published_at]" id="book-published-at" value="2015-02-19T12:50:36Z">)
+      end
     end
 
     describe 'with filled params' do
@@ -591,6 +694,27 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" class="form-control">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(publisher_email: val)] }
+      let(:val)    { 'maria@publisher.org' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          email_field :publisher_email
+        end.to_s
+
+        actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="maria@publisher.org">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          email_field :publisher_email, value: 'publisher@example.org'
+        end.to_s
+
+        actual.must_include %(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="publisher@example.org">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { publisher_email: val }] }
       let(:val)    { 'maria@publisher.org' }
@@ -690,6 +814,19 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover" accept="image/png,image/jpg">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(image_cover: val)] }
+      let(:val)    { 'image' }
+
+      it 'ignores value' do
+        actual = view.form_for(:book, action, values: values) do
+          file_field :image_cover
+        end.to_s
+
+        actual.must_include %(<input type="file" name="book[image_cover]" id="book-image-cover">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { image_cover: val }] }
       let(:val)    { 'image' }
@@ -743,6 +880,27 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<input type="hidden" name="book[author_id]" id="book-author-id" value="" class="form-details">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(author_id: val)] }
+      let(:val)    { '1' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          hidden_field :author_id
+        end.to_s
+
+        actual.must_include %(<input type="hidden" name="book[author_id]" id="book-author-id" value="1">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          hidden_field :author_id, value: '23'
+        end.to_s
+
+        actual.must_include %(<input type="hidden" name="book[author_id]" id="book-author-id" value="23">)
+      end
     end
 
     describe 'with filled params' do
@@ -832,6 +990,27 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="" step="5">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(percent_read: val)] }
+      let(:val)    { 95 }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          number_field :percent_read
+        end.to_s
+
+        actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="95">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          number_field :percent_read, value: 50
+        end.to_s
+
+        actual.must_include %(<input type="number" name="book[percent_read]" id="book-percent-read" value="50">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { percent_read: val }] }
       let(:val)    { 95 }
@@ -914,6 +1093,51 @@ describe Hanami::Helpers::FormHelper do
         end.to_s
 
         actual.must_include %(<textarea name="book[description]" id="book-description">#{content}</textarea>)
+      end
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(description: val)] }
+      let(:val) { 'A short description of the book' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          text_area :description
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description">#{val}</textarea>)
+      end
+
+      it 'renders with value, when only attributes are specified' do
+        actual = view.form_for(:book, action, values: values) do
+          text_area :description, class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control">#{val}</textarea>)
+      end
+
+      it 'allows to override value' do
+        actual = view.form_for(:book, action, values: values) do
+          text_area :description, 'Just a simple description'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description">Just a simple description</textarea>)
+      end
+
+      it 'forces blank value' do
+        actual = view.form_for(:book, action, values: values) do
+          text_area :description, ''
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description"></textarea>)
+      end
+
+      it 'forces blank value, when also attributes are specified' do
+        actual = view.form_for(:book, action, values: values) do
+          text_area :description, '', class: 'form-control'
+        end.to_s
+
+        actual.must_include %(<textarea name="book[description]" id="book-description" class="form-control"></textarea>)
       end
     end
 
@@ -1004,6 +1228,27 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="text" name="book[title]" id="book-title" value="" class="form-control">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(title: val)] }
+      let(:val)    { 'PPoEA' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          text_field :title
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="PPoEA">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          text_field :title, value: 'DDD'
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="DDD">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { title: val }] }
       let(:val)    { 'PPoEA' }
@@ -1067,6 +1312,27 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="" class="form-control">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[signup: Signup.new(password: val)] }
+      let(:val)    { 'secret' }
+
+      it 'ignores value' do
+        actual = view.form_for(:signup, action, values: values) do
+          password_field :password
+        end.to_s
+
+        actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:signup, action, values: values) do
+          password_field :password, value: '123'
+        end.to_s
+
+        actual.must_include %(<input type="password" name="signup[password]" id="signup-password" value="123">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[signup: { password: val }] }
       let(:val)    { 'secret' }
@@ -1117,6 +1383,20 @@ describe Hanami::Helpers::FormHelper do
       actual.must_include %(<input type="radio" name="book[category]" value="Fiction" class="form-control">\n<input type="radio" name="book[category]" value="Non-Fiction" class="radio-button">)
     end
 
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(category: val)] }
+      let(:val)    { 'Non-Fiction' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          radio_button :category, 'Fiction'
+          radio_button :category, 'Non-Fiction'
+        end.to_s
+
+        actual.must_include %(<input type="radio" name="book[category]" value="Fiction">\n<input type="radio" name="book[category]" value="Non-Fiction" checked="checked">)
+      end
+    end
+
     describe 'with filled params' do
       let(:params) { Hash[book: { category: val }] }
       let(:val)    { 'Non-Fiction' }
@@ -1133,11 +1413,11 @@ describe Hanami::Helpers::FormHelper do
   end
 
   describe '#select' do
-    let(:values) { Hash['Italy' => 'it', 'United States' => 'us'] }
+    let(:option_values) { Hash['Italy' => 'it', 'United States' => 'us'] }
 
     it 'renders' do
       actual = view.form_for(:book, action) do
-        select :store, values
+        select :store, option_values
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1145,7 +1425,7 @@ describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'id' attribute" do
       actual = view.form_for(:book, action) do
-        select :store, values, id: 'store'
+        select :store, option_values, id: 'store'
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1153,7 +1433,7 @@ describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'name' attribute" do
       actual = view.form_for(:book, action) do
-        select :store, values, name: 'store'
+        select :store, option_values, name: 'store'
       end.to_s
 
       actual.must_include %(<select name="store" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1161,7 +1441,7 @@ describe Hanami::Helpers::FormHelper do
 
     it 'allows to specify HTML attributes' do
       actual = view.form_for(:book, action) do
-        select :store, values, class: 'form-control'
+        select :store, option_values, class: 'form-control'
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="book-store" class="form-control">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1169,7 +1449,7 @@ describe Hanami::Helpers::FormHelper do
 
     it 'allows to specify HTML attributes for options' do
       actual = view.form_for(:book, action) do
-        select :store, values, options: { class: 'form-option' }
+        select :store, option_values, options: { class: 'form-option' }
       end.to_s
 
       actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>)
@@ -1178,7 +1458,7 @@ describe Hanami::Helpers::FormHelper do
     describe "with option 'multiple'" do
       it 'renders' do
         actual = view.form_for(:book, action) do
-          select :store, values, multiple: true
+          select :store, option_values, multiple: true
         end.to_s
 
         actual.must_include %(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1186,7 +1466,7 @@ describe Hanami::Helpers::FormHelper do
 
       it 'allows to select values' do
         actual = view.form_for(:book, action) do
-          select :store, values, multiple: true, options: { selected: %w(it us) }
+          select :store, option_values, multiple: true, options: { selected: %w(it us) }
         end.to_s
 
         actual.must_include %(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it" selected="selected">Italy</option>\n<option value="us" selected="selected">United States</option>\n</select>)
@@ -1194,11 +1474,11 @@ describe Hanami::Helpers::FormHelper do
     end
 
     describe 'with values an structured Array of values' do
-      let(:values) { [%w(Italy it), ['United States', 'us']] }
+      let(:option_values) { [%w(Italy it), ['United States', 'us']] }
 
       it 'renders' do
         actual = view.form_for(:book, action) do
-          select :store, values
+          select :store, option_values
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1210,7 +1490,7 @@ describe Hanami::Helpers::FormHelper do
 
         it 'renders with value' do
           actual = view.form_for(:book, action) do
-            select :store, values
+            select :store, option_values
           end.to_s
 
           actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1223,7 +1503,7 @@ describe Hanami::Helpers::FormHelper do
 
       it 'renders' do
         actual = view.form_for(:book, action) do
-          select :store, values
+          select :store, option_values
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1235,11 +1515,24 @@ describe Hanami::Helpers::FormHelper do
 
         it 'renders with value' do
           actual = view.form_for(:book, action) do
-            select :store, values
+            select :store, option_values
           end.to_s
 
           actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
         end
+      end
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(store: val)] }
+      let(:val)    { 'it' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          select :store, option_values
+        end.to_s
+
+        actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
       end
     end
 
@@ -1249,7 +1542,7 @@ describe Hanami::Helpers::FormHelper do
 
       it 'renders with value' do
         actual = view.form_for(:book, action) do
-          select :store, values
+          select :store, option_values
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1259,7 +1552,7 @@ describe Hanami::Helpers::FormHelper do
     describe 'with prompt option' do
       it 'allows string' do
         actual = view.form_for(:book, action) do
-          select :store, values, options: { prompt: 'Select a store' }
+          select :store, option_values, options: { prompt: 'Select a store' }
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1267,10 +1560,23 @@ describe Hanami::Helpers::FormHelper do
 
       it 'allows blank string' do
         actual = view.form_for(:book, action) do
-          select :store, values, options: { prompt: '' }
+          select :store, option_values, options: { prompt: '' }
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>)
+      end
+
+      describe 'with values' do
+        let(:values) { Hash[book: Book.new(store: val)] }
+        let(:val)    { 'it' }
+
+        it 'renders with value' do
+          actual = view.form_for(:book, action, values: values) do
+            select :store, option_values, options: { prompt: 'Select a store' }
+          end.to_s
+
+          actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
+        end
       end
 
       describe 'with filled params' do
@@ -1279,7 +1585,7 @@ describe Hanami::Helpers::FormHelper do
 
         it 'renders with value' do
           actual = view.form_for(:book, action) do
-            select :store, values, options: { prompt: 'Select a store' }
+            select :store, option_values, options: { prompt: 'Select a store' }
           end.to_s
 
           actual.must_include %(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)
@@ -1293,7 +1599,7 @@ describe Hanami::Helpers::FormHelper do
 
       it 'sets the selected attribute' do
         actual = view.form_for(:book, action) do
-          select :store, values, options: { selected: val }
+          select :store, option_values, options: { selected: val }
         end.to_s
 
         actual.must_include %(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>)

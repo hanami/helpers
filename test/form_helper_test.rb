@@ -1044,7 +1044,6 @@ describe Hanami::Helpers::FormHelper do
       end
     end
 
-
     describe 'with filled params' do
       let(:params) { Hash[book: { percent_read: val }] }
       let(:val)    { 95 }

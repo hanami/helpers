@@ -957,7 +957,9 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }.merge(attributes)
+          attrs = { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }.merge!(attributes)
+          attrs[:value] = Hanami::Utils::Escape.html(attrs[:value])
+          attrs
         end
 
         # Input <tt>name</tt> HTML attribute

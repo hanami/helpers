@@ -1023,6 +1023,28 @@ describe Hanami::Helpers::FormHelper do
       end
     end
 
+    describe 'without values' do
+      let(:book)   { Book.new(title: val) }
+      let(:val)    { '"DDD" Book' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          text_field :title
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          text_field :title, value: book.title
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="&quot;DDD&quot; Book">)
+      end
+    end
+
+
     describe 'with filled params' do
       let(:params) { Hash[book: { percent_read: val }] }
       let(:val)    { 95 }

@@ -206,8 +206,8 @@ CONTENT
     end
 
     it 'renders multiple attributes' do
-      result = @builder.input('required' => true, 'something' => 'bar').to_s
-      result.must_equal('<input required="required" something="bar">')
+      result = @builder.input('required' => true, 'value' => 'Title "book"', 'something' => 'bar').to_s
+      result.must_equal('<input required="required" value="Title &quot;book&quot;" something="bar">')
     end
   end
 

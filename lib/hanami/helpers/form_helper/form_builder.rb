@@ -203,10 +203,10 @@ module Hanami
           @name = current_name
         end
 
-        # Nested structures
+        # Nested collections
         #
-        # Used in conjunction with field_for, the
-        # It supports infinite levels of nesting.
+        # Supports nesting for collections, with infinite
+        # levels of nesting.
         #
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
@@ -216,7 +216,7 @@ module Hanami
         #     form_for :delivery, routes.deliveries_path do
         #       text_field :customer_name
         #
-        #       structured_fields_for :addresses do
+        #       fields_for_collection :addresses do
         #         text_field :street
         #       end
         #
@@ -233,7 +233,7 @@ module Hanami
         #     #   <button type="submit">Create</button>
         #     # </form>
         #
-        def structured_fields_for(name, &block)
+        def fields_for_collection(name, &block)
           current_name = @name
           base_value = _value(name)
           @name = _input_name(name)

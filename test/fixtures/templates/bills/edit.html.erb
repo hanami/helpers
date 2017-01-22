@@ -3,7 +3,7 @@
     fieldset do
       legend 'Addresses'
 
-      structured_fields_for :addresses do |i|
+      fields_for_collection :addresses do |i|
         div class: 'form-group' do
           label :street
           input_text :street, class: 'form-control', placeholder: 'Street', 'data-funky': "id-#{i}"

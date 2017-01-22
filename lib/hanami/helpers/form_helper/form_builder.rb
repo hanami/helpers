@@ -999,13 +999,14 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = { type: type, name: _cleaned_input_name(name), id: _input_id(name), value: _value(name) }
+          attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
           attrs.merge!(attributes)
           attrs[:value] = Hanami::Utils::Escape.html(attrs[:value])
           attrs
         end
 
-        # Input <tt>name</tt> HTML attribute
+        # Full input name, used to construct the input
+        # attributes.
         #
         # @api private
         # @since 0.2.0
@@ -1013,7 +1014,11 @@ module Hanami
           "#{@name}[#{name}]"
         end
 
-        def _cleaned_input_name(name)
+        # Input <tt>name</tt> HTML attribute
+        #
+        # @api private
+        # @since x.x.x
+        def _displayed_input_name(name)
           _input_name(name).gsub(/\[\d+\]/, '[]')
         end
 

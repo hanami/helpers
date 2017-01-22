@@ -198,7 +198,7 @@ module Hanami
         def fields_for(name)
           current_name = @name
           @name        = _input_name(name)
-          yield
+          yield(name)
         ensure
           @name = current_name
         end
@@ -239,7 +239,7 @@ module Hanami
           @name = _input_name(name)
 
           base_value.count.times do |index|
-            _nested_field_for_index(index, &block)
+            fields_for(index, &block)
           end
         ensure
           @name = current_name
@@ -1105,19 +1105,6 @@ module Hanami
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||
             input_value.is_a?(Array) && input_value.include?(value))
-        end
-
-        # Subroutine for nested structures
-        #
-        # @api private
-        #
-        # @see Hanami::Helpers::FormHelper::FormBuilder#structured_fields_for
-        def _nested_field_for_index(index)
-          current_name = @name
-          @name = _input_name(index)
-          yield(index)
-        ensure
-          @name = current_name
         end
       end
     end

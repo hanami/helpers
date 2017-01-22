@@ -6,9 +6,11 @@
       structured_fields_for :addresses do |i|
         div class: 'form-group' do
           label :street
-          input_text :street, class: 'form-control', placeholder: 'Street'
+          input_text :street, class: 'form-control', placeholder: 'Street', 'data-funky': "id-#{i}"
         end
       end
+
+      label :ensure_names
     end
 
     submit submit_label, class: 'btn btn-default'

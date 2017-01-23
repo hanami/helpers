@@ -48,15 +48,20 @@ module Hanami
 
           tail.each do |k|
             break if result.nil?
-
-            result = case result
-                     when Utils::Hash, ::Hash        then result[k]
-                     when Array                      then result[k.to_s.to_i]
-                     when ->(r) { r.respond_to?(k) } then result.public_send(k)
-                     end
+            result = _dig(result, k)
           end
 
           result
+        end
+
+        # @since x.x.x
+        # @api private
+        def _dig(base, key)
+          case base
+          when Utils::Hash, ::Hash        then base[key]
+          when Array                      then base[key.to_s.to_i]
+          when ->(r) { r.respond_to?(key) } then base.public_send(key)
+          end
         end
       end
     end

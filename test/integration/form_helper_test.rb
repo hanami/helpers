@@ -112,7 +112,7 @@ describe 'Form helper' do
         @address1 = Address.new(street: '5th Ave')
         @address2 = Address.new(street: '4th Ave')
         @bill     = Bill.new(id: 1, addresses: [@address1, @address2])
-        @params   = BillParams.new(bill: { addresses: [{ street: 'Mulholland Drive' }, { street: 'Quaint Edge'}]})
+        @params   = BillParams.new(bill: { addresses: [{ street: 'Mulholland Drive' }, { street: 'Quaint Edge' }] })
         @session  = Session.new(_csrf_token: 's14')
 
         @actual   = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)

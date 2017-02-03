@@ -198,7 +198,49 @@ module Hanami
         def fields_for(name)
           current_name = @name
           @name        = _input_name(name)
-          yield
+          yield(name)
+        ensure
+          @name = current_name
+        end
+
+        # Nested collections
+        #
+        # Supports nesting for collections, with infinite
+        # levels of nesting.
+        #
+        # @param name [Symbol] the nested name, it's used to generate input
+        #   names, ids, and to lookup params to fill values.
+        #
+        # @example Basic usage
+        #   <%=
+        #     form_for :delivery, routes.deliveries_path do
+        #       text_field :customer_name
+        #
+        #       fields_for_collection :addresses do
+        #         text_field :street
+        #       end
+        #
+        #       submit 'Create'
+        #     end
+        #   %>
+        #
+        #   Output:
+        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
+        #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-0-street" value="">
+        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-1-street" value="">
+        #     #
+        #     #   <button type="submit">Create</button>
+        #     # </form>
+        #
+        def fields_for_collection(name, &block)
+          current_name = @name
+          base_value = _value(name)
+          @name = _input_name(name)
+
+          base_value.count.times do |index|
+            fields_for(index, &block)
+          end
         ensure
           @name = current_name
         end
@@ -957,17 +999,27 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }.merge!(attributes)
+          attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
+          attrs.merge!(attributes)
           attrs[:value] = Hanami::Utils::Escape.html(attrs[:value])
           attrs
         end
 
-        # Input <tt>name</tt> HTML attribute
+        # Full input name, used to construct the input
+        # attributes.
         #
         # @api private
         # @since 0.2.0
         def _input_name(name)
           "#{@name}[#{name}]"
+        end
+
+        # Input <tt>name</tt> HTML attribute
+        #
+        # @api private
+        # @since x.x.x
+        def _displayed_input_name(name)
+          _input_name(name).gsub(/\[\d+\]/, '[]')
         end
 
         # Input <tt>id</tt> HTML attribute

@@ -36,6 +36,7 @@ module Hanami
         # @since 0.5.0
         # @api private
         def _get_from_params(*keys)
+          keys.map! { |key| key.to_s =~ /\A\d+\z/ ? key.to_s.to_i : key }
           @params.dig(*keys)
         end
 
@@ -47,14 +48,20 @@ module Hanami
 
           tail.each do |k|
             break if result.nil?
-
-            result = case result
-                     when Utils::Hash, ::Hash        then result[k]
-                     when ->(r) { r.respond_to?(k) } then result.public_send(k)
-                     end
+            result = _dig(result, k)
           end
 
           result
+        end
+
+        # @since 1.0.0.beta1
+        # @api private
+        def _dig(base, key)
+          case base
+          when Utils::Hash, ::Hash        then base[key]
+          when Array                      then base[key.to_s.to_i]
+          when ->(r) { r.respond_to?(key) } then base.public_send(key)
+          end
         end
       end
     end

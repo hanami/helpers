@@ -1,6 +1,15 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.0.0.beta1 (unreleased)
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.4
+- [Marion Duprey] Introduced Form helper `fields_for_collection` to support arrays of nested fields
+
+## Fixed
+- [Ksenia Zalesnaya] Ensure radio buttons and selects to coerce the value to boolean before to decide if they should be checked or not.
+- [Anton Davydov] Escape form values to prevent XSS attacks
+
 ## v0.5.1 - 2016-12-19
 ### Fixed
 - [Alex Coles] Ensure `#form_for`'s `values:` to accept `Hanami::Entity` instances

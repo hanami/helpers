@@ -384,12 +384,33 @@ class Delivery
   end
 end
 
+class Bill
+  attr_reader :id, :addresses
+
+  def initialize(attributes = {})
+    @id        = attributes[:id]
+    @addresses = attributes[:addresses]
+  end
+end
+
 class DeliveryParams < Hanami::Action::Params
   params do
     required(:delivery).schema do
       required(:customer_id, :int).filled
       required(:address).schema do
         required(:street, :string).filled
+      end
+    end
+  end
+end
+
+class BillParams < Hanami::Action::Params
+  params do
+    required(:bill).schema do
+      required(:addresses).each do
+        schema do
+          required(:street, :string).filled
+        end
       end
     end
   end
@@ -421,6 +442,10 @@ module FullStack
 
     def delivery_path(attrs = {})
       _escape "/deliveries/#{attrs.fetch(:id)}"
+    end
+
+    def bill_path(attrs = {})
+      _escape "/bills/#{attrs.fetch(:id)}"
     end
 
     private
@@ -487,6 +512,21 @@ module FullStack
           Form.new(:delivery,
                    routes.delivery_path(id: delivery.id),
                    { delivery: delivery }, method: :patch)
+        end
+
+        def submit_label
+          'Update'
+        end
+      end
+    end
+
+    module Bills
+      class Edit
+        include TestView
+        template 'bills/edit'
+
+        def form
+          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
         end
 
         def submit_label

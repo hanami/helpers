@@ -1017,7 +1017,7 @@ module Hanami
         # Input <tt>name</tt> HTML attribute
         #
         # @api private
-        # @since x.x.x
+        # @since 1.0.0.beta1
         def _displayed_input_name(name)
           _input_name(name).gsub(/\[\d+\]/, '[]')
         end

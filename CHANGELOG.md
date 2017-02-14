@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v1.0.0.beta1 (unreleased)
+## v1.0.0.beta1 - 2017-02-14
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.4
 - [Marion Duprey] Introduced Form helper `fields_for_collection` to support arrays of nested fields

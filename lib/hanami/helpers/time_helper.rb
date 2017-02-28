@@ -61,7 +61,7 @@ module Hanami
         # @since x.x.x
         # @api private
         MINUTE = 60
-        
+
         # @since x.x.x
         # @api private
         HOUR   = 60 * MINUTE
@@ -84,6 +84,8 @@ module Hanami
 
         # @since x.x.x
         # @api private
+        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable Metrics/MethodLength
         def resolution(diff)
           if diff >= YEAR
             [(diff / YEAR).round, 'years']
@@ -99,6 +101,8 @@ module Hanami
             [(diff / MINUTE).round, 'minutes']
           end
         end
+        # rubocop:enable Metrics/AbcSize
+        # rubocop:enable Metrics/MethodLength
 
         # @since x.x.x
         # @api private

@@ -1,6 +1,7 @@
 require 'hanami/view'
 require 'hanami/controller'
 require 'hanami/helpers/html_helper'
+require 'hanami/helpers/time_helper'
 require 'hanami/helpers/escape_helper'
 require 'dry/struct'
 
@@ -253,6 +254,14 @@ class EscapeView
 
   def url_string_alias
     hu 'http://hanamirb.org'
+  end
+end
+
+class TimeView
+  include Hanami::Helpers::TimeHelper
+
+  def created_at(time_to, time_from = Time.now)
+    relative_time(time_to, time_from)
   end
 end
 

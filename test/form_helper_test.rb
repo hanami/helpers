@@ -657,6 +657,90 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#month_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        month_field :release_month
+      end.to_s
+
+      actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        month_field :release_month, id: 'release-month'
+      end.to_s
+
+      actual.must_include %(<input type="month" name="book[release_month]" id="release-month" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        month_field :release_month, name: 'release_month'
+      end.to_s
+
+      actual.must_include %(<input type="month" name="release_month" id="book-release-month" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        month_field :release_month, value: '2017-03'
+      end.to_s
+
+      actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="2017-03">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        month_field :release_month, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(release_month: val)] }
+      let(:val)    { '2017-03' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          month_field :release_month
+        end.to_s
+
+        actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          month_field :release_month, value: '2017-04'
+        end.to_s
+
+        actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="2017-04">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { release_month: val }] }
+      let(:val)    { '2017-10' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          month_field :release_month
+        end.to_s
+
+        actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          month_field :release_month, value: '2017-04'
+        end.to_s
+
+        actual.must_include %(<input type="month" name="book[release_month]" id="book-release-month" value="2017-04">)
+      end
+    end
+  end
+
   describe '#email_field' do
     it 'renders' do
       actual = view.form_for(:book, action) do

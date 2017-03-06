@@ -477,6 +477,25 @@ module Hanami
           input _attributes(:'datetime-local', name, attributes)
         end
 
+        # Month field
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     month_field :release_month
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="month" name="book[release_month]" id="book-release-month" value="">
+        def month_field(name, attributes = {})
+          input _attributes(:month, name, attributes)
+        end
+
         # Email input
         #
         # @param name [Symbol] the input name

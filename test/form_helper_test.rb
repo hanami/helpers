@@ -741,6 +741,90 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#week_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        week_field :release_week
+      end.to_s
+
+      actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        week_field :release_week, id: 'release-week'
+      end.to_s
+
+      actual.must_include %(<input type="week" name="book[release_week]" id="release-week" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        week_field :release_week, name: 'release_week'
+      end.to_s
+
+      actual.must_include %(<input type="week" name="release_week" id="book-release-week" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        week_field :release_week, value: '2017-W10'
+      end.to_s
+
+      actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="2017-W10">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        week_field :release_week, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(release_week: val)] }
+      let(:val)    { '2017-W10' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          week_field :release_week
+        end.to_s
+
+        actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          week_field :release_week, value: '2017-W31'
+        end.to_s
+
+        actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="2017-W31">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { release_week: val }] }
+      let(:val)    { '2017-W44' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          week_field :release_week
+        end.to_s
+
+        actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          week_field :release_week, value: '2017-W07'
+        end.to_s
+
+        actual.must_include %(<input type="week" name="book[release_week]" id="book-release-week" value="2017-W07">)
+      end
+    end
+  end
+
   describe '#email_field' do
     it 'renders' do
       actual = view.form_for(:book, action) do

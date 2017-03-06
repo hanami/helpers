@@ -496,6 +496,25 @@ module Hanami
           input _attributes(:month, name, attributes)
         end
 
+        # Week field
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     week_field :release_week
+        #   %>
+        #
+        #   # Output:
+        #   #  <input type="week" name="book[release_week]" id="book-release-week" value="">
+        def week_field(name, attributes = {})
+          input _attributes(:week, name, attributes)
+        end
+
         # Email input
         #
         # @param name [Symbol] the input name

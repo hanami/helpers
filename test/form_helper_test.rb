@@ -657,6 +657,90 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#time_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        time_field :release_hour
+      end.to_s
+
+      actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        time_field :release_hour, id: 'release-hour'
+      end.to_s
+
+      actual.must_include %(<input type="time" name="book[release_hour]" id="release-hour" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        time_field :release_hour, name: 'release_hour'
+      end.to_s
+
+      actual.must_include %(<input type="time" name="release_hour" id="book-release-hour" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        time_field :release_hour, value: '00:00'
+      end.to_s
+
+      actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="00:00">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        time_field :release_hour, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(release_hour: val)] }
+      let(:val)    { '18:30' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          time_field :release_hour
+        end.to_s
+
+        actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          time_field :release_hour, value: '17:00'
+        end.to_s
+
+        actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="17:00">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { release_hour: val }] }
+      let(:val)    { '11:30' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          time_field :release_hour
+        end.to_s
+
+        actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="#{val}">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          time_field :release_hour, value: '8:15'
+        end.to_s
+
+        actual.must_include %(<input type="time" name="book[release_hour]" id="book-release-hour" value="8:15">)
+      end
+    end
+  end
+
   describe '#month_field' do
     it 'renders' do
       actual = view.form_for(:book, action) do

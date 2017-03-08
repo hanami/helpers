@@ -89,6 +89,7 @@ module Hanami
           q
           rp
           rt
+          rtc
           ruby
           s
           samp

@@ -111,6 +111,13 @@ CONTENT
     end
   end
 
+  describe '<rtc>' do
+    it 'generates a rtc' do
+      result = @builder.rtc("Rome").to_s
+      result.must_equal %(<rtc>Rome</rtc>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

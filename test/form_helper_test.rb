@@ -211,6 +211,26 @@ describe Hanami::Helpers::FormHelper do
   end
 
   #
+  # FIELDSET
+  #
+  describe '#fieldset' do
+    it 'renders a fieldset' do
+      actual = view.form_for(:book, action) do
+        fieldset do
+          legend "Author"
+
+          fields_for :author do
+            label :name
+            text_field :name
+          end
+        end
+      end.to_s
+
+      actual.must_include %(<fieldset>\n<legend>Author</legend>\n<label for="book-author-name">Name</label>\n<input type="text" name="book[author][name]" id="book-author-name" value="">\n</fieldset>)
+    end
+  end
+
+  #
   # INPUT FIELDS
   #
 

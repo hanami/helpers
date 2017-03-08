@@ -118,6 +118,7 @@ module Hanami
           tr
           u
           ul
+          var
           video
         ).freeze
 

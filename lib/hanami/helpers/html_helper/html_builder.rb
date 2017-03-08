@@ -68,7 +68,6 @@ module Hanami
           label
           legend
           li
-          link
           main
           map
           mark

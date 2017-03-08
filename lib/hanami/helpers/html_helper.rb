@@ -8,6 +8,7 @@ module Hanami
     # This is a HTML5 markup builder.
     #
     # Features:
+    #
     #   * Support for complex markup without the need of concatenation
     #   * Auto closing HTML5 tags
     #   * Custom tags

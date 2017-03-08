@@ -183,6 +183,7 @@ module Hanami
           @nodes = []
         end
 
+        # @api private
         def options
         end
 
@@ -294,15 +295,18 @@ module Hanami
         #
         # @example
         #
-        #   html.label do
-        #     text "Option 1"
-        #     radio_button :option, 1
-        #   end
+        #   <%=
+        #     html.label do
+        #       text "Option 1"
+        #       radio_button :option, 1
+        #     end
+        #   %>
         #
-        #   # <label>
-        #   #   Option 1
-        #   #   <input type="radio" name="option" value="1" />
-        #   # </label>
+        #   <!-- output -->
+        #   <label>
+        #     Option 1
+        #     <input type="radio" name="option" value="1" />
+        #   </label>
         def text(content)
           @nodes << TextNode.new(content)
           self
@@ -346,16 +350,20 @@ module Hanami
           @nodes.any?
         end
 
-        # Resolve the context for nested contents
-        #
-        # @since 0.1.0
-        # @api private
         if !Utils.jruby?
+          # Resolve the context for nested contents
+          #
+          # @since 0.1.0
+          # @api private
           def resolve(&blk)
             @context = blk.binding.receiver
             instance_exec(&blk)
           end
         else
+          # Resolve the context for nested contents
+          #
+          # @since 0.1.0
+          # @api private
           def resolve(&blk)
             @context = eval 'self', blk.binding
             instance_exec(&blk)

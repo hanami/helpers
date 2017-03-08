@@ -74,9 +74,8 @@ module Hanami
     #     end
     #   end
     #
-    #   # Corresponding template:
-    #   #
-    #   #  <%= my_form %>
+    #   <!-- use this in the template -->
+    #   <%= my_form %>
     module FormHelper
       # Default HTTP method for form
       #
@@ -181,22 +180,23 @@ module Hanami
         #     end
         #   %>
         #
-        #   # It will render:
-        #   #
-        #   #  <form action="/deliveries/1" method="POST" accept-charset="utf-8">
-        #   #    <input type="hidden" name="_method" value="PATCH">
-        #   #
-        #   #    # Value taken from delivery.delivered_on
-        #   #    <input type="date" name="delivery[delivered_on]" id="delivery-delivered-on" value="2015-05-27">
-        #   #
-        #   #    # Value taken from customer.name
-        #   #    <input type="text" name="delivery[customer][name]" id="delivery-customer-name" value="Luca">
-        #   #
-        #   #    # Value taken from customer.address.city
-        #   #    <input type="text" name="delivery[customer][address][city]" id="delivery-customer-address-city" value="Rome">
-        #   #
-        #   #    <button type="submit">Update</button>
-        #   #  </form>
+        #   <!-- output -->
+        #
+        #   <form action="/deliveries/1" method="POST" accept-charset="utf-8">
+        #     <input type="hidden" name="_method" value="PATCH">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #
+        #     # Value taken from delivery.delivered_on
+        #     <input type="date" name="delivery[delivered_on]" id="delivery-delivered-on" value="2015-05-27">
+        #
+        #     # Value taken from customer.name
+        #     <input type="text" name="delivery[customer][name]" id="delivery-customer-name" value="Luca">
+        #
+        #     # Value taken from customer.address.city
+        #     <input type="text" name="delivery[customer][address][city]" id="delivery-customer-address-city" value="Rome">
+        #
+        #     <button type="submit">Update</button>
+        #   </form>
         def initialize(name, url, values = {}, attributes = {})
           @name       = name
           @url        = url
@@ -255,15 +255,17 @@ module Hanami
       #     end
       #   %>
       #
-      #   Output:
-      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
-      #     #   <div>
-      #     #     <label for="book-title">Title</label>
-      #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
-      #     #   </div>
-      #     #
-      #     #   <button type="submit">Create</button>
-      #     # </form>
+      #   <!-- output -->
+      #
+      #   <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <div>
+      #       <label for="book-title">Title</label>
+      #       <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #     </div>
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
       #
       #
       #
@@ -284,17 +286,20 @@ module Hanami
       #     end
       #   end
       #
+      #   <!-- in the corresponding template use this -->
       #   <%= form %>
       #
-      #   Output:
-      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
-      #     #   <div>
-      #     #     <label for="book-title">Title</label>
-      #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
-      #     #   </div>
-      #     #
-      #     #   <button type="submit">Create</button>
-      #     # </form>
+      #   <!-- output -->
+      #
+      #   <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <div>
+      #       <label for="book-title">Title</label>
+      #       <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #     </div>
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
       #
       # @example Share Code Between Views
       #
@@ -348,15 +353,17 @@ module Hanami
       #     end
       #   %>
       #
-      #   Output:
-      #     # <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
-      #     #   <div>
-      #     #     <label for="book-title">Title</label>
-      #     #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
-      #     #   </div>
-      #     #
-      #     #   <button type="submit">Create</button>
-      #     # </form>
+      #   <!-- output -->
+      #
+      #   <form action="/books" method="POST" accept-charset="utf-8" id="book-form" class="form-horizontal">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <div>
+      #       <label for="book-title">Title</label>
+      #       <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #     </div>
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
       #
       # @example Method override
       #   <%=
@@ -367,13 +374,15 @@ module Hanami
       #     end
       #   %>
       #
-      #   Output:
-      #     # <form action="/books/23" accept-charset="utf-8" id="book-form" method="POST">
-      #     #   <input type="hidden" name="_method" value="PUT">
-      #     #   <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
-      #     #
-      #     #   <button type="submit">Update</button>
-      #     # </form>
+      #   <!-- output -->
+      #
+      #   <form action="/books/23" accept-charset="utf-8" id="book-form" method="POST">
+      #     <input type="hidden" name="_method" value="PUT">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <input type="text" name="book[title]" id="book-title" value="Test Driven Development">
+      #
+      #     <button type="submit">Update</button>
+      #   </form>
       #
       # @example Nested fields
       #   <%=
@@ -388,13 +397,15 @@ module Hanami
       #     end
       #   %>
       #
-      #   Output:
-      #     # <form action="/deliveries" accept-charset="utf-8" id="delivery-form" method="POST">
-      #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
-      #     #   <input type="text" name="delivery[address][city]" id="delivery-address-city" value="">
-      #     #
-      #     #   <button type="submit">Create</button>
-      #     # </form>
+      #   <!-- output -->
+      #
+      #   <form action="/deliveries" accept-charset="utf-8" id="delivery-form" method="POST">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+      #     <input type="text" name="delivery[address][city]" id="delivery-address-city" value="">
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
       def form_for(name, url, options = {}, &blk)
         form = if name.is_a?(Form)
                  options = url

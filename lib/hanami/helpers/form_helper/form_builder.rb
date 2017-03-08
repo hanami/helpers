@@ -1144,6 +1144,35 @@ module Hanami
           end
         end
 
+        # Button
+        #
+        # @param content [String] The content
+        # @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     button 'Click me'
+        #   %>
+        #
+        #   <!-- output -->
+        #   <button>Click me</button>
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     button 'Click me', class: "btn btn-secondary"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <button class="btn btn-secondary">Click me</button>
+        def button(content, attributes = {})
+          # This is here only for documentation purposes
+          super
+        end
+
         # Submit button
         #
         # @param content [String] The content

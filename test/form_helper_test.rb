@@ -143,6 +143,7 @@ describe Hanami::Helpers::FormHelper do
   #
   # LABEL
   #
+
   describe '#label' do
     it 'renders capitalized string' do
       actual = view.form_for(:book, action) do
@@ -166,6 +167,27 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<label for="free-shipping">Free shipping</label>)
+    end
+  end
+
+  #
+  # BUTTONS
+  #
+  describe '#button' do
+    it 'renders a button' do
+      actual = view.form_for(:book, action) do
+        button "Click me"
+      end.to_s
+
+      actual.must_include %(<button>Click me</button>)
+    end
+
+    it 'renders a button with HTML attributes' do
+      actual = view.form_for(:book, action) do
+        button "Click me", class: "btn btn-secondary"
+      end.to_s
+
+      actual.must_include %(<button class="btn btn-secondary">Click me</button>)
     end
   end
 

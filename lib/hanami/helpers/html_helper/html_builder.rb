@@ -96,6 +96,7 @@ module Hanami
           script
           section
           select
+          slot
           small
           span
           strong

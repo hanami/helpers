@@ -118,6 +118,13 @@ CONTENT
     end
   end
 
+  describe '<slot>' do
+    it 'generates a slot' do
+      result = @builder.slot("Need description").to_s
+      result.must_equal %(<slot>Need description</slot>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

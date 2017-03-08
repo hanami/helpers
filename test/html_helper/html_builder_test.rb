@@ -101,6 +101,16 @@ CONTENT
     end
   end
 
+  describe '<hgroup>' do
+    it 'generates a hgroup' do
+      result = @builder.hgroup do
+        h1 "Hello"
+      end.to_s
+
+      result.must_equal %(<hgroup>\n<h1>Hello</h1>\n</hgroup>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

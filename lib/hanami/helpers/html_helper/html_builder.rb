@@ -62,6 +62,7 @@ module Hanami
           h6
           head
           header
+          hgroup
           i
           iframe
           ins

@@ -125,6 +125,13 @@ CONTENT
     end
   end
 
+  describe '<var>' do
+    it 'generates a var' do
+      result = @builder.var("x").to_s
+      result.must_equal %(<var>x</var>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

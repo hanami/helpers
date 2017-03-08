@@ -173,6 +173,7 @@ describe Hanami::Helpers::FormHelper do
   #
   # BUTTONS
   #
+
   describe '#button' do
     it 'renders a button' do
       actual = view.form_for(:book, action) do
@@ -188,6 +189,24 @@ describe Hanami::Helpers::FormHelper do
       end.to_s
 
       actual.must_include %(<button class="btn btn-secondary">Click me</button>)
+    end
+  end
+
+  describe '#submit' do
+    it 'renders a submit button' do
+      actual = view.form_for(:book, action) do
+        submit "Create"
+      end.to_s
+
+      actual.must_include %(<button type="submit">Create</button>)
+    end
+
+    it 'renders a submit button with HTML attributes' do
+      actual = view.form_for(:book, action) do
+        submit "Create", class: "btn btn-primary"
+      end.to_s
+
+      actual.must_include %(<button type="submit" class="btn btn-primary">Create</button>)
     end
   end
 

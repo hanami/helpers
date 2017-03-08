@@ -1204,6 +1204,42 @@ module Hanami
           super
         end
 
+        # Image button
+        #
+        # Visual submit button
+        #
+        # **Please note:** for security reasons, please use the absolute URL of the image
+        #
+        # @param source [String] The **absolute URL** of the image
+        # @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     image_button "https://hanamirb.org/assets/button.png"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="image" src="https://hanamirb.org/assets/button.png">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     image_button "https://hanamirb.org/assets/button.png", name: "image", width: "50"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input name="image" width="50" type="image" src="https://hanamirb.org/assets/button.png">
+        def image_button(source, attributes = {})
+          attrs = attributes.dup
+          attrs[:type] = :image
+          attrs[:src]  = Hanami::Utils::Escape.url(source)
+
+          input attrs
+        end
+
         # Submit button
         #
         # @param content [String] The content

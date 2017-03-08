@@ -210,6 +210,32 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#image_button' do
+    it 'renders an image button' do
+      actual = view.form_for(:book, action) do
+        image_button "https://hanamirb.org/assets/image_button.png"
+      end.to_s
+
+      actual.must_include %(<input type="image" src="https://hanamirb.org/assets/image_button.png">)
+    end
+
+    it 'renders an image button with HTML attributes' do
+      actual = view.form_for(:book, action) do
+        image_button "https://hanamirb.org/assets/image_button.png", name: "image", width: "50"
+      end.to_s
+
+      actual.must_include %(<input name="image" width="50" type="image" src="https://hanamirb.org/assets/image_button.png">)
+    end
+
+    it 'prevents XSS attacks' do
+      actual = view.form_for(:book, action) do
+        image_button "<script>alert('xss');</script>"
+      end.to_s
+
+      actual.must_include %(<input type="image" src="">)
+    end
+  end
+
   #
   # FIELDSET
   #

@@ -160,13 +160,14 @@ module Hanami
         #     end
         #   %>
         #
-        #   Output:
-        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
-        #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
-        #     #   <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
-        #     #
-        #     #   <button type="submit">Create</button>
-        #     # </form>
+        #   <!-- output -->
+        #   <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+        #     <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
+        #
+        #     <button type="submit">Create</button>
+        #   </form>
         #
         # @example Multiple levels of nesting
         #   <%=
@@ -186,15 +187,16 @@ module Hanami
         #     end
         #   %>
         #
-        #   Output:
-        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
-        #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
-        #     #   <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
-        #     #   <input type="text" name="delivery[address][location][city]" id="delivery-address-location-city" value="">
-        #     #   <input type="text" name="delivery[address][location][country]" id="delivery-address-location-country" value="">
-        #     #
-        #     #   <button type="submit">Create</button>
-        #     # </form>
+        #   <!-- output -->
+        #   <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+        #     <input type="text" name="delivery[address][street]" id="delivery-address-street" value="">
+        #     <input type="text" name="delivery[address][location][city]" id="delivery-address-location-city" value="">
+        #     <input type="text" name="delivery[address][location][country]" id="delivery-address-location-country" value="">
+        #
+        #     <button type="submit">Create</button>
+        #   </form>
         def fields_for(name)
           current_name = @name
           @name        = _input_name(name)
@@ -224,15 +226,15 @@ module Hanami
         #     end
         #   %>
         #
-        #   Output:
-        #     # <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
-        #     #   <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
-        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-0-street" value="">
-        #     #   <input type="text" name="delivery[addresses][][street]" id="delivery-address-1-street" value="">
-        #     #
-        #     #   <button type="submit">Create</button>
-        #     # </form>
+        #   <!-- output -->
+        #   <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
+        #     <input type="text" name="delivery[addresses][][street]" id="delivery-address-0-street" value="">
+        #     <input type="text" name="delivery[addresses][][street]" id="delivery-address-1-street" value="">
         #
+        #     <button type="submit">Create</button>
+        #   </form>
         def fields_for_collection(name, &block)
           current_name = @name
           base_value = _value(name)
@@ -262,8 +264,17 @@ module Hanami
         #     label :extended_title
         #   %>
         #
-        #  # Output:
-        #  #  <label for="book-extended-title">Extended title</label>
+        #   <!-- output -->
+        #   <label for="book-extended-title">Extended title</label>
+        #
+        # @example HTML attributes
+        #   <%=
+        #     # ...
+        #     label :title, class: "form-label"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <label for="book-title" class="form-label">Title</label>
         #
         # @example Custom content
         #   <%=
@@ -271,8 +282,8 @@ module Hanami
         #     label 'Title', for: :extended_title
         #   %>
         #
-        #  # Output:
-        #  #  <label for="book-extended-title">Title</label>
+        #   <!-- output -->
+        #   <label for="book-extended-title">Title</label>
         #
         # @example Custom "for" attribute
         #   <%=
@@ -280,8 +291,8 @@ module Hanami
         #     label :extended_title, for: 'ext-title'
         #   %>
         #
-        #  # Output:
-        #  #  <label for="ext-title">Extended title</label>
+        #   <!-- output -->
+        #   <label for="ext-title">Extended title</label>
         #
         # @example Nested fields usage
         #   <%=
@@ -292,9 +303,9 @@ module Hanami
         #     end
         #   %>
         #
-        #  # Output:
-        #  #  <label for="delivery-address-city">City</label>
-        #  #  <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
+        #   <!-- output -->
+        #   <label for="delivery-address-city">City</label>
+        #   <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
         def label(content, attributes = {})
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content
@@ -337,18 +348,27 @@ module Hanami
         #     check_box :free_shipping
         #   %>
         #
-        #   # Output:
-        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
-        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1">
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     check_box :free_shipping, class: "form-check-input"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" class="form-check-input">
         #
         # @example Specify (un)checked values
         #   <%=
         #     check_box :free_shipping, checked_value: 'true', unchecked_value: 'false'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="hidden" name="delivery[free_shipping]" value="false">
-        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="true">
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[free_shipping]" value="false">
+        #   <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="true">
         #
         # @example Automatic "checked" attribute
         #   # For this example the params are:
@@ -358,9 +378,9 @@ module Hanami
         #     check_box :free_shipping
         #   %>
         #
-        #   # Output:
-        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
-        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
         #
         # @example Force "checked" attribute
         #   # For this example the params are:
@@ -370,9 +390,9 @@ module Hanami
         #     check_box :free_shipping, checked: 'checked'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="hidden" name="delivery[free_shipping]" value="0">
-        #   #  <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[free_shipping]" value="0">
+        #   <input type="checkbox" name="delivery[free_shipping]" id="delivery-free-shipping" value="1" checked="checked">
         #
         # @example Multiple check boxes
         #   <%=
@@ -380,9 +400,9 @@ module Hanami
         #     check_box :languages, name: 'book[languages][]', value: 'english', id: nil
         #   %>
         #
-        #   # Output:
-        #   #  <input type="checkbox" name="book[languages][]" value="italian">
-        #   #  <input type="checkbox" name="book[languages][]" value="english">
+        #   <!-- output -->
+        #   <input type="checkbox" name="book[languages][]" value="italian">
+        #   <input type="checkbox" name="book[languages][]" value="english">
         #
         # @example Automatic "checked" attribute for multiple check boxes
         #   # For this example the params are:
@@ -393,9 +413,9 @@ module Hanami
         #     check_box :languages, name: 'book[languages][]', value: 'english', id: nil
         #   %>
         #
-        #   # Output:
-        #   #  <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
-        #   #  <input type="checkbox" name="book[languages][]" value="english">
+        #   <!-- output -->
+        #   <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
+        #   <input type="checkbox" name="book[languages][]" value="english">
         def check_box(name, attributes = {})
           _hidden_field_for_check_box(name, attributes)
           input _attributes_for_check_box(name, attributes)
@@ -414,8 +434,17 @@ module Hanami
         #     color_field :background
         #   %>
         #
-        #   # Output:
-        #   #  <input type="color" name="user[background]" id="user-background" value="">
+        #   <!-- output -->
+        #   <input type="color" name="user[background]" id="user-background" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     color_field :background, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="color" name="user[background]" id="user-background" value="" class="form-control">
         def color_field(name, attributes = {})
           input _attributes(:color, name, attributes)
         end
@@ -433,8 +462,17 @@ module Hanami
         #     date_field :birth_date
         #   %>
         #
-        #   # Output:
-        #   #  <input type="date" name="user[birth_date]" id="user-birth-date" value="">
+        #   <!-- output -->
+        #   <input type="date" name="user[birth_date]" id="user-birth-date" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     date_field :birth_date, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="date" name="user[birth_date]" id="user-birth-date" value="" class="form-control">
         def date_field(name, attributes = {})
           input _attributes(:date, name, attributes)
         end
@@ -452,8 +490,17 @@ module Hanami
         #     datetime_field :delivered_at
         #   %>
         #
-        #   # Output:
-        #   #  <input type="datetime" name="delivery[delivered_at]" id="delivery-delivered-at" value="">
+        #   <!-- output -->
+        #   <input type="datetime" name="delivery[delivered_at]" id="delivery-delivered-at" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     datetime_field :delivered_at, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="datetime" name="delivery[delivered_at]" id="delivery-delivered-at" value="" class="form-control">
         def datetime_field(name, attributes = {})
           input _attributes(:datetime, name, attributes)
         end
@@ -471,8 +518,17 @@ module Hanami
         #     datetime_local_field :delivered_at
         #   %>
         #
-        #   # Output:
-        #   #  <input type="datetime-local" name="delivery[delivered_at]" id="delivery-delivered-at" value="">
+        #   <!-- output -->
+        #   <input type="datetime-local" name="delivery[delivered_at]" id="delivery-delivered-at" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     datetime_local_field :delivered_at, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="datetime-local" name="delivery[delivered_at]" id="delivery-delivered-at" value="" class="form-control">
         def datetime_local_field(name, attributes = {})
           input _attributes(:'datetime-local', name, attributes)
         end
@@ -490,8 +546,17 @@ module Hanami
         #     time_field :release_hour
         #   %>
         #
-        #   # Output:
-        #   #  <input type="time" name="book[release_hour]" id="book-release-hour" value="">
+        #   <!-- output -->
+        #   <input type="time" name="book[release_hour]" id="book-release-hour" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     time_field :release_hour, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="time" name="book[release_hour]" id="book-release-hour" value="" class="form-control">
         def time_field(name, attributes = {})
           input _attributes(:time, name, attributes)
         end
@@ -509,8 +574,17 @@ module Hanami
         #     month_field :release_month
         #   %>
         #
-        #   # Output:
-        #   #  <input type="month" name="book[release_month]" id="book-release-month" value="">
+        #   <!-- output -->
+        #   <input type="month" name="book[release_month]" id="book-release-month" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     month_field :release_month, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="month" name="book[release_month]" id="book-release-month" value="" class="form-control">
         def month_field(name, attributes = {})
           input _attributes(:month, name, attributes)
         end
@@ -528,8 +602,17 @@ module Hanami
         #     week_field :release_week
         #   %>
         #
-        #   # Output:
-        #   #  <input type="week" name="book[release_week]" id="book-release-week" value="">
+        #   <!-- output -->
+        #   <input type="week" name="book[release_week]" id="book-release-week" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     week_field :release_week, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="week" name="book[release_week]" id="book-release-week" value="" class="form-control">
         def week_field(name, attributes = {})
           input _attributes(:week, name, attributes)
         end
@@ -547,8 +630,17 @@ module Hanami
         #     email_field :email
         #   %>
         #
-        #   # Output:
-        #   #  <input type="email" name="user[email]" id="user-email" value="">
+        #   <!-- output -->
+        #   <input type="email" name="user[email]" id="user-email" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     email_field :email, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="email" name="user[email]" id="user-email" value="" class="form-control">
         def email_field(name, attributes = {})
           input _attributes(:email, name, attributes)
         end
@@ -566,15 +658,15 @@ module Hanami
         #     hidden_field :customer_id
         #   %>
         #
-        #   # Output:
-        #   #  <input type="hidden" name="delivery[customer_id]" id="delivery-customer-id" value="">
+        #   <!-- output -->
+        #   <input type="hidden" name="delivery[customer_id]" id="delivery-customer-id" value="">
         def hidden_field(name, attributes = {})
           input _attributes(:hidden, name, attributes)
         end
 
         # File input
         #
-        # PLEASE REMEMBER TO ADD <tt>enctype: 'multipart/form-data'</tt> ATTRIBUTE TO THE FORM
+        # **PLEASE REMEMBER TO ADD <tt>enctype: 'multipart/form-data'</tt> ATTRIBUTE TO THE FORM**
         #
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
@@ -589,26 +681,35 @@ module Hanami
         #     file_field :avatar
         #   %>
         #
-        #   # Output:
-        #   #  <input type="file" name="user[avatar]" id="user-avatar">
+        #   <!-- output -->
+        #   <input type="file" name="user[avatar]" id="user-avatar">
         #
-        # @example Accepted mime types
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     file_field :avatar, class: "avatar-upload"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="file" name="user[avatar]" id="user-avatar" class="avatar-upload">
+        #
+        # @example Accepted MIME Types
         #   <%=
         #     # ...
         #     file_field :resume, accept: 'application/pdf,application/ms-word'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
+        #   <!-- output -->
+        #   <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
         #
-        # @example Accepted mime types (as array)
+        # @example Accepted MIME Types (as array)
         #   <%=
         #     # ...
         #     file_field :resume, accept: ['application/pdf', 'application/ms-word']
         #   %>
         #
-        #   # Output:
-        #   #  <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
+        #   <!-- output -->
+        #   <input type="file" name="user[resume]" id="user-resume" accept="application/pdf,application/ms-word">
         #
         # @example Accepted multiple file upload (as array)
         #   <%=
@@ -616,8 +717,8 @@ module Hanami
         #     file_field :resume, multiple: true
         #   %>
         #
-        #   # Output:
-        #   #  <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
+        #   <!-- output -->
+        #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
           attributes = { type: :file, name: _input_name(name), id: _input_id(name) }.merge(attributes)
@@ -626,6 +727,9 @@ module Hanami
         end
 
         # Number input
+        #
+        # You can also make use of the `max`, `min`, and `step` attributes for
+        # the HTML5 number field.
         #
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the number input
@@ -636,11 +740,8 @@ module Hanami
         #     number_field :percent_read
         #   %>
         #
-        #   # Output:
-        #   #  <input type="number" name="book[percent_read]" id="book-percent-read" value="">
-        #
-        # You can also make use of the 'max', 'min', and 'step' attributes for
-        # the HTML5 number field.
+        #   <!-- output -->
+        #   <input type="number" name="book[percent_read]" id="book-percent-read" value="">
         #
         # @example Advanced attributes
         #   <%=
@@ -648,8 +749,8 @@ module Hanami
         #     number_field :priority, min: 1, max: 10, step: 1
         #   %>
         #
-        #   # Output:
-        #   #  <input type="number" name="book[percent_read]" id="book-precent-read" value="" min="1" max="10" step="1">
+        #   <!-- output -->
+        #   <input type="number" name="book[percent_read]" id="book-precent-read" value="" min="1" max="10" step="1">
         def number_field(name, attributes = {})
           input _attributes(:number, name, attributes)
         end
@@ -668,8 +769,8 @@ module Hanami
         #     text_area :hobby
         #   %>
         #
-        #   # Output:
-        #   #  <textarea name="user[hobby]" id="user-hobby"></textarea>
+        #   <!-- output -->
+        #   <textarea name="user[hobby]" id="user-hobby"></textarea>
         #
         # @example Set content
         #   <%=
@@ -677,8 +778,8 @@ module Hanami
         #     text_area :hobby, 'Football'
         #   %>
         #
-        #   # Output:
-        #   #  <textarea name="user[hobby]" id="user-hobby">Football</textarea>
+        #   <!-- output -->
+        #   <textarea name="user[hobby]" id="user-hobby">Football</textarea>
         #
         # @example Set content and HTML attributes
         #   <%=
@@ -686,8 +787,8 @@ module Hanami
         #     text_area :hobby, 'Football', class: 'form-control'
         #   %>
         #
-        #   # Output:
-        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control">Football</textarea>
+        #   <!-- output -->
+        #   <textarea name="user[hobby]" id="user-hobby" class="form-control">Football</textarea>
         #
         # @example Omit content and specify HTML attributes
         #   <%=
@@ -695,8 +796,8 @@ module Hanami
         #     text_area :hobby, class: 'form-control'
         #   %>
         #
-        #   # Output:
-        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
+        #   <!-- output -->
+        #   <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
         #
         # @example Force blank value
         #   <%=
@@ -704,8 +805,8 @@ module Hanami
         #     text_area :hobby, '', class: 'form-control'
         #   %>
         #
-        #   # Output:
-        #   #  <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
+        #   <!-- output -->
+        #   <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
         def text_area(name, content = nil, attributes = {})
           if content.respond_to?(:to_hash)
             attributes = content
@@ -729,8 +830,17 @@ module Hanami
         #     text_field :first_name
         #   %>
         #
-        #   # Output:
-        #   #  <input type="text" name="user[first_name]" id="user-first-name" value="">
+        #   <!-- output -->
+        #   <input type="text" name="user[first_name]" id="user-first-name" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     text_field :first_name, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="text" name="user[first_name]" id="user-first-name" value="" class="form-control">
         def text_field(name, attributes = {})
           input _attributes(:text, name, attributes)
         end
@@ -755,9 +865,20 @@ module Hanami
         #     radio_button :category, 'Non-Fiction'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="radio" name="book[category]" value="Fiction">
-        #   #  <input type="radio" name="book[category]" value="Non-Fiction">
+        #   <!-- output -->
+        #   <input type="radio" name="book[category]" value="Fiction">
+        #   <input type="radio" name="book[category]" value="Non-Fiction">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     radio_button :category, 'Fiction', class: "form-check"
+        #     radio_button :category, 'Non-Fiction', class: "form-check"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="radio" name="book[category]" value="Fiction" class="form-check">
+        #   <input type="radio" name="book[category]" value="Non-Fiction" class="form-check">
         #
         # @example Automatic checked value
         #   # Given the following params:
@@ -772,9 +893,9 @@ module Hanami
         #     radio_button :category, 'Non-Fiction'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="radio" name="book[category]" value="Fiction">
-        #   #  <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
+        #   <!-- output -->
+        #   <input type="radio" name="book[category]" value="Fiction">
+        #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, attributes = {})
           attributes = { type: :radio, name: _input_name(name), value: value }.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
@@ -794,8 +915,8 @@ module Hanami
         #     password_field :password
         #   %>
         #
-        #   # Output:
-        #   #  <input type="password" name="signup[password]" id="signup-password" value="">
+        #   <!-- output -->
+        #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, attributes = {})
           input({ type: :password, name: _input_name(name), id: _input_id(name), value: nil }.merge(attributes))
         end
@@ -817,14 +938,27 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
+        #     select :store, values, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store" class="form-control">
+        #     <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values
         #   %>
         #
-        #   # Output:
-        #   #  <select name="book[store]" id="book-store">
-        #   #    <option value="it">Italy</option>
-        #   #    <option value="us">United States</option>
-        #   #  </select>
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
         #
         # @example Automatic selected option
         #   # Given the following params:
@@ -839,38 +973,52 @@ module Hanami
         #     select :store, values
         #   %>
         #
-        #   # Output:
-        #   #  <select name="book[store]" id="book-store">
-        #   #    <option value="it" selected="selected">Italy</option>
-        #   #    <option value="us">United States</option>
-        #   #  </select>
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it" selected="selected">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
         #
         # @example Prompt option
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :store, values, options: {prompt: 'Select a store'}
+        #     select :store, values, options: { prompt: 'Select a store' }
         #   %>
         #
-        #   # Output:
-        #   #  <select name="book[store]" id="book-store">
-        #   #    <option>Select a store</option>
-        #   #    <option value="it">Italy</option>
-        #   #    <option value="us">United States</option>
-        #   #  </select>
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option>Select a store</option>
+        #     <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
         #
         # @example Selected option
         #   <%=
         #     # ...
         #     values = Hash['it' => 'Italy', 'us' => 'United States']
-        #     select :store, values, options: {selected: book.store}
+        #     select :store, values, options: { selected: book.store }
         #   %>
         #
-        #   # Output:
-        #   #  <select name="book[store]" id="book-store">
-        #   #    <option value="it" selected="selected">Italy</option>
-        #   #    <option value="us">United States</option>
-        #   #  </select>
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it" selected="selected">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
+        #
+        # @example Prompt option and HTML attributes
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :store, values, options: { prompt: 'Select a store' }, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store" class="form-control">
+        #     <option>Select a store</option>
+        #     <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
         #
         # @example Multiple select
         #   <%=
@@ -879,11 +1027,24 @@ module Hanami
         #     select :stores, values, multiple: true
         #   %>
         #
-        #   # Output:
-        #   # <select name="book[store][]" id="book-store" multiple="multiple">
-        #   #   <option value="it">Italy</option>
-        #   #    <option value="us">United States</option>
-        #   #  </select>
+        #   <!-- output -->
+        #   <select name="book[store][]" id="book-store" multiple="multiple">
+        #    <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
+        #
+        # @example Multiple select and HTML attributes
+        #   <%=
+        #     # ...
+        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     select :stores, values, multiple: true, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store][]" id="book-store" multiple="multiple" class="form-control">
+        #     <option value="it">Italy</option>
+        #     <option value="us">United States</option>
+        #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }
           attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)
@@ -919,12 +1080,12 @@ module Hanami
         #     datalist :stores, values, 'books'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
-        #   #  <datalist id="books">
-        #   #    <option value="Italy"></option>
-        #   #    <option value="United States"></option>
-        #   #  </datalist>
+        #   <!-- output -->
+        #   <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   <datalist id="books">
+        #     <option value="Italy"></option>
+        #     <option value="United States"></option>
+        #   </datalist>
         #
         # @example Options As Hash
         #   <%=
@@ -933,12 +1094,12 @@ module Hanami
         #     datalist :stores, values, 'books'
         #   %>
         #
-        #   # Output:
-        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
-        #   #  <datalist id="books">
-        #   #    <option value="Italy">it</option>
-        #   #    <option value="United States">us</option>
-        #   #  </datalist>
+        #   <!-- output -->
+        #   <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   <datalist id="books">
+        #     <option value="Italy">it</option>
+        #     <option value="United States">us</option>
+        #   </datalist>
         #
         # @example Specify Custom Attributes For Datalist Input
         #   <%=
@@ -947,12 +1108,12 @@ module Hanami
         #     datalist :stores, values, 'books', datalist: { class: 'form-control' }
         #   %>
         #
-        #   # Output:
-        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
-        #   #  <datalist id="books" class="form-control">
-        #   #    <option value="Italy"></option>
-        #   #    <option value="United States"></option>
-        #   #  </datalist>
+        #   <!-- output -->
+        #   <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   <datalist id="books" class="form-control">
+        #     <option value="Italy"></option>
+        #     <option value="United States"></option>
+        #   </datalist>
         #
         # @example Specify Custom Attributes For Options List
         #   <%=
@@ -961,12 +1122,12 @@ module Hanami
         #     datalist :stores, values, 'books', options: { class: 'form-control' }
         #   %>
         #
-        #   # Output:
-        #   #  <input type="text" name="book[store]" id="book-store" value="" list="books">
-        #   #  <datalist id="books">
-        #   #    <option value="Italy" class="form-control"></option>
-        #   #    <option value="United States" class="form-control"></option>
-        #   #  </datalist>
+        #   <!-- output -->
+        #   <input type="text" name="book[store]" id="book-store" value="" list="books">
+        #   <datalist id="books">
+        #     <option value="Italy" class="form-control"></option>
+        #     <option value="United States" class="form-control"></option>
+        #   </datalist>
         def datalist(name, values, list, attributes = {}) # rubocop:disable Metrics/MethodLength
           attrs    = attributes.dup
           options  = attrs.delete(:options)  || {}
@@ -996,8 +1157,17 @@ module Hanami
         #     submit 'Create'
         #   %>
         #
-        #   # Output:
-        #   #  <button type="submit">Create</button>
+        #   <!-- output -->
+        #   <button type="submit">Create</button>
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     submit 'Create', class: "btn btn-primary"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <button type="submit" class="btn btn-primary">Create</button>
         def submit(content, attributes = {})
           attributes = { type: :submit }.merge(attributes)
           button(content, attributes)
@@ -1146,6 +1316,7 @@ module Hanami
           attributes
         end
 
+        # @api private
         def _select_input_name(name, multiple)
           select_name = _input_name(name)
           select_name = "#{select_name}[]" if multiple
@@ -1153,6 +1324,8 @@ module Hanami
         end
 
         # TODO: this has to be refactored
+        #
+        # @api private
         #
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
@@ -1163,6 +1336,7 @@ module Hanami
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity
 
+        # @api private
         def _check_box_checked?(value, input_value)
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||

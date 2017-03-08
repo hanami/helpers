@@ -42,6 +42,7 @@ module Hanami
           datalist
           del
           details
+          dialog
           dfn
           div
           dl

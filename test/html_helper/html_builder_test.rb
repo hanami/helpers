@@ -94,6 +94,13 @@ CONTENT
     end
   end
 
+  describe '<dialog>' do
+    it 'generates a dialog' do
+      result = @builder.dialog('Greetings, one and all!').to_s
+      result.must_equal %(<dialog>Greetings, one and all!</dialog>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

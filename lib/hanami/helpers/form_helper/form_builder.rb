@@ -318,6 +318,37 @@ module Hanami
           super(content, attributes)
         end
 
+        # Fieldset
+        #
+        # @param content [Symbol,String,NilClass] the content
+        # @param attributes [Hash] HTML attributes to pass to the label tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     fieldset do
+        #       legend "Author"
+        #
+        #       fields_for :author do
+        #         label :name
+        #         text_field :name
+        #       end
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <fieldset>
+        #     <legend>Author</legend>
+        #     <label for="book-author-name">Name</label>
+        #     <input type="text" name="book[author][name]" id="book-author-name" value="">
+        #   </fieldset>
+        def fieldset(content = nil, attributes = {})
+          # This is here only for documentation purposes
+          super
+        end
+
         # Check box
         #
         # It renders a check box input.

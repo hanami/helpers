@@ -1,6 +1,12 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.0.0.beta2 (unrealeased)
+### Added
+- [Luca Guidi] Introduced `time_field` form helper
+- [Luca Guidi] Introduced `month_field` form helper
+- [Luca Guidi] Introduced `week_field` form helper
+
 ## v1.0.0.beta1 - 2017-02-14
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.4

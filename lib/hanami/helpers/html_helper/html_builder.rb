@@ -1,4 +1,4 @@
-require 'hanami/utils' # RUBY_VERSION >= '2.2'
+require 'hanami/utils'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/escape'
 require 'hanami/helpers/html_helper/empty_html_node'
@@ -350,7 +350,7 @@ module Hanami
           @nodes.any?
         end
 
-        if RUBY_VERSION >= '2.2' && !Utils.jruby?
+        if !Utils.jruby?
           # Resolve the context for nested contents
           #
           # @since 0.1.0

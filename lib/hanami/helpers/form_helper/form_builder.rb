@@ -906,6 +906,35 @@ module Hanami
         end
         alias input_text text_field
 
+        # Search input
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since 0.2.0
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     search_field :q
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="search" name="search[q]" id="search-q" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     search_field :q, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="search" name="search[q]" id="search-q" value="" class="form-control">
+        def search_field(name, attributes = {})
+          input _attributes(:search, name, attributes)
+        end
+        alias input_text text_field
+
         # Radio input
         #
         # If request params have a value that corresponds to the given value,

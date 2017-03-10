@@ -1772,6 +1772,90 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#search_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        search_field :search_title
+      end.to_s
+
+      actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        search_field :search_title, id: 'book-short-title'
+      end.to_s
+
+      actual.must_include %(<input type="search" name="book[search_title]" id="book-short-title" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        search_field :search_title, name: 'book[short_title]'
+      end.to_s
+
+      actual.must_include %(<input type="search" name="book[short_title]" id="book-search-title" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        search_field :search_title, value: 'Refactoring'
+      end.to_s
+
+      actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="Refactoring">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        search_field :search_title, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(search_title: val)] }
+      let(:val)    { 'PPoEA' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          search_field :search_title
+        end.to_s
+
+        actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="PPoEA">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          search_field :search_title, value: 'DDD'
+        end.to_s
+
+        actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="DDD">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { search_title: val }] }
+      let(:val)    { 'PPoEA' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          search_field :search_title
+        end.to_s
+
+        actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="PPoEA">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          search_field :search_title, value: 'DDD'
+        end.to_s
+
+        actual.must_include %(<input type="search" name="book[search_title]" id="book-search-title" value="DDD">)
+      end
+    end
+  end
+
   describe '#password_field' do
     it 'renders' do
       actual = view.form_for(:signup, action) do

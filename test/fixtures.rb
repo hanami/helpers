@@ -260,6 +260,7 @@ class Book < Dry::Struct
   constructor_type :weak
 
   attribute :title,               Types::String.optional
+  attribute :search_title,        Types::String.optional
   attribute :description,         Types::String.optional
   attribute :author_id,           Types::Form::Int.optional
   attribute :category,            Types::String.optional

@@ -786,6 +786,35 @@ module Hanami
           input _attributes(:number, name, attributes)
         end
 
+        # Range input
+        #
+        # You can also make use of the `max`, `min`, and `step` attributes for
+        # the HTML5 number field.
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the number input
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     range_field :discount_percentage
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="">
+        #
+        # @example Advanced attributes
+        #   <%=
+        #     # ...
+        #     range_field :discount_percentage, min: 1, max: 10, step: 1
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="number" name="book[discount_percentage]" id="book-discount-percentage" value="" min="1" max="10" step="1">
+        def range_field(name, attributes = {})
+          input _attributes(:range, name, attributes)
+        end
+
         # Text-area input
         #
         # @param name [Symbol] the input name

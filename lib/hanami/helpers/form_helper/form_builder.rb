@@ -856,6 +856,8 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the number input
         #
+        # @since x.x.x
+        #
         # @example Basic usage
         #   <%=
         #     # ...
@@ -973,7 +975,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since 0.2.0
+        # @since x.x.x
         #
         # @example Basic usage
         #   <%=

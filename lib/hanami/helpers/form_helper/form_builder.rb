@@ -1,6 +1,7 @@
 require 'hanami/helpers/form_helper/html_node'
 require 'hanami/helpers/form_helper/values'
 require 'hanami/helpers/html_helper/html_builder'
+require 'hanami/helpers/escape_helper'
 require 'hanami/utils/string'
 
 module Hanami
@@ -73,6 +74,8 @@ module Hanami
         DEFAULT_CHECKED_VALUE = '1'.freeze
 
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
+
+        include Helpers::EscapeHelper
 
         self.html_node = ::Hanami::Helpers::FormHelper::HtmlNode
 
@@ -702,7 +705,7 @@ module Hanami
         #   <input type="url" name="user[website]" id="user-website" value="" class="form-control">
         def url_field(name, attributes = {})
           attrs         = attributes.dup
-          attrs[:value] = Hanami::Utils::Escape.url(attrs.fetch(:value) { _value(name) })
+          attrs[:value] = escape_url(attrs.fetch(:value) { _value(name) })
 
           input _attributes(:url, name, attrs)
         end
@@ -1324,7 +1327,7 @@ module Hanami
         def image_button(source, attributes = {})
           attrs = attributes.dup
           attrs[:type] = :image
-          attrs[:src]  = Hanami::Utils::Escape.url(source)
+          attrs[:src]  = escape_url(source)
 
           input attrs
         end
@@ -1413,7 +1416,7 @@ module Hanami
         def _attributes(type, name, attributes)
           attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
           attrs.merge!(attributes)
-          attrs[:value] = Hanami::Utils::Escape.html(attrs[:value])
+          attrs[:value] = escape_html(attrs[:value])
           attrs
         end
 

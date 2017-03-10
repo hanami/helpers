@@ -1405,6 +1405,135 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#range_field' do
+    it 'renders the element' do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, id: 'discount-percentage'
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="discount-percentage" value="">)
+    end
+
+    it "allows to override the 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, name: 'book[read]'
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[read]" id="book-discount-percentage" value="">)
+    end
+
+    it "allows to override the 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, value: '99'
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="99">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" class="form-control">)
+    end
+
+    it "allows to specify a 'min' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, min: 0
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" min="0">)
+    end
+
+    it "allows to specify a 'max' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, max: 100
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" max="100">)
+    end
+
+    it "allows to specify a 'step' attribute" do
+      actual = view.form_for(:book, action) do
+        range_field :discount_percentage, step: 5
+      end.to_s
+
+      actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" step="5">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(discount_percentage: val)] }
+      let(:val)    { 95 }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          range_field :discount_percentage
+        end.to_s
+
+        actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="95">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          range_field :discount_percentage, value: 50
+        end.to_s
+
+        actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="50">)
+      end
+    end
+
+    describe 'without values' do
+      let(:book)   { Book.new(title: val) }
+      let(:val)    { '"DDD" Book' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          text_field :title
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          text_field :title, value: book.title
+        end.to_s
+
+        actual.must_include %(<input type="text" name="book[title]" id="book-title" value="&quot;DDD&quot; Book">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { discount_percentage: val }] }
+      let(:val)    { 95 }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          range_field :discount_percentage
+        end.to_s
+
+        actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="95">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          range_field :discount_percentage, value: 50
+        end.to_s
+
+        actual.must_include %(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="50">)
+      end
+    end
+  end
+
   describe '#text_area' do
     it 'renders the element' do
       actual = view.form_for(:book, action) do

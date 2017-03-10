@@ -259,20 +259,21 @@ end
 class Book < Dry::Struct
   constructor_type :weak
 
-  attribute :title,           Types::String.optional
-  attribute :description,     Types::String.optional
-  attribute :author_id,       Types::Form::Int.optional
-  attribute :category,        Types::String.optional
-  attribute :cover,           Types::String.optional
-  attribute :image_cover,     Types::String.optional
-  attribute :percent_read,    Types::Form::Int.optional
-  attribute :published_at,    Types::String.optional
-  attribute :publisher_email, Types::String.optional
-  attribute :release_date,    Types::Form::Date.optional
-  attribute :release_hour,    Types::String.optional
-  attribute :release_week,    Types::String.optional
-  attribute :release_month,   Types::Form::Date.optional
-  attribute :store,           Types::String.optional
+  attribute :title,               Types::String.optional
+  attribute :description,         Types::String.optional
+  attribute :author_id,           Types::Form::Int.optional
+  attribute :category,            Types::String.optional
+  attribute :cover,               Types::String.optional
+  attribute :image_cover,         Types::String.optional
+  attribute :percent_read,        Types::Form::Int.optional
+  attribute :discount_percentage, Types::Form::Int.optional
+  attribute :published_at,        Types::String.optional
+  attribute :publisher_email,     Types::String.optional
+  attribute :release_date,        Types::Form::Date.optional
+  attribute :release_hour,        Types::String.optional
+  attribute :release_week,        Types::String.optional
+  attribute :release_month,       Types::Form::Date.optional
+  attribute :store,               Types::String.optional
 end
 
 User = Struct.new(:name, :website, :snippet)

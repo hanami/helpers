@@ -710,6 +710,34 @@ module Hanami
           input _attributes(:url, name, attrs)
         end
 
+        # Telephone input
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     tel_field :telephone
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="tel" name="user[telephone]" id="user-telephone" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     telurl_field :telephone, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="tel" name="user[telephone]" id="user-telephone" value="" class="form-control">
+        def tel_field(name, attributes = {})
+          input _attributes(:tel, name, attributes)
+        end
+
         # Hidden input
         #
         # @param name [Symbol] the input name

@@ -1201,6 +1201,98 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#tel_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone, id: 'publisher-telephone'
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="publisher-telephone" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone, name: 'book[telephone]'
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[telephone]" id="book-publisher-telephone" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone, value: 'publisher@example.org'
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">)
+    end
+
+    it "allows to specify 'multiple' attribute" do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone, multiple: true
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" multiple="multiple">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        tel_field :publisher_telephone, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(publisher_telephone: val)] }
+      let(:val)    { 'maria@publisher.org' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          tel_field :publisher_telephone
+        end.to_s
+
+        actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="maria@publisher.org">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          tel_field :publisher_telephone, value: 'publisher@example.org'
+        end.to_s
+
+        actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { publisher_telephone: val }] }
+      let(:val)    { 'maria@publisher.org' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          tel_field :publisher_telephone
+        end.to_s
+
+        actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="maria@publisher.org">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          tel_field :publisher_telephone, value: 'publisher@example.org'
+        end.to_s
+
+        actual.must_include %(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">)
+      end
+    end
+  end
+
   describe '#file_field' do
     it 'renders' do
       actual = view.form_for(:book, action) do

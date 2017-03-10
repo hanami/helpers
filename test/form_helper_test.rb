@@ -1088,6 +1088,119 @@ describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#url_field' do
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        url_field :website
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[website]" id="book-website" value="">)
+    end
+
+    it "allows to override 'id' attribute" do
+      actual = view.form_for(:book, action) do
+        url_field :website, id: 'website'
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[website]" id="website" value="">)
+    end
+
+    it "allows to override 'name' attribute" do
+      actual = view.form_for(:book, action) do
+        url_field :website, name: 'book[url]'
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[url]" id="book-website" value="">)
+    end
+
+    it "allows to override 'value' attribute" do
+      actual = view.form_for(:book, action) do
+        url_field :website, value: 'http://example.org'
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[website]" id="book-website" value="http://example.org">)
+    end
+
+    it "allows to specify 'multiple' attribute" do
+      actual = view.form_for(:book, action) do
+        url_field :website, multiple: true
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[website]" id="book-website" value="" multiple="multiple">)
+    end
+
+    it 'allows to specify HTML attributes' do
+      actual = view.form_for(:book, action) do
+        url_field :website, class: 'form-control'
+      end.to_s
+
+      actual.must_include %(<input type="url" name="book[website]" id="book-website" value="" class="form-control">)
+    end
+
+    describe 'with values' do
+      let(:values) { Hash[book: Book.new(website: val)] }
+      let(:val)    { 'http://publisher.org' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action, values: values) do
+          url_field :website
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="http://publisher.org">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action, values: values) do
+          url_field :website, value: 'https://www.example.org'
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="https://www.example.org">)
+      end
+    end
+
+    describe 'with filled params' do
+      let(:params) { Hash[book: { website: val }] }
+      let(:val)    { 'http://publisher.org' }
+
+      it 'renders with value' do
+        actual = view.form_for(:book, action) do
+          url_field :website
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="http://publisher.org">)
+      end
+
+      it "allows to override 'value' attribute" do
+        actual = view.form_for(:book, action) do
+          url_field :website, value: 'http://example.org'
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="http://example.org">)
+      end
+    end
+
+    describe 'with escape url' do
+      let(:values) { Hash[book: Book.new(website: val)] }
+      let(:val)    { %("onclick=javascript:alert('xss')) }
+
+      it 'renders with automatic value' do
+        actual = view.form_for(:book, action, values: values) do
+          url_field :website
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="">)
+      end
+
+      it 'renders with explicit value' do
+        actual = view.form_for(:book, action, values: values) do
+          url_field :website, value: val
+        end.to_s
+
+        actual.must_include %(<input type="url" name="book[website]" id="book-website" value="">)
+      end
+    end
+  end
+
   describe '#file_field' do
     it 'renders' do
       actual = view.form_for(:book, action) do

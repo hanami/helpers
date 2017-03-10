@@ -40,6 +40,8 @@ module Hanami
     #   # ERB template
     #   # <%= link_to_home %>
     module RoutingHelper
+      # @since 0.1.0
+      # @api private
       def self.included(base)
         factory = "#{Utils::String.new(base).namespace}.routes"
 

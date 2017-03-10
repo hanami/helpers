@@ -1,4 +1,4 @@
-require 'hanami/utils' # RUBY_VERSION >= '2.2'
+require 'hanami/utils'
 require 'hanami/utils/class_attribute'
 require 'hanami/utils/escape'
 require 'hanami/helpers/html_helper/empty_html_node'
@@ -42,6 +42,7 @@ module Hanami
           datalist
           del
           details
+          dialog
           dfn
           div
           dl
@@ -61,6 +62,7 @@ module Hanami
           h6
           head
           header
+          hgroup
           i
           iframe
           ins
@@ -68,7 +70,6 @@ module Hanami
           label
           legend
           li
-          link
           main
           map
           mark
@@ -88,12 +89,14 @@ module Hanami
           q
           rp
           rt
+          rtc
           ruby
           s
           samp
           script
           section
           select
+          slot
           small
           span
           strong
@@ -115,6 +118,7 @@ module Hanami
           tr
           u
           ul
+          var
           video
         ).freeze
 
@@ -183,6 +187,7 @@ module Hanami
           @nodes = []
         end
 
+        # @api private
         def options
         end
 
@@ -294,15 +299,18 @@ module Hanami
         #
         # @example
         #
-        #   html.label do
-        #     text "Option 1"
-        #     radio_button :option, 1
-        #   end
+        #   <%=
+        #     html.label do
+        #       text "Option 1"
+        #       radio_button :option, 1
+        #     end
+        #   %>
         #
-        #   # <label>
-        #   #   Option 1
-        #   #   <input type="radio" name="option" value="1" />
-        #   # </label>
+        #   <!-- output -->
+        #   <label>
+        #     Option 1
+        #     <input type="radio" name="option" value="1" />
+        #   </label>
         def text(content)
           @nodes << TextNode.new(content)
           self
@@ -346,16 +354,20 @@ module Hanami
           @nodes.any?
         end
 
-        # Resolve the context for nested contents
-        #
-        # @since 0.1.0
-        # @api private
-        if RUBY_VERSION >= '2.2' && !Utils.jruby?
+        if !Utils.jruby?
+          # Resolve the context for nested contents
+          #
+          # @since 0.1.0
+          # @api private
           def resolve(&blk)
             @context = blk.binding.receiver
             instance_exec(&blk)
           end
         else
+          # Resolve the context for nested contents
+          #
+          # @since 0.1.0
+          # @api private
           def resolve(&blk)
             @context = eval 'self', blk.binding
             instance_exec(&blk)

@@ -114,15 +114,18 @@ module Hanami
           result
         end
 
+        # @api private
         def boolean_attribute?(attribute_name)
           BOOLEAN_ATTRIBUTES.include?(attribute_name.to_s)
         end
 
         # Do not render boolean attributes when their value is _false_.
+        # @api private
         def boolean_attribute(attribute_name, _value)
           %(#{ATTRIBUTES_SEPARATOR}#{attribute_name}="#{attribute_name}")
         end
 
+        # @api private
         def attribute(attribute_name, value)
           %(#{ATTRIBUTES_SEPARATOR}#{attribute_name}="#{value}")
         end

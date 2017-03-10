@@ -6,6 +6,7 @@ require 'hanami/helpers/link_to_helper'
 require 'hanami/helpers/form_helper'
 require 'hanami/helpers/number_formatting_helper'
 
+# @since 0.1.0
 module Hanami
   # View helpers for Ruby applications
   #

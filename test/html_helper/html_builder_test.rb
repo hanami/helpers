@@ -94,6 +94,44 @@ CONTENT
     end
   end
 
+  describe '<dialog>' do
+    it 'generates a dialog' do
+      result = @builder.dialog('Greetings, one and all!').to_s
+      result.must_equal %(<dialog>Greetings, one and all!</dialog>)
+    end
+  end
+
+  describe '<hgroup>' do
+    it 'generates a hgroup' do
+      result = @builder.hgroup do
+        h1 "Hello"
+      end.to_s
+
+      result.must_equal %(<hgroup>\n<h1>Hello</h1>\n</hgroup>)
+    end
+  end
+
+  describe '<rtc>' do
+    it 'generates a rtc' do
+      result = @builder.rtc("Rome").to_s
+      result.must_equal %(<rtc>Rome</rtc>)
+    end
+  end
+
+  describe '<slot>' do
+    it 'generates a slot' do
+      result = @builder.slot("Need description").to_s
+      result.must_equal %(<slot>Need description</slot>)
+    end
+  end
+
+  describe '<var>' do
+    it 'generates a var' do
+      result = @builder.var("x").to_s
+      result.must_equal %(<var>x</var>)
+    end
+  end
+
   ##############################################################################
   # EMPTY TAGS                                                                 #
   ##############################################################################

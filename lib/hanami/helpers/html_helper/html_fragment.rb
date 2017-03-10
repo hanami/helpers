@@ -32,6 +32,7 @@ module Hanami
           content.to_s
         end
 
+        # @api private
         def content
           result = @builder.resolve(&@blk)
 

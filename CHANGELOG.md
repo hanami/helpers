@@ -3,9 +3,15 @@ View helpers for Ruby web applications
 
 ## v1.0.0.beta2 (unrealeased)
 ### Added
-- [Luca Guidi] Introduced `time_field` form helper
-- [Luca Guidi] Introduced `month_field` form helper
-- [Luca Guidi] Introduced `week_field` form helper
+- [Luca Guidi] Added `time_field` form helper
+- [Luca Guidi] Added `month_field` form helper
+- [Luca Guidi] Added `week_field` form helper
+- [Luca Guidi] Added `range_field` form helper
+- [Luca Guidi] Added `search_field` form helper
+- [Luca Guidi] Added `url_field` form helper
+- [Luca Guidi] Added `tel_field` form helper
+- [Luca Guidi] Added `image_button` form helper
+- [Luca Guidi] Added support for `<dialog>`, `<hgroup>`, `<rtc>`, `<slot>`, and `<var>` HTML5 tags
 
 ## v1.0.0.beta1 - 2017-02-14
 ### Added

@@ -271,6 +271,7 @@ class Book < Dry::Struct
   attribute :published_at,        Types::String.optional
   attribute :website,             Types::String.optional
   attribute :publisher_email,     Types::String.optional
+  attribute :publisher_telephone, Types::String.optional
   attribute :release_date,        Types::Form::Date.optional
   attribute :release_hour,        Types::String.optional
   attribute :release_week,        Types::String.optional

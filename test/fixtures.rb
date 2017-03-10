@@ -269,6 +269,7 @@ class Book < Dry::Struct
   attribute :percent_read,        Types::Form::Int.optional
   attribute :discount_percentage, Types::Form::Int.optional
   attribute :published_at,        Types::String.optional
+  attribute :website,             Types::String.optional
   attribute :publisher_email,     Types::String.optional
   attribute :release_date,        Types::Form::Date.optional
   attribute :release_hour,        Types::String.optional

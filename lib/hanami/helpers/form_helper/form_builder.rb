@@ -676,6 +676,37 @@ module Hanami
           input _attributes(:email, name, attributes)
         end
 
+        # URL input
+        #
+        # @param name [Symbol] the input name
+        # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # @since x.x.x
+        #
+        # @example Basic usage
+        #   <%=
+        #     # ...
+        #     url_field :website
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="url" name="user[website]" id="user-website" value="">
+        #
+        # @example HTML Attributes
+        #   <%=
+        #     # ...
+        #     url_field :website, class: "form-control"
+        #   %>
+        #
+        #   <!-- output -->
+        #   <input type="url" name="user[website]" id="user-website" value="" class="form-control">
+        def url_field(name, attributes = {})
+          attrs         = attributes.dup
+          attrs[:value] = Hanami::Utils::Escape.url(attrs.fetch(:value) { _value(name) })
+
+          input _attributes(:url, name, attrs)
+        end
+
         # Hidden input
         #
         # @param name [Symbol] the input name

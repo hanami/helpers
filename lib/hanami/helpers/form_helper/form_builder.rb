@@ -326,7 +326,7 @@ module Hanami
         # @param content [Symbol,String,NilClass] the content
         # @param attributes [Hash] HTML attributes to pass to the label tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -572,7 +572,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -600,7 +600,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -628,7 +628,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -684,7 +684,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -715,7 +715,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -856,7 +856,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the number input
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -975,7 +975,7 @@ module Hanami
         # @param name [Symbol] the input name
         # @param attributes [Hash] HTML attributes to pass to the input tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -1302,7 +1302,7 @@ module Hanami
         # @param content [String] The content
         # @param attributes [Hash] HTML attributes to pass to the button tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=
@@ -1335,7 +1335,7 @@ module Hanami
         # @param source [String] The **absolute URL** of the image
         # @param attributes [Hash] HTML attributes to pass to the button tag
         #
-        # @since x.x.x
+        # @since 1.0.0.beta2
         #
         # @example Basic usage
         #   <%=

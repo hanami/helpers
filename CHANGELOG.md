@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v1.0.0.beta2 (unrealeased)
+## v1.0.0.beta2 - 2017-03-17
 ### Added
 - [Luca Guidi] Added `time_field` form helper
 - [Luca Guidi] Added `month_field` form helper

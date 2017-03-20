@@ -6,8 +6,8 @@ require 'hanami/helpers/version'
 Gem::Specification.new do |spec|
   spec.name          = 'hanami-helpers'
   spec.version       = Hanami::Helpers::VERSION
-  spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
-  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
+  spec.authors       = ['Luca Guidi']
+  spec.email         = ['me@lucaguidi.com']
   spec.summary       = 'Hanami helpers'
   spec.description   = 'View helpers for Ruby applications'
   spec.homepage      = 'http://hanamirb.org'

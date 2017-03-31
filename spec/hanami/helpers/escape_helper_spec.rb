@@ -55,7 +55,7 @@ it 'autoscape evil string' do
   end
 
   it 'html attribute helper alias' do
-    expect(@view.html_attribute_string_alias).to eq(%(<a title='foo'>link</a>)
+    expect(@view.html_attribute_string_alias).to eq(%(<a title='foo'>link</a>))
   end
 
   it 'url helper alias' do

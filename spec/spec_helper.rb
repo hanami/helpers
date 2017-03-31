@@ -29,7 +29,6 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-
 $LOAD_PATH.unshift 'lib'
 require 'hanami/helpers'
 require_relative './support/fixtures'

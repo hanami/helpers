@@ -44,31 +44,31 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
   end
 
   it 'returns a fragment with block content as string' do
-     expect(@view.fragment_with_block_content.to_s).to eq(%(<div>Hello</div>\n<div>Hanami</div>))
+    expect(@view.fragment_with_block_content.to_s).to eq(%(<div>Hello</div>\n<div>Hanami</div>))
   end
 
   it 'returns a tag with attribute' do
-     expect(@view.div_with_attr.to_s).to eq(%(<div id="container"></div>))
+    expect(@view.div_with_attr.to_s).to eq(%(<div id="container"></div>))
   end
 
   it 'returns a tag with data attribute' do
-     expect(@view.div_with_data_attr.to_s).to eq(%(<div data-where="up"></div>))
+    expect(@view.div_with_data_attr.to_s).to eq(%(<div data-where="up"></div>))
   end
 
   it 'returns a tag with attributes' do
-     expect(@view.div_with_attrs.to_s).to eq(%(<div id="content" class="filled"></div>))
+    expect(@view.div_with_attrs.to_s).to eq(%(<div id="content" class="filled"></div>))
   end
 
   it 'returns a tag with string content and attributes' do
-     expect(@view.div_with_string_content_and_attrs.to_s).to eq(%(<div id="greeting" class="blink">ciao</div>))
+    expect(@view.div_with_string_content_and_attrs.to_s).to eq(%(<div id="greeting" class="blink">ciao</div>))
   end
 
   it 'returns a tag with block content as string and attributes' do
-     expect(@view.div_with_block_content_as_string_and_attrs.to_s).to eq(%(<div id="sidebar" class="blue">\nbonjour\n</div>))
+    expect(@view.div_with_block_content_as_string_and_attrs.to_s).to eq(%(<div id="sidebar" class="blue">\nbonjour\n</div>))
   end
 
   it 'returns a custom tag' do
-     expect(@view.custom_tag.to_s).to eq(%(<custom id="next">Foo</custom>))
+    expect(@view.custom_tag.to_s).to eq(%(<custom id="next">Foo</custom>))
   end
 
   it 'returns a custom empty tag' do
@@ -76,19 +76,19 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
   end
 
   it 'autoescapes string contents' do
-     expect(@view.evil_string_content.to_s).to eq(%(<div>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>))
+    expect(@view.evil_string_content.to_s).to eq(%(<div>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>))
   end
 
   it 'autoescapes block contents' do
-     expect(@view.evil_block_content.to_s).to eq(%(<div>\n&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;\n</div>))
+    expect(@view.evil_block_content.to_s).to eq(%(<div>\n&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;\n</div>))
   end
 
   it 'autoescapes nested helpers contents' do
-     expect(@view.evil_tag_helper.to_s).to eq(%(<div><p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p></div>))
+    expect(@view.evil_tag_helper.to_s).to eq(%(<div><p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p></div>))
   end
 
   it 'autoescapes nested blocks' do
-     expect(@view.evil_nested_block_content.to_s).to eq(%(<div>\n<p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p>\n</div>))
+    expect(@view.evil_nested_block_content.to_s).to eq(%(<div>\n<p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p>\n</div>))
   end
 
   describe 'with link_to helper' do
@@ -97,11 +97,11 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
     end
 
     it 'returns two links in div' do
-       expect(@view.two_links_to_in_div.to_s).to eq(%(<div>\n<a href=\"/comments\">Comments</a>\n<a href=\"/posts\">Posts</a>\n</div>))
+      expect(@view.two_links_to_in_div.to_s).to eq(%(<div>\n<a href=\"/comments\">Comments</a>\n<a href=\"/posts\">Posts</a>\n</div>))
     end
 
     it 'returns span and link in div' do
-     expect(@view.span_and_link_to_in_div.to_s).to eq(%(<div>\n<span>hello</span>\n<a href=\"/comments\">Comments</a>\n</div>))
+    expect(@view.span_and_link_to_in_div.to_s).to eq(%(<div>\n<span>hello</span>\n<a href=\"/comments\">Comments</a>\n</div>))
     end
   end
 end

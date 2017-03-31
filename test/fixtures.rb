@@ -55,7 +55,10 @@ class HtmlView
   end
 
   def concatenation_of_multiple_fragments
-    html { div 'Hello' } + html { div 'Hanami' }
+    hello  = html { div 'Hello' }
+    hanami = html { div 'Hanami' }
+ 
+    hello + hanami
   end
 
   def concatenation_of_multiple_divs

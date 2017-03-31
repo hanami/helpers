@@ -82,7 +82,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      [:patch, :put, :delete].each do |verb|
+        [:patch, :put, :delete].each do |verb|
         it "it injects hidden field when Method Override (#{verb}) is active" do
           actual = view.form_for(:book, action, method: verb) do
             text_field :title
@@ -324,7 +324,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         check_box :languages, name: 'book[languages][]', value: 'english' # , id: nil FIXME
       end.to_s
 
-expect(actual).to include(%(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">))
+      expect(actual).to include(%(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian">\n<input type="checkbox" name="book[languages][]" id="book-languages" value="english">))
     end
 
     describe 'with filled params' do

@@ -1,4 +1,4 @@
-Rspec.describe Hanami::Helpers::EscapeHelper do
+RSpec.describe Hanami::Helpers::EscapeHelper do
   before do
     @view = EscapeView.new
   end

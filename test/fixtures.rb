@@ -57,7 +57,7 @@ class HtmlView
   def concatenation_of_multiple_fragments
     hello  = html { div 'Hello' }
     hanami = html { div 'Hanami' }
- 
+
     hello + hanami
   end
 

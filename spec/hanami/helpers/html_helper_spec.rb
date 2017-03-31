@@ -91,7 +91,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
      expect(@view.evil_nested_block_content.to_s).to eq(%(<div>\n<p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p>\n</div>))
   end
 
-  RSpec.describe 'with link_to helper' do
+  describe 'with link_to helper' do
     before do
       @view = HtmlAndLinkTo.new
     end

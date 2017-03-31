@@ -72,7 +72,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
   end
 
   it 'returns a custom empty tag' do
-     expect(@view.custom_empty_tag.to_s).to eq(%(<xr id="next">))
+    expect(@view.custom_empty_tag.to_s).to eq(%(<xr id="next">))
   end
 
   it 'autoescapes string contents' do
@@ -101,7 +101,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
     end
 
     it 'returns span and link in div' do
-    expect(@view.span_and_link_to_in_div.to_s).to eq(%(<div>\n<span>hello</span>\n<a href=\"/comments\">Comments</a>\n</div>))
+      expect(@view.span_and_link_to_in_div.to_s).to eq(%(<div>\n<span>hello</span>\n<a href=\"/comments\">Comments</a>\n</div>))
     end
   end
 end

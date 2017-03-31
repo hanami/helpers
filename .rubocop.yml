@@ -8,3 +8,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
 Style/MethodMissing:
   Enabled: false
+Style/IndentHeredoc:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false

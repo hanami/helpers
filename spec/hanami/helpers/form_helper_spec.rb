@@ -35,7 +35,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>))
     end
 
-    [:patch, :put, :delete].each do |verb|
+    %i[:patch, :put, :delete].each do |verb|
       it "allows to override 'method' attribute (#{verb})" do
         actual = view.form_for(:book, action, method: verb) do
           text_field :title
@@ -78,19 +78,19 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         it "doesn't inject hidden field" do
           actual = view.form_for(:book, action, method: 'GET', class: 'form-horizonal') {}
-         expect(actual.to_s).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form" class="form-horizonal">\n\n</form>))
+          expect(actual.to_s).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form" class="form-horizonal">\n\n</form>))
         end
       end
 
-        [:patch, :put, :delete].each do |verb|
+        %i[:patch, :put, :delete].each do |verb|
         it "it injects hidden field when Method Override (#{verb}) is active" do
           actual = view.form_for(:book, action, method: verb) do
             text_field :title
           end.to_s
 
           expect(actual).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="hidden" name="_method" value="#{verb.to_s.upcase}">\n<input type="hidden" name="_csrf_token" value="#{csrf_token}">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>))
+         end
         end
-      end
     end
   end
 

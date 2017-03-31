@@ -1,4 +1,4 @@
-Rspec.describe Hanami::Helpers::VERSION do
+RSpec.describe Hanami::Helpers::VERSION do
   it 'exposes version' do
     expect(Hanami::Helpers::VERSION).to eq('1.0.0.beta2')
   end

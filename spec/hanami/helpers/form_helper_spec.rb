@@ -148,7 +148,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         label :free_shipping
       end.to_s
 
-      expect(actual).to include(%(<label for="book-free-shipping">Free shipping</label>)))
+      expect(actual).to include(%(<label for="book-free-shipping">Free shipping</label>))
     end
 
     it 'accepts a string as custom content' do
@@ -164,7 +164,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         label :free_shipping, for: 'free-shipping'
       end.to_s
 
-      (expect(actual).to include(%(<label for="free-shipping">Free shipping</label>))
+      expect(actual).to include(%(<label for="free-shipping">Free shipping</label>))
     end
   end
 
@@ -304,7 +304,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         check_box :free_shipping, value: 'ok'
       end.to_s
 
-      actual.wont_include %(<input type="hidden" name="book[free_shipping]" value="0">))
+      expect(actual).not_to include(%(<input type="hidden" name="book[free_shipping]" value="0">))
       expect(actual).to include(%(<input type="checkbox" name="book[free_shipping]" id="book-free-shipping" value="ok">))
     end
 

@@ -60,7 +60,7 @@ RSpec.describe Hanami::Helpers::NumberFormattingHelper do
   end
 
   it 'returns string when passed a string that represent a float' do
-   expect(@view.pass_non_numeric_float).to eq('1.0')
+    expect(@view.pass_non_numeric_float).to eq('1.0')
   end
 
   it 'returns string when passed BigDecimal' do

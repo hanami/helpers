@@ -7,3 +7,7 @@ Metrics/BlockLength:
     - "test/**/*_test.rb" # Minitest syntax generates this false positive
 Style/MethodMissing:
   Enabled: false
+Style/IndentHeredoc:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false

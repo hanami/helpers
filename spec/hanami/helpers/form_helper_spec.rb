@@ -1,3 +1,5 @@
+require 'ostruct'
+
 RSpec.describe Hanami::Helpers::FormHelper do
   let(:view)   { FormHelperView.new(params) }
   let(:params) { Hash[] }

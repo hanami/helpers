@@ -18,7 +18,7 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
   it 'has a private raw method' do
     expect { @view.raw }.to raise_error(NoMethodError)
   end
-it 'autoscape evil string' do
+  it 'autoscape evil string' do
     expect(@view.evil_string).to eq(%(&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;))
   end
 

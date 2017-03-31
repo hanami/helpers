@@ -89,7 +89,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           end.to_s
 
           expect(actual).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="hidden" name="_method" value="#{verb.to_s.upcase}">\n<input type="hidden" name="_csrf_token" value="#{csrf_token}">\n<input type="text" name="book[title]" id="book-title" value="">\n</form>))
-         end
+        end
         end
     end
   end

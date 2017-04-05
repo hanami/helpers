@@ -54,7 +54,7 @@ module Hanami
           result
         end
 
-        # @since 1.0.0.beta1
+        # @since 1.0.0
         # @api private
         def _dig(base, key)
           case base

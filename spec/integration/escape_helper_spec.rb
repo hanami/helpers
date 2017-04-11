@@ -1,4 +1,3 @@
-
 RSpec.describe 'Escape helper' do
   before do
     @user   = User.new('MG', 'http://freud.org', %(<span>hello</span>))

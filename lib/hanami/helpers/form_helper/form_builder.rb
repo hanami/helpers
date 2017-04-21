@@ -1481,9 +1481,11 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _value(name)
-          @values.get(
+          value = @values.get(
             *_input_name(name).split(/[\[\]]+/).map(&:to_sym)
           )
+          
+          Utils::Escape.html_attribute(value) if value
         end
 
         # Input <tt>for</tt> HTML attribute

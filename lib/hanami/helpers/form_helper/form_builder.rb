@@ -315,7 +315,7 @@ module Hanami
                        when String, Hanami::Utils::String
                          content
                        else
-                         Utils::String.new(content).capitalize
+                         Utils::String.capitalize(content)
                        end
 
           super(content, attributes)
@@ -1473,7 +1473,7 @@ module Hanami
         # @since 0.2.0
         def _input_id(name)
           name = _input_name(name).gsub(/\[(?<token>[[[:word:]]\-]*)\]/, INPUT_ID_REPLACEMENT)
-          Utils::String.new(name).dasherize
+          Utils::String.dasherize(name)
         end
 
         # Input <tt>value</tt> HTML attribute

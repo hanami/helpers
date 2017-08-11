@@ -377,10 +377,11 @@ class SessionFormHelperView < FormHelperView
 end
 
 class Address
-  attr_reader :street
+  attr_reader :street, :city
 
   def initialize(attributes = {})
     @street = attributes[:street]
+    @city   = attributes[:city]
   end
 end
 

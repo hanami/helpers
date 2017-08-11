@@ -233,8 +233,8 @@ module Hanami
         #   <form action="/deliveries" method="POST" accept-charset="utf-8" id="delivery-form">
         #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
         #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
-        #     <input type="text" name="delivery[addresses][][street]" id="delivery-address-0-street" value="">
-        #     <input type="text" name="delivery[addresses][][street]" id="delivery-address-1-street" value="">
+        #     <input type="text" name="delivery[addresses][0][street]" id="delivery-address-0-street" value="">
+        #     <input type="text" name="delivery[addresses][1][street]" id="delivery-address-1-street" value="">
         #
         #     <button type="submit">Create</button>
         #   </form>
@@ -1444,7 +1444,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
+          attrs = { type: type, name: _input_name(name), id: _input_id(name), value: _value(name) }
           attrs.merge!(attributes)
           attrs[:value] = escape_html(attrs[:value])
           attrs

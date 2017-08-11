@@ -93,8 +93,8 @@ describe 'Form helper' do
   describe 'form with nested structures' do
     describe 'first page load' do
       before do
-        @address1 = Address.new(street: '5th Ave')
-        @address2 = Address.new(street: '4th Ave')
+        @address1 = Address.new(street: '5th Ave', city: 'New York')
+        @address2 = Address.new(street: '4th Ave', city: 'Seattle')
         @bill     = Bill.new(id: 1, addresses: [@address1, @address2])
         @params   = BillParams.new({})
         @session  = Session.new(_csrf_token: 's14')
@@ -103,14 +103,42 @@ describe 'Form helper' do
       end
 
       it 'renders the form' do
-        @actual.must_include %(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@address1.street}" class="form-control" placeholder="Street" data-funky="id-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@address2.street}" class="form-control" placeholder="Street" data-funky="id-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n)
+        expected = %(
+        <form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">
+        <input type="hidden" name="_method" value="PATCH">
+        <input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">
+        <fieldset>
+        <legend>Addresses</legend>
+        <div class="form-group">
+        <label for="bill-addresses-0-street">Street</label>
+        <input type="text" name="bill[addresses][0][street]" id="bill-addresses-0-street" value="#{@address1.street}" class="form-control" placeholder="Street" data-funky="id-0">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-0-city">City</label>
+        <input type="text" name="bill[addresses][0][city]" id="bill-addresses-0-city" value="#{@address1.city}" class="form-control" placeholder="City" data-funky="id-0">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-1-street">Street</label>
+        <input type="text" name="bill[addresses][1][street]" id="bill-addresses-1-street" value="#{@address2.street}" class="form-control" placeholder="Street" data-funky="id-1">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-1-city">City</label>
+        <input type="text" name="bill[addresses][1][city]" id="bill-addresses-1-city" value="#{@address2.city}" class="form-control" placeholder="City" data-funky="id-1">
+        </div>
+        <label for="bill-ensure-names">Ensure names</label>
+        </fieldset>
+        <button type="submit" class="btn btn-default">Update</button>
+        </form>
+        ).strip.split("\n").map(&:strip).join("\n")
+
+        @actual.must_include expected
       end
     end
 
     describe 'after a failed submission' do
       before do
-        @address1 = Address.new(street: '5th Ave')
-        @address2 = Address.new(street: '4th Ave')
+        @address1 = Address.new(street: '5th Ave', city: 'New York')
+        @address2 = Address.new(street: '4th Ave', city: 'Seattle')
         @bill     = Bill.new(id: 1, addresses: [@address1, @address2])
         @params   = BillParams.new(bill: { addresses: [{ street: 'Mulholland Drive' }, { street: 'Quaint Edge' }] })
         @session  = Session.new(_csrf_token: 's14')
@@ -119,7 +147,35 @@ describe 'Form helper' do
       end
 
       it 'renders the form' do
-        @actual.must_include %(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@params[:bill][:addresses][0][:street]}" class="form-control" placeholder="Street" data-funky="id-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@params[:bill][:addresses][1][:street]}" class="form-control" placeholder="Street" data-funky="id-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n)
+        expected = %(
+        <form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">
+        <input type="hidden" name="_method" value="PATCH">
+        <input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">
+        <fieldset>
+        <legend>Addresses</legend>
+        <div class="form-group">
+        <label for="bill-addresses-0-street">Street</label>
+        <input type="text" name="bill[addresses][0][street]" id="bill-addresses-0-street" value="#{@params[:bill][:addresses][0][:street]}" class="form-control" placeholder="Street" data-funky="id-0">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-0-city">City</label>
+        <input type="text" name="bill[addresses][0][city]" id="bill-addresses-0-city" value="#{@address1.city}" class="form-control" placeholder="City" data-funky="id-0">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-1-street">Street</label>
+        <input type="text" name="bill[addresses][1][street]" id="bill-addresses-1-street" value="#{@params[:bill][:addresses][1][:street]}" class="form-control" placeholder="Street" data-funky="id-1">
+        </div>
+        <div class="form-group">
+        <label for="bill-addresses-1-city">City</label>
+        <input type="text" name="bill[addresses][1][city]" id="bill-addresses-1-city" value="#{@address2.city}" class="form-control" placeholder="City" data-funky="id-1">
+        </div>
+        <label for="bill-ensure-names">Ensure names</label>
+        </fieldset>
+        <button type="submit" class="btn btn-default">Update</button>
+        </form>
+        ).strip.split("\n").map(&:strip).join("\n")
+
+        @actual.must_include expected
       end
     end
   end

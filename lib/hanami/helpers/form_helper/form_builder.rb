@@ -1239,7 +1239,7 @@ module Hanami
           selected   = options.delete(:selected)
 
           super(attributes) do
-            option(prompt, disabled: DISABLED) unless prompt.nil?
+            _prompt(name, prompt, selected)
 
             already_selected = nil
             values.each do |content, value|
@@ -1596,6 +1596,20 @@ module Hanami
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||
             input_value.is_a?(Array) && input_value.include?(value))
+        end
+
+        # @api private
+        # @since x.x.x
+        #
+        # @see Hanami::Helpers::FormHelper::FormBuilder#select
+        def _prompt(name, prompt, selected)
+          return if prompt.nil?
+
+          if selected.nil? && _value(name).nil?
+            option(prompt, disabled: DISABLED, selected: SELECTED)
+          else
+            option(prompt, disabled: DISABLED)
+          end
         end
       end
     end

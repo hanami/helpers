@@ -35,7 +35,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>))
     end
 
-    [:patch, :put, :delete].each do |verb|
+    %i[patch put delete].each do |verb|
       it "allows to override 'method' attribute (#{verb})" do
         actual = view.form_for(:book, action, method: verb) do
           text_field :title
@@ -82,7 +82,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      [:patch, :put, :delete].each do |verb|
+      %i[patch put delete].each do |verb|
         it "it injects hidden field when Method Override (#{verb}) is active" do
           actual = view.form_for(:book, action, method: verb) do
             text_field :title
@@ -2272,7 +2272,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it 'allows to select values' do
         actual = view.form_for(:book, action) do
-          select :store, option_values, multiple: true, options: { selected: %w(it us) }
+          select :store, option_values, multiple: true, options: { selected: %w[it us] }
         end.to_s
 
         expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it" selected="selected">Italy</option>\n<option value="us" selected="selected">United States</option>\n</select>))
@@ -2280,7 +2280,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe 'with values an structured Array of values' do
-      let(:option_values) { [%w(Italy it), ['United States', 'us']] }
+      let(:option_values) { [%w[Italy it], ['United States', 'us']] }
 
       it 'renders' do
         actual = view.form_for(:book, action) do

@@ -12,7 +12,7 @@ module Hanami
         # @api private
         #
         # @see http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attribute
-        BOOLEAN_ATTRIBUTES = %w(
+        BOOLEAN_ATTRIBUTES = %w[
           allowfullscreen
           async
           autobuffer
@@ -59,7 +59,7 @@ module Hanami
           truespeed
           typemustmatch
           visible
-        ).freeze
+        ].freeze
 
         # Attributes separator
         #

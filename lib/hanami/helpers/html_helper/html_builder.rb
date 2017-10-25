@@ -20,7 +20,7 @@ module Hanami
         #
         # @see Hanami::Helpers::HtmlHelper::HtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        CONTENT_TAGS = %w(
+        CONTENT_TAGS = %w[
           a
           abbr
           address
@@ -120,7 +120,7 @@ module Hanami
           ul
           var
           video
-        ).freeze
+        ].freeze
 
         # HTML5 empty tags
         #
@@ -129,7 +129,7 @@ module Hanami
         #
         # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        EMPTY_TAGS = %w(
+        EMPTY_TAGS = %w[
           area
           base
           br
@@ -146,7 +146,7 @@ module Hanami
           source
           track
           wbr
-        ).freeze
+        ].freeze
 
         # New line separator
         #

@@ -17,13 +17,13 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        BROWSER_METHODS = %w(GET POST).freeze
+        BROWSER_METHODS = %w[GET POST].freeze
 
         # Set of HTTP methods that should NOT generate CSRF token
         #
         # @since 0.2.0
         # @api private
-        EXCLUDED_CSRF_METHODS = %w(GET).freeze
+        EXCLUDED_CSRF_METHODS = %w[GET].freeze
 
         # Checked attribute value
         #
@@ -315,7 +315,7 @@ module Hanami
                        when String, Hanami::Utils::String
                          content
                        else
-                         Utils::String.new(content).capitalize
+                         Utils::String.capitalize(content)
                        end
 
           super(content, attributes)
@@ -997,7 +997,6 @@ module Hanami
         def search_field(name, attributes = {})
           input _attributes(:search, name, attributes)
         end
-        alias input_text text_field
 
         # Radio input
         #
@@ -1473,7 +1472,7 @@ module Hanami
         # @since 0.2.0
         def _input_id(name)
           name = _input_name(name).gsub(/\[(?<token>[[[:word:]]\-]*)\]/, INPUT_ID_REPLACEMENT)
-          Utils::String.new(name).dasherize
+          Utils::String.dasherize(name)
         end
 
         # Input <tt>value</tt> HTML attribute

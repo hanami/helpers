@@ -3,6 +3,7 @@ gemspec
 
 unless ENV['TRAVIS']
   gem 'byebug', require: false, platforms: :mri
+  gem 'pry-debugger-jruby', require: false, platforms: :jruby
   gem 'yard',   require: false
 end
 

@@ -140,6 +140,76 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
+  describe '#fields_for_collection' do
+    let(:params) { Hash[book: { categories: [{ name: 'foo', new: true, genre: nil }] }] }
+
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        fields_for_collection :categories do
+          text_field :name
+          hidden_field :name
+          text_area :name
+          check_box :new
+          select :genre, [%w[Terror terror], %w[Comedy comedy]]
+          color_field :name
+          date_field :name
+          datetime_field :name
+          datetime_local_field :name
+          time_field :name
+          month_field :name
+          week_field :name
+          email_field :name
+          url_field :name
+          tel_field :name
+          file_field :name
+          number_field :name
+          range_field :name
+          search_field :name
+          radio_button :name, 'Fiction'
+          password_field :name
+          datalist :name, ['Italy', 'United States'], 'books'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <input type="text" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="hidden" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <textarea name="book[categories][][name]" id="book-categories-0-name">foo</textarea>
+        <input type="hidden" name="book[categories][][new]" value="0">
+        <input type="checkbox" name="book[categories][][new]" id="book-categories-0-new" value="1" checked="checked">
+        <select name="book[categories][][genre]" id="book-categories-0-genre">
+        <option value="terror">Terror</option>
+        <option value="comedy">Comedy</option>
+        </select>
+        <input type="color" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="date" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="datetime" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="datetime-local" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="time" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="month" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="week" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="email" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="url" name="book[categories][][name]" id="book-categories-0-name" value="">
+        <input type="tel" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="file" name="book[categories][][name]" id="book-categories-0-name">
+        <input type="number" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="range" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="search" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="radio" name="book[categories][][name]" value="Fiction">
+        <input type="password" name="book[categories][][name]" id="book-categories-0-name" value="">
+        <input type="text" name="book[categories][][name]" id="book-categories-0-name" value="foo" list="books">
+        <datalist id="books">
+        <option value="Italy"></option>
+        <option value="United States"></option>
+        </datalist>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
+    end
+  end
+
   #
   # LABEL
   #

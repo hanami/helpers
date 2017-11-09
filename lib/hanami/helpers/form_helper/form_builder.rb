@@ -814,7 +814,7 @@ module Hanami
         #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
-          attributes = { type: :file, name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = { type: :file, name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
 
           input(attributes)
         end
@@ -937,7 +937,7 @@ module Hanami
             content    = nil
           end
 
-          attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = { name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
           textarea(content || _value(name), attributes)
         end
 
@@ -1049,7 +1049,7 @@ module Hanami
         #   <input type="radio" name="book[category]" value="Fiction">
         #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, attributes = {})
-          attributes = { type: :radio, name: _input_name(name), value: value }.merge(attributes)
+          attributes = { type: :radio, name: _displayed_input_name(name), value: value }.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
           input(attributes)
         end
@@ -1070,7 +1070,7 @@ module Hanami
         #   <!-- output -->
         #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, attributes = {})
-          input({ type: :password, name: _input_name(name), id: _input_id(name), value: nil }.merge(attributes))
+          input({ type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil }.merge(attributes))
         end
 
         # Select input
@@ -1509,7 +1509,7 @@ module Hanami
 
           input(
             type:  :hidden,
-            name:  attributes[:name] || _input_name(name),
+            name:  attributes[:name] || _displayed_input_name(name),
             value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
           )
         end
@@ -1523,7 +1523,7 @@ module Hanami
         def _attributes_for_check_box(name, attributes)
           attributes = {
             type:  :checkbox,
-            name:  _input_name(name),
+            name:  _displayed_input_name(name),
             id:    _input_id(name),
             value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
           }.merge(attributes)
@@ -1535,7 +1535,7 @@ module Hanami
 
         # @api private
         def _select_input_name(name, multiple)
-          select_name = _input_name(name)
+          select_name = _displayed_input_name(name)
           select_name = "#{select_name}[]" if multiple
           select_name
         end

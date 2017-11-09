@@ -1121,7 +1121,7 @@ module Hanami
         #
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values
         #   %>
         #
@@ -1134,7 +1134,7 @@ module Hanami
         # @example Prompt option
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { prompt: 'Select a store' }
         #   %>
         #
@@ -1148,7 +1148,7 @@ module Hanami
         # @example Selected option
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { selected: book.store }
         #   %>
         #
@@ -1161,7 +1161,7 @@ module Hanami
         # @example Prompt option and HTML attributes
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { prompt: 'Select a store' }, class: "form-control"
         #   %>
         #
@@ -1175,7 +1175,7 @@ module Hanami
         # @example Multiple select
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values, multiple: true
         #   %>
         #
@@ -1188,7 +1188,7 @@ module Hanami
         # @example Multiple select and HTML attributes
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values, multiple: true, class: "form-control"
         #   %>
         #

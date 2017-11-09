@@ -1208,7 +1208,7 @@ module Hanami
 
             already_selected = nil
             values.each do |content, value|
-              if (attributes[:multiple] || !already_selected) && already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple])
+              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple]))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))

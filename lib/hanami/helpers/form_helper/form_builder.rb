@@ -1206,8 +1206,9 @@ module Hanami
           super(attributes) do
             option(prompt) unless prompt.nil?
 
+            already_selected = nil
             values.each do |content, value|
-              if _select_option_selected?(value, selected, _value(name), attributes[:multiple])
+              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple]))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))
@@ -1547,8 +1548,10 @@ module Hanami
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
-          value == selected || (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            value.to_s == input_value.to_s || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+          value == selected ||
+            (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
+            value.to_s == input_value.to_s ||
+            (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity

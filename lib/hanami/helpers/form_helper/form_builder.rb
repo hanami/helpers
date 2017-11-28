@@ -1200,6 +1200,30 @@ module Hanami
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
+        #
+        # @example Array with repeated entries
+        #   <%=
+        #     # ...
+        #     values = [['Italy', 'it'],
+        #               ['---', ''],
+        #               ['Afghanistan', 'af'],
+        #               ...
+        #               ['Italy', 'it'],
+        #               ...
+        #               ['Zimbabwe', 'zw']]
+        #     select :stores, values
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it">Italy</option>
+        #     <option value="">---</option>
+        #     <option value="af">Afghanistan</option>
+        #     ...
+        #     <option value="it">Italy</option>
+        #     ...
+        #     <option value="zw">Zimbabwe</option>
+        #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }
           attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)

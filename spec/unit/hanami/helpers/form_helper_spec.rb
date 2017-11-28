@@ -2372,6 +2372,18 @@ RSpec.describe Hanami::Helpers::FormHelper do
           expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
         end
       end
+
+      describe 'and repeated values' do
+        let(:option_values) { [%w[Italy it], ['United States', 'us'], %w[Italy it]] }
+
+        it 'renders' do
+          actual = view.form_for(:book, action) do
+            select :store, option_values
+          end.to_s
+
+          expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="it">Italy</option>\n</select>))
+        end
+      end
     end
 
     describe 'with values an Array of objects' do

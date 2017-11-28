@@ -1077,8 +1077,11 @@ module Hanami
         #
         # @param name [Symbol] the input name
         # @param values [Hash] a Hash to generate <tt><option></tt> tags.
-        #   Values correspond to <tt>value</tt> and keys correspond to the content.
         # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # Values is used to generate the list of <tt>&lt;option&gt;</tt> tags, it is an
+        # <tt>Enumerable</tt> of pairs of content (the displayed text) and value (the tag's
+        # attribute), in that respective order (please refer to the examples for more clarity).
         #
         # If request params have a value that corresponds to one of the given values,
         # it automatically sets the <tt>selected</tt> attribute on the <tt><option></tt> tag.
@@ -1090,11 +1093,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values, class: "form-control"
+        #     select :store, values
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store" class="form-control">
+        #   <select name="book[store]" id="book-store">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1103,11 +1106,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values
+        #     select :store, values, class: "form-control"
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store">
+        #   <select name="book[store]" id="book-store" class="form-control">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1196,6 +1199,30 @@ module Hanami
         #   <select name="book[store][]" id="book-store" multiple="multiple" class="form-control">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
+        #   </select>
+        #
+        # @example Array with repeated entries
+        #   <%=
+        #     # ...
+        #     values = [['Italy', 'it'],
+        #               ['---', ''],
+        #               ['Afghanistan', 'af'],
+        #               ...
+        #               ['Italy', 'it'],
+        #               ...
+        #               ['Zimbabwe', 'zw']]
+        #     select :stores, values
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it">Italy</option>
+        #     <option value="">---</option>
+        #     <option value="af">Afghanistan</option>
+        #     ...
+        #     <option value="it">Italy</option>
+        #     ...
+        #     <option value="zw">Zimbabwe</option>
         #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }

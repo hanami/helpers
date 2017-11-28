@@ -3,7 +3,8 @@ gemspec
 
 unless ENV['TRAVIS']
   gem 'byebug', require: false, platforms: :mri
-  gem 'yard',   require: false
+  gem 'pry-debugger-jruby', require: false, platforms: :jruby
+  gem 'yard', require: false
 end
 
 gem 'hanami-utils',       '~> 1.1', git: 'https://github.com/hanami/utils.git',       branch: '1.1.x'

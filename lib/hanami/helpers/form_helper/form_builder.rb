@@ -1550,7 +1550,7 @@ module Hanami
         def _select_option_selected?(value, selected, input_value, multiple)
           value == selected ||
             (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            value.to_s == input_value.to_s ||
+            (!input_value.nil? && (value.to_s == input_value.to_s)) ||
             (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
         # rubocop:enable Metrics/PerceivedComplexity

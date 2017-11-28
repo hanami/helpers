@@ -2524,6 +2524,14 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
       end
+
+      it "allows to force the selection of none" do
+        actual = view.form_for(:book, action) do
+          select :store, option_values, options: { selected: 'none' }
+        end.to_s
+
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
+      end
     end
   end
 

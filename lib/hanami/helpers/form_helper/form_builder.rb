@@ -1077,8 +1077,11 @@ module Hanami
         #
         # @param name [Symbol] the input name
         # @param values [Hash] a Hash to generate <tt><option></tt> tags.
-        #   Values correspond to <tt>value</tt> and keys correspond to the content.
         # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # Values is used to generate the list of <tt>&lt;option&gt;</tt> tags, it is an
+        # <tt>Enumerable</tt> of pairs of content (the displayed text) and value (the tag's
+        # attribute), in that respective order (please refer to the examples for more clarity).
         #
         # If request params have a value that corresponds to one of the given values,
         # it automatically sets the <tt>selected</tt> attribute on the <tt><option></tt> tag.

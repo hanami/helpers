@@ -1093,11 +1093,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values, class: "form-control"
+        #     select :store, values
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store" class="form-control">
+        #   <select name="book[store]" id="book-store">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1106,11 +1106,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values
+        #     select :store, values, class: "form-control"
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store">
+        #   <select name="book[store]" id="book-store" class="form-control">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>

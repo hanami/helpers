@@ -35,7 +35,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>))
     end
 
-    [:patch, :put, :delete].each do |verb|
+    %i[patch put delete].each do |verb|
       it "allows to override 'method' attribute (#{verb})" do
         actual = view.form_for(:book, action, method: verb) do
           text_field :title
@@ -82,7 +82,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      [:patch, :put, :delete].each do |verb|
+      %i[patch put delete].each do |verb|
         it "it injects hidden field when Method Override (#{verb}) is active" do
           actual = view.form_for(:book, action, method: verb) do
             text_field :title
@@ -137,6 +137,76 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         expect(actual).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<input type="text" name="book[categories][name]" id="book-categories-name" value="foo">\n<input type="text" name="book[categories][subcategories][name]" id="book-categories-subcategories-name" value="sub">\n<input type="text" name="book[categories][name2]" id="book-categories-name2" value="bar">\n<input type="text" name="book[title]" id="book-title" value="TDD">\n</form>))
       end
+    end
+  end
+
+  describe '#fields_for_collection' do
+    let(:params) { Hash[book: { categories: [{ name: 'foo', new: true, genre: nil }] }] }
+
+    it 'renders' do
+      actual = view.form_for(:book, action) do
+        fields_for_collection :categories do
+          text_field :name
+          hidden_field :name
+          text_area :name
+          check_box :new
+          select :genre, [%w[Terror terror], %w[Comedy comedy]]
+          color_field :name
+          date_field :name
+          datetime_field :name
+          datetime_local_field :name
+          time_field :name
+          month_field :name
+          week_field :name
+          email_field :name
+          url_field :name
+          tel_field :name
+          file_field :name
+          number_field :name
+          range_field :name
+          search_field :name
+          radio_button :name, 'Fiction'
+          password_field :name
+          datalist :name, ['Italy', 'United States'], 'books'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <input type="text" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="hidden" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <textarea name="book[categories][][name]" id="book-categories-0-name">foo</textarea>
+        <input type="hidden" name="book[categories][][new]" value="0">
+        <input type="checkbox" name="book[categories][][new]" id="book-categories-0-new" value="1" checked="checked">
+        <select name="book[categories][][genre]" id="book-categories-0-genre">
+        <option value="terror">Terror</option>
+        <option value="comedy">Comedy</option>
+        </select>
+        <input type="color" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="date" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="datetime" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="datetime-local" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="time" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="month" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="week" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="email" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="url" name="book[categories][][name]" id="book-categories-0-name" value="">
+        <input type="tel" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="file" name="book[categories][][name]" id="book-categories-0-name">
+        <input type="number" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="range" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="search" name="book[categories][][name]" id="book-categories-0-name" value="foo">
+        <input type="radio" name="book[categories][][name]" value="Fiction">
+        <input type="password" name="book[categories][][name]" id="book-categories-0-name" value="">
+        <input type="text" name="book[categories][][name]" id="book-categories-0-name" value="foo" list="books">
+        <datalist id="books">
+        <option value="Italy"></option>
+        <option value="United States"></option>
+        </datalist>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
     end
   end
 
@@ -2272,7 +2342,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it 'allows to select values' do
         actual = view.form_for(:book, action) do
-          select :store, option_values, multiple: true, options: { selected: %w(it us) }
+          select :store, option_values, multiple: true, options: { selected: %w[it us] }
         end.to_s
 
         expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it" selected="selected">Italy</option>\n<option value="us" selected="selected">United States</option>\n</select>))
@@ -2280,7 +2350,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe 'with values an structured Array of values' do
-      let(:option_values) { [%w(Italy it), ['United States', 'us']] }
+      let(:option_values) { [%w[Italy it], ['United States', 'us']] }
 
       it 'renders' do
         actual = view.form_for(:book, action) do
@@ -2300,6 +2370,18 @@ RSpec.describe Hanami::Helpers::FormHelper do
           end.to_s
 
           expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
+        end
+      end
+
+      describe 'and repeated values' do
+        let(:option_values) { [%w[Italy it], ['United States', 'us'], %w[Italy it]] }
+
+        it 'renders' do
+          actual = view.form_for(:book, action) do
+            select :store, option_values
+          end.to_s
+
+          expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="it">Italy</option>\n</select>))
         end
       end
     end
@@ -2425,6 +2507,42 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
+      end
+    end
+
+    describe 'with nil as a value' do
+      let(:option_values) { Hash['Italy' => 'it', 'United States' => 'us', 'N/A' => nil] }
+
+      it "sets nil option as selected by default" do
+        actual = view.form_for(:book, action) do
+          select :store, option_values
+        end.to_s
+
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N&#x2F;A</option>\n</select>))
+      end
+
+      it "set as selected the option with nil value" do
+        actual = view.form_for(:book, action) do
+          select :store, option_values, options: { selected: nil }
+        end.to_s
+
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N&#x2F;A</option>\n</select>))
+      end
+
+      it "set as selected the option with a value" do
+        actual = view.form_for(:book, action) do
+          select :store, option_values, options: { selected: 'it' }
+        end.to_s
+
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
+      end
+
+      it "allows to force the selection of none" do
+        actual = view.form_for(:book, action) do
+          select :store, option_values, options: { selected: 'none' }
+        end.to_s
+
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
       end
     end
   end

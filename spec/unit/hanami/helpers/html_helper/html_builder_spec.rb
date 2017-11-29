@@ -44,12 +44,12 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
   describe '<addr>' do
     it 'generates an address' do
       content = Hanami::Utils::Escape::SafeString.new(
-        <<-CONTENT
-Mozilla Foundation<br>
-1981 Landings Drive<br>
-Building K<br>
-Mountain View, CA 94043-0801<br>
-USA
+        <<~CONTENT
+          Mozilla Foundation<br>
+          1981 Landings Drive<br>
+          Building K<br>
+          Mountain View, CA 94043-0801<br>
+          USA
 CONTENT
       )
 
@@ -164,7 +164,7 @@ CONTENT
     it 'generates HTML4 content type' do
       # RUBY_VERSION >= 2.2
       # result = @builder.meta('http-equiv': 'Content-Type', content: 'text/html; charset=utf-8').to_s
-      result = @builder.meta(:'http-equiv' => 'Content-Type', content: 'text/html; charset=utf-8').to_s
+      result = @builder.meta('http-equiv': 'Content-Type', content: 'text/html; charset=utf-8').to_s
       expect(result).to eq(%(<meta http-equiv="Content-Type" content="text/html; charset=utf-8">))
     end
 
@@ -176,7 +176,7 @@ CONTENT
     it 'generates a page refresh' do
       # RUBY_VERSION >= 2.2
       # result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://hanamirb.org').to_s
-      result = @builder.meta(:'http-equiv' => 'refresh', content: '23;url=http://hanamirb.org').to_s
+      result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://hanamirb.org').to_s
       expect(result).to eq(%(<meta http-equiv="refresh" content="23;url=http://hanamirb.org">))
     end
   end

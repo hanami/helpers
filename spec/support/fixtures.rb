@@ -85,7 +85,7 @@ class HtmlView
   #   html.div('data-where': 'up')
   # end
   def div_with_data_attr
-    html.div(:'data-where' => 'up')
+    html.div('data-where': 'up')
   end
 
   def div_with_attrs
@@ -260,7 +260,7 @@ class EscapeView
 end
 
 class Book < Dry::Struct
-  constructor_type :weak
+  constructor_type :schema
 
   attribute :title,               Types::String.optional
   attribute :search_title,        Types::String.optional
@@ -356,7 +356,7 @@ class FormHelperView
     parameters = params.to_h
 
     # Randomly use Hanami::Action::BaseParams or the given raw Hash in order to
-    # simulate Hash usage during the test setup unit tests in Hanami projects.
+    # simulate Hash usage during the spec setup of unit specs in Hanami projects.
     if parameters.respond_to?(:dig)
       [true, false].sample ? Hanami::Action::BaseParams.new(parameters) : parameters
     else

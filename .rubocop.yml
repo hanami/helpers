@@ -1,14 +1,8 @@
 # Please keep AllCops, Bundler, Style, Metrics groups and then order cops
 # alphabetically
 inherit_from:
-  - https://raw.githubusercontent.com/hanami/hanami/master/.rubocop.yml
-Metrics/BlockLength:
-  Exclude:
-    - "test/**/*_test.rb" # Minitest syntax generates this false positive
-    - 'spec/**/*'
+  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
+Naming/HeredocDelimiterNaming:
+  Enabled: false
 Style/MethodMissing:
-  Enabled: false
-Style/IndentHeredoc:
-  Enabled: false
-Style/SymbolArray:
   Enabled: false

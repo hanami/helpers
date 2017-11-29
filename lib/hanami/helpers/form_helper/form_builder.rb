@@ -17,13 +17,13 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        BROWSER_METHODS = %w(GET POST).freeze
+        BROWSER_METHODS = %w[GET POST].freeze
 
         # Set of HTTP methods that should NOT generate CSRF token
         #
         # @since 0.2.0
         # @api private
-        EXCLUDED_CSRF_METHODS = %w(GET).freeze
+        EXCLUDED_CSRF_METHODS = %w[GET].freeze
 
         # Checked attribute value
         #
@@ -315,7 +315,7 @@ module Hanami
                        when String, Hanami::Utils::String
                          content
                        else
-                         Utils::String.new(content).capitalize
+                         Utils::String.capitalize(content)
                        end
 
           super(content, attributes)
@@ -814,7 +814,7 @@ module Hanami
         #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
-          attributes = { type: :file, name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = { type: :file, name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
 
           input(attributes)
         end
@@ -937,7 +937,7 @@ module Hanami
             content    = nil
           end
 
-          attributes = { name: _input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = { name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
           textarea(content || _value(name), attributes)
         end
 
@@ -997,7 +997,6 @@ module Hanami
         def search_field(name, attributes = {})
           input _attributes(:search, name, attributes)
         end
-        alias input_text text_field
 
         # Radio input
         #
@@ -1050,7 +1049,7 @@ module Hanami
         #   <input type="radio" name="book[category]" value="Fiction">
         #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, attributes = {})
-          attributes = { type: :radio, name: _input_name(name), value: value }.merge(attributes)
+          attributes = { type: :radio, name: _displayed_input_name(name), value: value }.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
           input(attributes)
         end
@@ -1071,15 +1070,18 @@ module Hanami
         #   <!-- output -->
         #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, attributes = {})
-          input({ type: :password, name: _input_name(name), id: _input_id(name), value: nil }.merge(attributes))
+          input({ type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil }.merge(attributes))
         end
 
         # Select input
         #
         # @param name [Symbol] the input name
         # @param values [Hash] a Hash to generate <tt><option></tt> tags.
-        #   Values correspond to <tt>value</tt> and keys correspond to the content.
         # @param attributes [Hash] HTML attributes to pass to the input tag
+        #
+        # Values is used to generate the list of <tt>&lt;option&gt;</tt> tags, it is an
+        # <tt>Enumerable</tt> of pairs of content (the displayed text) and value (the tag's
+        # attribute), in that respective order (please refer to the examples for more clarity).
         #
         # If request params have a value that corresponds to one of the given values,
         # it automatically sets the <tt>selected</tt> attribute on the <tt><option></tt> tag.
@@ -1091,11 +1093,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values, class: "form-control"
+        #     select :store, values
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store" class="form-control">
+        #   <select name="book[store]" id="book-store">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1104,11 +1106,11 @@ module Hanami
         #   <%=
         #     # ...
         #     values = Hash['Italy' => 'it', 'United States' => 'us']
-        #     select :store, values
+        #     select :store, values, class: "form-control"
         #   %>
         #
         #   <!-- output -->
-        #   <select name="book[store]" id="book-store">
+        #   <select name="book[store]" id="book-store" class="form-control">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1122,7 +1124,7 @@ module Hanami
         #
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values
         #   %>
         #
@@ -1135,7 +1137,7 @@ module Hanami
         # @example Prompt option
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { prompt: 'Select a store' }
         #   %>
         #
@@ -1149,7 +1151,7 @@ module Hanami
         # @example Selected option
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { selected: book.store }
         #   %>
         #
@@ -1162,7 +1164,7 @@ module Hanami
         # @example Prompt option and HTML attributes
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :store, values, options: { prompt: 'Select a store' }, class: "form-control"
         #   %>
         #
@@ -1176,7 +1178,7 @@ module Hanami
         # @example Multiple select
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values, multiple: true
         #   %>
         #
@@ -1189,7 +1191,7 @@ module Hanami
         # @example Multiple select and HTML attributes
         #   <%=
         #     # ...
-        #     values = Hash['it' => 'Italy', 'us' => 'United States']
+        #     values = Hash['Italy' => 'it', 'United States' => 'us']
         #     select :stores, values, multiple: true, class: "form-control"
         #   %>
         #
@@ -1197,6 +1199,30 @@ module Hanami
         #   <select name="book[store][]" id="book-store" multiple="multiple" class="form-control">
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
+        #   </select>
+        #
+        # @example Array with repeated entries
+        #   <%=
+        #     # ...
+        #     values = [['Italy', 'it'],
+        #               ['---', ''],
+        #               ['Afghanistan', 'af'],
+        #               ...
+        #               ['Italy', 'it'],
+        #               ...
+        #               ['Zimbabwe', 'zw']]
+        #     select :stores, values
+        #   %>
+        #
+        #   <!-- output -->
+        #   <select name="book[store]" id="book-store">
+        #     <option value="it">Italy</option>
+        #     <option value="">---</option>
+        #     <option value="af">Afghanistan</option>
+        #     ...
+        #     <option value="it">Italy</option>
+        #     ...
+        #     <option value="zw">Zimbabwe</option>
         #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options    = attributes.delete(:options) { {} }
@@ -1207,8 +1233,9 @@ module Hanami
           super(attributes) do
             option(prompt) unless prompt.nil?
 
+            already_selected = nil
             values.each do |content, value|
-              if _select_option_selected?(value, selected, _value(name), attributes[:multiple])
+              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple]))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))
@@ -1473,7 +1500,7 @@ module Hanami
         # @since 0.2.0
         def _input_id(name)
           name = _input_name(name).gsub(/\[(?<token>[[[:word:]]\-]*)\]/, INPUT_ID_REPLACEMENT)
-          Utils::String.new(name).dasherize
+          Utils::String.dasherize(name)
         end
 
         # Input <tt>value</tt> HTML attribute
@@ -1510,7 +1537,7 @@ module Hanami
 
           input(
             type:  :hidden,
-            name:  attributes[:name] || _input_name(name),
+            name:  attributes[:name] || _displayed_input_name(name),
             value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
           )
         end
@@ -1524,7 +1551,7 @@ module Hanami
         def _attributes_for_check_box(name, attributes)
           attributes = {
             type:  :checkbox,
-            name:  _input_name(name),
+            name:  _displayed_input_name(name),
             id:    _input_id(name),
             value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
           }.merge(attributes)
@@ -1536,7 +1563,7 @@ module Hanami
 
         # @api private
         def _select_input_name(name, multiple)
-          select_name = _input_name(name)
+          select_name = _displayed_input_name(name)
           select_name = "#{select_name}[]" if multiple
           select_name
         end
@@ -1548,8 +1575,10 @@ module Hanami
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
-          value == selected || (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            value.to_s == input_value.to_s || (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+          value == selected ||
+            (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
+            (!input_value.nil? && (value.to_s == input_value.to_s)) ||
+            (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
         end
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity

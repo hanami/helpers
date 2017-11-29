@@ -414,7 +414,7 @@ module Hanami
                  Form.new(name, url, options.delete(:values))
                end
 
-        attributes = { action: form.url, method: form.verb, :'accept-charset' => DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(options)
+        attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(options)
         FormBuilder.new(form, attributes, self, &blk)
       end
 

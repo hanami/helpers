@@ -43,7 +43,7 @@ module Hanami
       # @since 0.1.0
       # @api private
       def self.included(base)
-        factory = "#{Utils::String.new(base).namespace}.routes"
+        factory = "#{Utils::String.namespace(base)}.routes"
 
         base.class_eval <<-END_EVAL, __FILE__, __LINE__
           def routes

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hanami
   module Helpers
     module HtmlHelper
@@ -65,7 +67,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        ATTRIBUTES_SEPARATOR = ' '.freeze
+        ATTRIBUTES_SEPARATOR = " "
 
         # Initialize a new empty HTML node
         #
@@ -101,13 +103,13 @@ module Hanami
         # @api private
         def attributes
           return unless defined?(@attributes) && !@attributes.nil?
-          result = ''
+          result = ""
 
           @attributes.each do |attribute_name, value|
             if boolean_attribute?(attribute_name)
-              result << boolean_attribute(attribute_name, value) if value
+              result += boolean_attribute(attribute_name, value) if value
             else
-              result << attribute(attribute_name, value)
+              result += attribute(attribute_name, value)
             end
           end
 

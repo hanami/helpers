@@ -1,9 +1,11 @@
-if ENV['COVERALL']
-  require 'coveralls'
+# frozen_string_literal: true
+
+if ENV["COVERALL"]
+  require "coveralls"
   Coveralls.wear!
 end
 
-require 'hanami/utils'
+require "hanami/utils"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -21,7 +23,7 @@ RSpec.configure do |config|
 
   config.warnings = true
 
-  config.default_formatter = 'doc' if config.files_to_run.one?
+  config.default_formatter = "doc" if config.files_to_run.one?
 
   config.profile_examples = 10
 
@@ -29,8 +31,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-$LOAD_PATH.unshift 'lib'
-require 'hanami/helpers'
-require_relative './support/fixtures'
+$LOAD_PATH.unshift "lib"
+require "hanami/helpers"
+require_relative "./support/fixtures"
 
 Hanami::View.load!

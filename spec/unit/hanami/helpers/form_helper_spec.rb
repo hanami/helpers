@@ -2353,7 +2353,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, multiple: true, options: { prompt: 'Choose your country' }
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple">\n<option disabled="disabled">Choose your country</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple">\n<option disabled="disabled" selected="selected">Choose your country</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
       end
     end
 

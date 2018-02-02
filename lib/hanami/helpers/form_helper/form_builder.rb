@@ -1474,6 +1474,7 @@ module Hanami
           attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
           attrs.merge!(attributes)
           attrs[:value] = escape_html(attrs[:value])
+          attrs[:class] = "#{attrs[:class]} field_with_error" if _field_with_error?(name)
           attrs
         end
 
@@ -1508,9 +1509,15 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _value(name)
-          @values.get(
-            *_input_name(name).split(/[\[\]]+/).map(&:to_sym)
-          )
+          @values.get(*_field_keys(name))
+        end
+
+        def _field_with_error?(name)
+          @values.error?(*_field_keys(name))
+        end
+
+        def _field_keys(name)
+          _input_name(name).split(/[\[\]]+/).map(&:to_sym)
         end
 
         # Input <tt>for</tt> HTML attribute

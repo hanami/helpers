@@ -31,6 +31,11 @@ module Hanami
           _get_from_params(*keys) || _get_from_values(*keys)
         end
 
+        def error?(*keys)
+          return false unless @params.respond_to?(:errors)
+          @params.errors && !@params.errors.dig(*keys).empty?
+        end
+
         private
 
         # @since 0.5.0

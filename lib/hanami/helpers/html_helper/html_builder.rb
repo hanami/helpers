@@ -162,7 +162,7 @@ module Hanami
               @nodes << self.class.html_node.new(:#{tag}, blk || content, attributes || content, options)
               self
             end
-          }
+          }, __FILE__, __LINE__ - 5
         end
 
         EMPTY_TAGS.each do |tag|
@@ -171,7 +171,7 @@ module Hanami
               @nodes << EmptyHtmlNode.new(:#{tag}, attributes)
               self
             end
-          }
+          }, __FILE__, __LINE__ - 5
         end
 
         include Utils::ClassAttribute
@@ -371,7 +371,7 @@ module Hanami
           # @since 0.1.0
           # @api private
           def resolve(&blk)
-            @context = eval "self", blk.binding
+            @context = eval("self", blk.binding, __FILE__, __LINE__)
             instance_exec(&blk)
           end
         end

@@ -110,6 +110,23 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
     end
+
+    describe "remote: true" do
+      it "adds data-remote=true to form attributes" do
+        actual = view.form_for(:book, action, remote: true) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="true">\n\n</form>))
+      end
+
+      it "adds data-remote=false to form attributes" do
+        actual = view.form_for(:book, action, remote: false) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="false">\n\n</form>))
+      end
+
+      it "adds data-remote= to form attributes" do
+        actual = view.form_for(:book, action, remote: nil) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
+      end
+    end
   end
 
   #

@@ -245,6 +245,13 @@ CONTENT
       result = @builder.input('required' => true, 'value' => 'Title "book"', 'something' => 'bar').to_s
       expect(result).to eq('<input required="required" value="Title "book"" something="bar">')
     end
+
+    # rubocop:disable Style/SymbolArray
+    it 'renders attribute with array value as joined with string' do
+      result = @builder.input('class' => [:ui, :form]).to_s
+      expect(result).to eq('<input class="ui form">')
+    end
+    # rubocop:enable Style/SymbolArray
   end
 
   ##############################################################################

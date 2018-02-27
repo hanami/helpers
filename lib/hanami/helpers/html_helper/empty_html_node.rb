@@ -140,7 +140,7 @@ module Hanami
         # @since x.x.x
         def htmlified_array_attributes(attributes)
           attributes&.inject({}) do |attrs, (key, value)|
-            attrs[key] = value.is_a?(Array) ? value.join(" ") : value
+            attrs[key] = value.is_a?(Array) ? value.join(ATTRIBUTES_SEPARATOR) : value
             attrs
           end
         end

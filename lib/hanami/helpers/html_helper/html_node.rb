@@ -27,7 +27,8 @@ module Hanami
                        @attributes = content
                        nil
                      else
-                       @attributes = attributes.to_h if attributes.respond_to?(:to_h)
+                       attributes_hash = attributes.to_h if attributes.respond_to?(:to_h)
+                       @attributes = htmlified_array_attributes(attributes_hash)
                        content
                      end
         end

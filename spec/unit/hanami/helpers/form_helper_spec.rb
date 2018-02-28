@@ -92,6 +92,41 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
     end
+
+    describe "CSRF meta tags" do
+      let(:view)       { SessionFormHelperView.new(params, csrf_token) }
+      let(:csrf_token) { 'abc123' }
+
+      it "prints meta tags" do
+        expected = %(<meta name="csrf-param" value="_csrf_token">\n<meta name="csrf-token" value="#{csrf_token}">)
+        expect(view.csrf_meta_tags.to_s).to eq(expected)
+      end
+
+      context "when CSRF token is nil" do
+        let(:csrf_token) { nil }
+
+        it "returns nil" do
+          expect(view.csrf_meta_tags).to be(nil)
+        end
+      end
+    end
+
+    describe "remote: true" do
+      it "adds data-remote=true to form attributes" do
+        actual = view.form_for(:book, action, remote: true) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="true">\n\n</form>))
+      end
+
+      it "adds data-remote=false to form attributes" do
+        actual = view.form_for(:book, action, remote: false) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="false">\n\n</form>))
+      end
+
+      it "adds data-remote= to form attributes" do
+        actual = view.form_for(:book, action, remote: nil) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
+      end
+    end
   end
 
   #

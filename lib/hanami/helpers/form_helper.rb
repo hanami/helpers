@@ -443,7 +443,7 @@ module Hanami
       #
       # @return [Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the tags if `csrf_token` is not `nil`
       #
-      # @since x.x.x
+      # @since 1.2.0
       #
       # @example
       #   <html>

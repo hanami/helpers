@@ -137,7 +137,7 @@ module Hanami
         #
         # @return [Hash] the attributes transformed into HTML friendly values, i.e space separated strings
         #
-        # @since x.x.x
+        # @since 1.2.0
         def prepare_html_attributes(attributes)
           attributes&.inject({}) do |attrs, (key, value)|
             attrs[key] = value.is_a?(Array) ? value.join(ATTRIBUTES_SEPARATOR) : value

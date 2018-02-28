@@ -78,7 +78,7 @@ module Hanami
         # @api private
         def initialize(name, attributes)
           @name       = name
-          @attributes = htmlified_array_attributes(attributes)
+          @attributes = prepare_html_attributes(attributes)
         end
 
         # Resolve and return the output
@@ -138,7 +138,7 @@ module Hanami
         # @return [Hash] the attributes transformed into HTML friendly values, i.e space separated strings
         #
         # @since x.x.x
-        def htmlified_array_attributes(attributes)
+        def prepare_html_attributes(attributes)
           attributes&.inject({}) do |attrs, (key, value)|
             attrs[key] = value.is_a?(Array) ? value.join(ATTRIBUTES_SEPARATOR) : value
             attrs

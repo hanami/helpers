@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v1.1.1 - 2017-11-28
+## v1.1.1 - 2018-02-27
 ### Fixed
 - [Alfonso Uceda] Ensure `#select` form helper to not select options with `nil` value
 - [Alfonso Uceda] Ensure `#fields_for_collection` form helper to produce input fields with correct `name` attribute

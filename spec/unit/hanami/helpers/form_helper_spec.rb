@@ -260,6 +260,24 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       expect(actual).to include(%(<button class="btn btn-secondary">Click me</button>))
     end
+
+    it 'renders a button with block' do
+      actual = view.form_for(:book, action) do
+        button class: "btn btn-secondary" do
+          span class: 'oi oi-check'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <button class="btn btn-secondary">
+        <span class="oi oi-check"></span>
+        </button>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
+    end
   end
 
   describe '#submit' do
@@ -277,6 +295,24 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end.to_s
 
       expect(actual).to include(%(<button type="submit" class="btn btn-primary">Create</button>))
+    end
+
+    it 'renders a submit button with block' do
+      actual = view.form_for(:book, action) do
+        submit class: "btn btn-primary" do
+          span class: 'oi oi-check'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <button type="submit" class="btn btn-primary">
+        <span class="oi oi-check"></span>
+        </button>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
     end
   end
 

@@ -2546,9 +2546,9 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe 'with values' do
-        let(:values) { Hash[book: Book.new(category: val)] }
-        let(:option_values) {  Hash['N/A' => nil, 'Horror' => 'horror', 'SciFy' => 'scify'] }
-        let(:val) { 'horror' }
+        let(:values)        { Hash[book: Book.new(category: val)] }
+        let(:option_values) { Hash['N/A' => nil, 'Horror' => 'horror', 'SciFy' => 'scify'] }
+        let(:val)           { 'horror' }
 
         it 'sets correct value as selected' do
           actual = view.form_for(:book, action, values: values) do

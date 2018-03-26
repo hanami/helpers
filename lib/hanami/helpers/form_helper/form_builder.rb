@@ -1229,13 +1229,14 @@ module Hanami
           attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)
           prompt     = options.delete(:prompt)
           selected   = options.delete(:selected)
+          input_value = _value(name)
 
           super(attributes) do
             option(prompt) unless prompt.nil?
 
             already_selected = nil
             values.each do |content, value|
-              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple]))
+              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, attributes[:multiple]))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))

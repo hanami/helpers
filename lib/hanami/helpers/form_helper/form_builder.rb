@@ -1570,24 +1570,35 @@ module Hanami
           select_name
         end
 
-        # TODO: this has to be refactored
-        #
         # @api private
-        #
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
           if input_value && selected.nil?
             value.to_s == input_value
           else
             (value == selected) ||
-              (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-              (!input_value.nil? && (value.to_s == input_value.to_s)) ||
-              (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+              _is_in_selected_values?(multiple, selected, value) ||
+              _is_current_value?(input_value, value) ||
+              _is_in_input_values?(multiple, input_value, value)
           end
         end
-        # rubocop:enable Metrics/PerceivedComplexity
-        # rubocop:enable Metrics/CyclomaticComplexity
+
+        # @api private
+        def _is_current_value?(input_value, value)
+          return unless input_value
+          value.to_s == input_value.to_s
+        end
+
+        # @api private
+        def _is_in_selected_values?(multiple, selected, value)
+          return unless multiple && selected.is_a?(Array)
+          selected.include?(value)
+        end
+
+        # @api private
+        def _is_in_input_values?(multiple, input_value, value)
+          return unless multiple && input_value.is_a?(Array)
+          input_value.include?(value)
+        end
 
         # @api private
         def _check_box_checked?(value, input_value)

@@ -1225,10 +1225,11 @@ module Hanami
         #     <option value="zw">Zimbabwe</option>
         #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-          options    = attributes.delete(:options) { {} }
-          attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)
-          prompt     = options.delete(:prompt)
-          selected   = options.delete(:selected)
+          options     = attributes.delete(:options) { {} }
+          multiple    = attributes[:multiple]
+          attributes  = { name: _select_input_name(name, multiple), id: _input_id(name) }.merge(attributes)
+          prompt      = options.delete(:prompt)
+          selected    = options.delete(:selected)
           input_value = _value(name)
 
           super(attributes) do
@@ -1236,7 +1237,7 @@ module Hanami
 
             already_selected = nil
             values.each do |content, value|
-              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, attributes[:multiple]))
+              if (multiple || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, multiple))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))

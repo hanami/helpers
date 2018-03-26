@@ -1575,10 +1575,14 @@ module Hanami
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
-          value == selected ||
-            (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            (!input_value.nil? && (value.to_s == input_value.to_s)) ||
-            (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+          if input_value && selected.nil?
+            value.to_s == input_value
+          else
+            (value == selected) ||
+              (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
+              (!input_value.nil? && (value.to_s == input_value.to_s)) ||
+              (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+          end
         end
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity

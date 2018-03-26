@@ -81,11 +81,11 @@ module Hanami
 
         # Instantiate a form builder
         #
-        # @overload initialize(form, attributes, params, &blk)
+        # @overload initialize(form, attributes, context, &blk)
         #   Top level form
         #   @param form [Hanami::Helpers:FormHelper::Form] the form
         #   @param attributes [::Hash] a set of HTML attributes
-        #   @param params [Hanami::Action::Params] request params
+        #   @param context [Hanami::Helpers::FormHelper]
         #   @param blk [Proc] a block that describes the contents of the form
         #
         # @overload initialize(form, attributes, params, &blk)

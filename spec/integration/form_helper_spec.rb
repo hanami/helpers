@@ -101,7 +101,7 @@ RSpec.describe 'Form helper' do
       end
 
       it 'renders the form' do
-        expect(@actual).to include(%(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@address1.street}" class="form-control" placeholder="Street" data-funky="id-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@address2.street}" class="form-control" placeholder="Street" data-funky="id-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n))
+        expect(@actual).to include(%(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@address1.street}" class="form-control" placeholder="Street" data-funky="index-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@address2.street}" class="form-control" placeholder="Street" data-funky="index-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n))
       end
     end
 
@@ -117,7 +117,23 @@ RSpec.describe 'Form helper' do
       end
 
       it 'renders the form' do
-        expect(@actual).to include(%(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@params[:bill][:addresses][0][:street]}" class="form-control" placeholder="Street" data-funky="id-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@params[:bill][:addresses][1][:street]}" class="form-control" placeholder="Street" data-funky="id-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n))
+        expect(@actual).to include(%(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@params[:bill][:addresses][0][:street]}" class="form-control" placeholder="Street" data-funky="index-0">\n</div>\n<div class="form-group">\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@params[:bill][:addresses][1][:street]}" class="form-control" placeholder="Street" data-funky="index-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n))
+      end
+    end
+
+    describe 'accessing resource data' do
+      before do
+        @address1 = Address.new(id: 23, street: '5th Ave')
+        @address2 = Address.new(id: 42, street: '4th Ave')
+        @bill     = Bill.new(id: 1, addresses: [@address1, @address2])
+        @params   = BillParams.new({})
+        @session  = Session.new(_csrf_token: 's14')
+
+        @actual   = FullStack::Views::Bills::Edit2.render(format: :html, bill: @bill, params: @params, session: @session)
+      end
+
+      it 'renders the form' do
+        expect(@actual).to include(%(<form action="/bills/#{@bill.id}" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">\n<input type="hidden" name="_method" value="PATCH">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<fieldset>\n<legend>Addresses</legend>\n<div class="form-group">\nAddress id: 23\n<label for="bill-addresses-0-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="#{@address1.street}" class="form-control" placeholder="Street" data-funky="index-0">\n</div>\n<div class="form-group">\nAddress id: 42\n<label for="bill-addresses-1-street">Street</label>\n<input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="#{@address2.street}" class="form-control" placeholder="Street" data-funky="index-1">\n</div>\n<label for="bill-ensure-names">Ensure names</label>\n</fieldset>\n<button type="submit" class="btn btn-default">Update</button>\n</form>\n))
       end
     end
   end

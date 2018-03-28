@@ -377,9 +377,10 @@ class SessionFormHelperView < FormHelperView
 end
 
 class Address
-  attr_reader :street
+  attr_reader :id, :street
 
   def initialize(attributes = {})
+    @id     = attributes[:id]
     @street = attributes[:street]
   end
 end
@@ -534,6 +535,19 @@ module FullStack
       class Edit
         include TestView
         template 'bills/edit'
+
+        def form
+          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
+        end
+
+        def submit_label
+          'Update'
+        end
+      end
+
+      class Edit2
+        include TestView
+        template 'bills/edit2'
 
         def form
           Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)

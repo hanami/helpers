@@ -1361,7 +1361,6 @@ module Hanami
         #     <span class="oi oi-check"></span>
         #   </button>
         def button(content, attributes = {}, &blk)
-          # This is here only for documentation purposes
           if content.is_a?(Hash)
             attributes = content
             content = nil

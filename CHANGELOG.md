@@ -1,6 +1,10 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.2.0.rc1 - 2018-03-30
+### Fixed
+- [Gustavo Caso] Ensure `select` helper to set the `selected` attribute properly when an `<option>` has a `nil` value
+
 ## v1.2.0.beta2 - 2018-03-23
 
 ## v1.2.0.beta1 - 2018-02-28

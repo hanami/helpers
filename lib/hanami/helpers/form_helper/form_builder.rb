@@ -81,11 +81,11 @@ module Hanami
 
         # Instantiate a form builder
         #
-        # @overload initialize(form, attributes, params, &blk)
+        # @overload initialize(form, attributes, context, &blk)
         #   Top level form
         #   @param form [Hanami::Helpers:FormHelper::Form] the form
         #   @param attributes [::Hash] a set of HTML attributes
-        #   @param params [Hanami::Action::Params] request params
+        #   @param context [Hanami::Helpers::FormHelper]
         #   @param blk [Proc] a block that describes the contents of the form
         #
         # @overload initialize(form, attributes, params, &blk)
@@ -1225,17 +1225,19 @@ module Hanami
         #     <option value="zw">Zimbabwe</option>
         #   </select>
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-          options    = attributes.delete(:options) { {} }
-          attributes = { name: _select_input_name(name, attributes[:multiple]), id: _input_id(name) }.merge(attributes)
-          prompt     = options.delete(:prompt)
-          selected   = options.delete(:selected)
+          options     = attributes.delete(:options) { {} }
+          multiple    = attributes[:multiple]
+          attributes  = { name: _select_input_name(name, multiple), id: _input_id(name) }.merge(attributes)
+          prompt      = options.delete(:prompt)
+          selected    = options.delete(:selected)
+          input_value = _value(name)
 
           super(attributes) do
             option(prompt) unless prompt.nil?
 
             already_selected = nil
             values.each do |content, value|
-              if (attributes[:multiple] || !already_selected) && (already_selected = _select_option_selected?(value, selected, _value(name), attributes[:multiple]))
+              if (multiple || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, multiple))
                 option(content, { value: value, selected: SELECTED }.merge(options))
               else
                 option(content, { value: value }.merge(options))
@@ -1568,20 +1570,35 @@ module Hanami
           select_name
         end
 
-        # TODO: this has to be refactored
-        #
         # @api private
-        #
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def _select_option_selected?(value, selected, input_value, multiple)
-          value == selected ||
-            (multiple && (selected.is_a?(Array) && selected.include?(value))) ||
-            (!input_value.nil? && (value.to_s == input_value.to_s)) ||
-            (multiple && (input_value.is_a?(Array) && input_value.include?(value)))
+          if input_value && selected.nil?
+            value.to_s == input_value
+          else
+            (value == selected) ||
+              _is_in_selected_values?(multiple, selected, value) ||
+              _is_current_value?(input_value, value) ||
+              _is_in_input_values?(multiple, input_value, value)
+          end
         end
-        # rubocop:enable Metrics/PerceivedComplexity
-        # rubocop:enable Metrics/CyclomaticComplexity
+
+        # @api private
+        def _is_current_value?(input_value, value)
+          return unless input_value
+          value.to_s == input_value.to_s
+        end
+
+        # @api private
+        def _is_in_selected_values?(multiple, selected, value)
+          return unless multiple && selected.is_a?(Array)
+          selected.include?(value)
+        end
+
+        # @api private
+        def _is_in_input_values?(multiple, input_value, value)
+          return unless multiple && input_value.is_a?(Array)
+          input_value.include?(value)
+        end
 
         # @api private
         def _check_box_checked?(value, input_value)

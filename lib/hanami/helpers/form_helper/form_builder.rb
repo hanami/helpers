@@ -1328,8 +1328,15 @@ module Hanami
 
         # Button
         #
-        # @param content [String] The content
-        # @param attributes [Hash] HTML attributes to pass to the button tag
+        # @overload button(content, attributes = {})
+        #   Use string content
+        #   @param content [String] The content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @overload button(attributes = {}, &blk)
+        #   Use block content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #   @param blk [Proc] the block content
         #
         # @since 1.0.0
         #
@@ -1351,19 +1358,20 @@ module Hanami
         #   <!-- output -->
         #   <button class="btn btn-secondary">Click me</button>
         #
-        # @example block
+        # @example Block
         #   <%=
         #     # ...
         #     button class: "btn btn-secondary" do
         #       span class: 'oi oi-check'
         #     end
         #   %>
+        #
         #   <!-- output -->
         #   <button class="btn btn-secondary">
         #     <span class="oi oi-check"></span>
         #   </button>
         def button(content, attributes = {}, &blk)
-          if content.is_a?(Hash)
+          if content.is_a?(::Hash)
             attributes = content
             content = nil
           end
@@ -1409,8 +1417,15 @@ module Hanami
 
         # Submit button
         #
-        # @param content [String] The content
-        # @param attributes [Hash] HTML attributes to pass to the button tag
+        # @overload submit(content, attributes = {})
+        #   Use string content
+        #   @param content [String] The content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @overload submit(attributes = {}, &blk)
+        #   Use block content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #   @param blk [Proc] the block content
         #
         # @since 0.2.0
         #
@@ -1432,19 +1447,20 @@ module Hanami
         #   <!-- output -->
         #   <button type="submit" class="btn btn-primary">Create</button>
         #
-        # @example block
+        # @example Block
         #   <%=
         #     # ...
         #     button class: "btn btn-primary" do
         #       span class: 'oi oi-check'
         #     end
         #   %>
+        #
         #   <!-- output -->
         #   <button type="submit" class="btn btn-primary">
         #     <span class="oi oi-check"></span>
         #   </button>
         def submit(content, attributes = {}, &blk)
-          if content.is_a?(Hash)
+          if content.is_a?(::Hash)
             attributes = content
             content = nil
           end

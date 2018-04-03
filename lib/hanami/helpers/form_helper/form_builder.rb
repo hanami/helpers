@@ -1350,8 +1350,24 @@ module Hanami
         #
         #   <!-- output -->
         #   <button class="btn btn-secondary">Click me</button>
-        def button(content, attributes = {})
-          # This is here only for documentation purposes
+        #
+        # @example block
+        #   <%=
+        #     # ...
+        #     button class: "btn btn-secondary" do
+        #       span class: 'oi oi-check'
+        #     end
+        #   %>
+        #   <!-- output -->
+        #   <button class="btn btn-secondary">
+        #     <span class="oi oi-check"></span>
+        #   </button>
+        def button(content, attributes = {}, &blk)
+          if content.is_a?(Hash)
+            attributes = content
+            content = nil
+          end
+
           super
         end
 
@@ -1415,9 +1431,26 @@ module Hanami
         #
         #   <!-- output -->
         #   <button type="submit" class="btn btn-primary">Create</button>
-        def submit(content, attributes = {})
+        #
+        # @example block
+        #   <%=
+        #     # ...
+        #     button class: "btn btn-primary" do
+        #       span class: 'oi oi-check'
+        #     end
+        #   %>
+        #   <!-- output -->
+        #   <button type="submit" class="btn btn-primary">
+        #     <span class="oi oi-check"></span>
+        #   </button>
+        def submit(content, attributes = {}, &blk)
+          if content.is_a?(Hash)
+            attributes = content
+            content = nil
+          end
+
           attributes = { type: :submit }.merge(attributes)
-          button(content, attributes)
+          button(content, attributes, &blk)
         end
 
         protected

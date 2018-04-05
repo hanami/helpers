@@ -148,6 +148,9 @@ module Hanami
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
         #
+        # @yield [index]
+        # @yieldparam [Integer] index iterative index (it starts from zero)
+        #
         # @since 0.2.0
         #
         # @example Basic usage
@@ -200,10 +203,10 @@ module Hanami
         #
         #     <button type="submit">Create</button>
         #   </form>
-        def fields_for(name)
+        def fields_for(name, value = nil)
           current_name = @name
           @name        = _input_name(name)
-          yield(name)
+          yield(name, value)
         ensure
           @name = current_name
         end
@@ -215,6 +218,10 @@ module Hanami
         #
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
+        #
+        # @yield [index, value]
+        # @yieldparam [Integer] index iterative index (it starts from zero)
+        # @yieldparam [Object] value an item of the collection
         #
         # @example Basic usage
         #   <%=
@@ -238,22 +245,61 @@ module Hanami
         #
         #     <button type="submit">Create</button>
         #   </form>
+        #
+        # @example Yield index and value
+        #   <%=
+        #     form_for(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch, class: 'form-horizontal') do
+        #       fieldset do
+        #         legend "Addresses"
+        #
+        #         fields_for_collection :addresses do |i, address|
+        #           div class: "form-group" do
+        #             text "Address id: #{address.id}"
+        #
+        #             label :street
+        #             input_text :street, class: "form-control", placeholder: "Street", "data-funky": "index-#{i}"
+        #           end
+        #         end
+        #
+        #         label :ensure_names
+        #       end
+        #
+        #       submit submit_label, class: "btn btn-default"
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <form action="/bills/1" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">
+        #     <input type="hidden" name="_method" value="PATCH">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #     <fieldset>
+        #       <legend>Addresses</legend>
+        #
+        #       <div class="form-group">
+        #         Address id: 23
+        #         <label for="bill-addresses-0-street">Street</label>
+        #         <input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="5th Ave" class="form-control" placeholder="Street" data-funky="index-0">
+        #       </div>
+        #
+        #       <div class="form-group">
+        #         Address id: 42
+        #         <label for="bill-addresses-1-street">Street</label>
+        #         <input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="4th Ave" class="form-control" placeholder="Street" data-funky="index-1">
+        #       </div>
+        #
+        #       <label for="bill-ensure-names">Ensure names</label>
+        #     </fieldset>
+        #
+        #     <button type="submit" class="btn btn-default">Update</button>
+        #   </form>
         def fields_for_collection(name, &block)
           current_name = @name
           base_value = _value(name)
           @name = _input_name(name)
 
           base_value.each_with_index do |value, index|
-            _collection_fields_for(value, index, &block)
+            fields_for(index, value, &block)
           end
-        ensure
-          @name = current_name
-        end
-
-        def _collection_fields_for(value, index)
-          current_name = @name
-          @name        = _input_name(index)
-          yield(index, value)
         ensure
           @name = current_name
         end

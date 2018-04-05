@@ -4,6 +4,7 @@ View helpers for Ruby web applications
 ## v1.2.0.rc2 - 2018-04-06
 ### Added
 - [Ponomarev Ilya] Allow `submit` and `button` form helpers to accept blocks
+- [Ferdinand Niedermann] let `fields_for_collection` to iterate thru the given collection and yield current index and value
 
 ## v1.2.0.rc1 - 2018-03-30
 ### Fixed

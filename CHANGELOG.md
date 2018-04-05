@@ -1,6 +1,10 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.1.2 - 2018-04-05
+### Fixed
+- [Luca Guidi] Ensure correct arity of `#form_for`, to be used in conjuction with `Hanami::Helpers::FormHelper::Form` (eg. `<%= form_for(form) { ... } %>`)
+
 ## v1.1.1 - 2018-02-27
 ### Fixed
 - [Alfonso Uceda] Ensure `#select` form helper to not select options with `nil` value

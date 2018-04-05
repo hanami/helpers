@@ -3,8 +3,10 @@
     fieldset do
       legend 'Addresses'
 
-      fields_for_collection :addresses do |i|
+      fields_for_collection :addresses do |i, address|
         div class: 'form-group' do
+          text "Address id: #{address.id}"
+
           label :street
           input_text :street, class: 'form-control', placeholder: 'Street', 'data-funky': "index-#{i}"
         end

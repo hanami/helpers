@@ -243,9 +243,17 @@ module Hanami
           base_value = _value(name)
           @name = _input_name(name)
 
-          base_value.count.times do |index|
-            fields_for(index, &block)
+          base_value.each_with_index do |value, index|
+            _collection_fields_for(value, index, &block)
           end
+        ensure
+          @name = current_name
+        end
+
+        def _collection_fields_for(value, index)
+          current_name = @name
+          @name        = _input_name(index)
+          yield(index, value)
         ensure
           @name = current_name
         end

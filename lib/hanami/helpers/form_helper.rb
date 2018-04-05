@@ -229,7 +229,7 @@ module Hanami
       #   @option options [Hash] :values An optional payload of objects to pass
       #   @param blk [Proc] A block that describes the contents of the form
       #
-      # @overload form_for(form, attributes, &blk)
+      # @overload form_for(form, attributes = {}, &blk)
       #   Use Form
       #   @param form [Hanami::Helpers::FormHelper::Form] a form object
       #   @param attributes [Hash] HTML attributes to pass to the form tag and form values
@@ -406,9 +406,9 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url, options = {}, &blk)
+      def form_for(name, url = nil, options = {}, &blk)
         form = if name.is_a?(Form)
-                 options = url
+                 options = url || {}
                  name
                else
                  Form.new(name, url, options.delete(:values))

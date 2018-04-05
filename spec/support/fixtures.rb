@@ -446,6 +446,10 @@ module FullStack
       _escape '/sessions'
     end
 
+    def settings_path
+      _escape '/settings'
+    end
+
     def deliveries_path
       _escape '/deliveries'
     end
@@ -486,6 +490,17 @@ module FullStack
       class New
         include TestView
         template 'sessions/new'
+      end
+    end
+
+    module Settings
+      class Edit
+        include TestView
+        template 'settings/edit'
+
+        def form
+          Form.new(:settings, routes.settings_path)
+        end
       end
     end
 

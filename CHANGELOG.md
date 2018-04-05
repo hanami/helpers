@@ -1,6 +1,10 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.2.0.rc2 - 2018-04-06
+### Added
+- [Ponomarev Ilya] Allow `submit` and `button` form helpers to accept blocks
+
 ## v1.2.0.rc1 - 2018-03-30
 ### Fixed
 - [Gustavo Caso] Ensure `select` helper to set the `selected` attribute properly when an `<option>` has a `nil` value
@@ -8,7 +12,7 @@ View helpers for Ruby web applications
 ## v1.2.0.beta2 - 2018-03-23
 
 ## v1.2.0.beta1 - 2018-02-28
-## Added
+### Added
 - [Luca Guidi] Introduced `csrf_meta_tags` helper to print meta tags for CSRF protection
 - [Luca Guidi] Added support for `form_for(..., remote: true)` which translates to `<form ... data-remote="true">`
 - [Sean Collins] Allow HTML attributes to be specified as an array of strings or symbols (eg `<%= html.span("foo", class: %w(ui form)) %>`)

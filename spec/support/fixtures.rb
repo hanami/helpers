@@ -191,7 +191,7 @@ class NumbersView
   end
 
   def big_decimal
-    format_number BigDecimal.new('0.0001'), precision: 4
+    format_number BigDecimal('0.0001'), precision: 4
   end
 
   def complex

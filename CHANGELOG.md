@@ -13,6 +13,10 @@ View helpers for Ruby web applications
 - [Luca Guidi] Added support for `form_for(..., remote: true)` which translates to `<form ... data-remote="true">`
 - [Sean Collins] Allow HTML attributes to be specified as an array of strings or symbols (eg `<%= html.span("foo", class: %w(ui form)) %>`)
 
+## v1.1.2 - 2018-04-05
+### Fixed
+- [Luca Guidi] Ensure correct arity of `#form_for`, to be used in conjuction with `Hanami::Helpers::FormHelper::Form` (eg. `<%= form_for(form) { ... } %>`)
+
 ## v1.1.1 - 2018-02-27
 ### Fixed
 - [Alfonso Uceda] Ensure `#select` form helper to not select options with `nil` value

@@ -15,6 +15,18 @@ RSpec.describe 'Form helper' do
     end
   end
 
+  describe 'form with Form object' do
+    before do
+      @params  = Hanami::Action::BaseParams.new({})
+      @session = Session.new(_csrf_token: 'ln16')
+      @actual  = FullStack::Views::Settings::Edit.render(format: :html, params: @params, session: @session)
+    end
+
+    it 'renders the form' do
+      expect(@actual).to include(%(<form action="/settings" method="POST" accept-charset="utf-8" id="settings-form">\n<input type="hidden" name="_csrf_token" value="#{@session[:_csrf_token]}">\n<div>\n<label for="settings-email">Email</label>\n<input type="email" name="settings[email]" id="settings-email" value="">\n</div>\n<button type="submit">Update settings</button>\n</form>))
+    end
+  end
+
   describe 'form to create a new resource' do
     describe 'first page load' do
       before do

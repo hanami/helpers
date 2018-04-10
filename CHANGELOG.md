@@ -1,6 +1,8 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.2.0 - 2018-04-11
+
 ## v1.2.0.rc2 - 2018-04-06
 ### Added
 - [Ponomarev Ilya] Allow `submit` and `button` form helpers to accept blocks

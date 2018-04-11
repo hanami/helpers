@@ -92,6 +92,41 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
     end
+
+    describe "CSRF meta tags" do
+      let(:view)       { SessionFormHelperView.new(params, csrf_token) }
+      let(:csrf_token) { 'abc123' }
+
+      it "prints meta tags" do
+        expected = %(<meta name="csrf-param" value="_csrf_token">\n<meta name="csrf-token" value="#{csrf_token}">)
+        expect(view.csrf_meta_tags.to_s).to eq(expected)
+      end
+
+      context "when CSRF token is nil" do
+        let(:csrf_token) { nil }
+
+        it "returns nil" do
+          expect(view.csrf_meta_tags).to be(nil)
+        end
+      end
+    end
+
+    describe "remote: true" do
+      it "adds data-remote=true to form attributes" do
+        actual = view.form_for(:book, action, remote: true) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="true">\n\n</form>))
+      end
+
+      it "adds data-remote=false to form attributes" do
+        actual = view.form_for(:book, action, remote: false) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="false">\n\n</form>))
+      end
+
+      it "adds data-remote= to form attributes" do
+        actual = view.form_for(:book, action, remote: nil) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
+      end
+    end
   end
 
   #
@@ -260,6 +295,24 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       expect(actual).to include(%(<button class="btn btn-secondary">Click me</button>))
     end
+
+    it 'renders a button with block' do
+      actual = view.form_for(:book, action) do
+        button class: "btn btn-secondary" do
+          span class: 'oi oi-check'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <button class="btn btn-secondary">
+        <span class="oi oi-check"></span>
+        </button>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
+    end
   end
 
   describe '#submit' do
@@ -277,6 +330,24 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end.to_s
 
       expect(actual).to include(%(<button type="submit" class="btn btn-primary">Create</button>))
+    end
+
+    it 'renders a submit button with block' do
+      actual = view.form_for(:book, action) do
+        submit class: "btn btn-primary" do
+          span class: 'oi oi-check'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <button type="submit" class="btn btn-primary">
+        <span class="oi oi-check"></span>
+        </button>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
     end
   end
 

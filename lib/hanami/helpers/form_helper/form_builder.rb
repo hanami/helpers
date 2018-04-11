@@ -148,6 +148,9 @@ module Hanami
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
         #
+        # @yield [index]
+        # @yieldparam [Integer] index iterative index (it starts from zero)
+        #
         # @since 0.2.0
         #
         # @example Basic usage
@@ -200,10 +203,10 @@ module Hanami
         #
         #     <button type="submit">Create</button>
         #   </form>
-        def fields_for(name)
+        def fields_for(name, value = nil)
           current_name = @name
           @name        = _input_name(name)
-          yield(name)
+          yield(name, value)
         ensure
           @name = current_name
         end
@@ -215,6 +218,10 @@ module Hanami
         #
         # @param name [Symbol] the nested name, it's used to generate input
         #   names, ids, and to lookup params to fill values.
+        #
+        # @yield [index, value]
+        # @yieldparam [Integer] index iterative index (it starts from zero)
+        # @yieldparam [Object] value an item of the collection
         #
         # @example Basic usage
         #   <%=
@@ -238,13 +245,60 @@ module Hanami
         #
         #     <button type="submit">Create</button>
         #   </form>
+        #
+        # @example Yield index and value
+        #   <%=
+        #     form_for(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch, class: 'form-horizontal') do
+        #       fieldset do
+        #         legend "Addresses"
+        #
+        #         fields_for_collection :addresses do |i, address|
+        #           div class: "form-group" do
+        #             text "Address id: #{address.id}"
+        #
+        #             label :street
+        #             input_text :street, class: "form-control", placeholder: "Street", "data-funky": "index-#{i}"
+        #           end
+        #         end
+        #
+        #         label :ensure_names
+        #       end
+        #
+        #       submit submit_label, class: "btn btn-default"
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <form action="/bills/1" method="POST" accept-charset="utf-8" id="bill-form" class="form-horizontal">
+        #     <input type="hidden" name="_method" value="PATCH">
+        #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+        #     <fieldset>
+        #       <legend>Addresses</legend>
+        #
+        #       <div class="form-group">
+        #         Address id: 23
+        #         <label for="bill-addresses-0-street">Street</label>
+        #         <input type="text" name="bill[addresses][][street]" id="bill-addresses-0-street" value="5th Ave" class="form-control" placeholder="Street" data-funky="index-0">
+        #       </div>
+        #
+        #       <div class="form-group">
+        #         Address id: 42
+        #         <label for="bill-addresses-1-street">Street</label>
+        #         <input type="text" name="bill[addresses][][street]" id="bill-addresses-1-street" value="4th Ave" class="form-control" placeholder="Street" data-funky="index-1">
+        #       </div>
+        #
+        #       <label for="bill-ensure-names">Ensure names</label>
+        #     </fieldset>
+        #
+        #     <button type="submit" class="btn btn-default">Update</button>
+        #   </form>
         def fields_for_collection(name, &block)
           current_name = @name
           base_value = _value(name)
           @name = _input_name(name)
 
-          base_value.count.times do |index|
-            fields_for(index, &block)
+          base_value.each_with_index do |value, index|
+            fields_for(index, value, &block)
           end
         ensure
           @name = current_name
@@ -1328,8 +1382,15 @@ module Hanami
 
         # Button
         #
-        # @param content [String] The content
-        # @param attributes [Hash] HTML attributes to pass to the button tag
+        # @overload button(content, attributes = {})
+        #   Use string content
+        #   @param content [String] The content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @overload button(attributes = {}, &blk)
+        #   Use block content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #   @param blk [Proc] the block content
         #
         # @since 1.0.0
         #
@@ -1350,8 +1411,25 @@ module Hanami
         #
         #   <!-- output -->
         #   <button class="btn btn-secondary">Click me</button>
-        def button(content, attributes = {})
-          # This is here only for documentation purposes
+        #
+        # @example Block
+        #   <%=
+        #     # ...
+        #     button class: "btn btn-secondary" do
+        #       span class: 'oi oi-check'
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <button class="btn btn-secondary">
+        #     <span class="oi oi-check"></span>
+        #   </button>
+        def button(content, attributes = {}, &blk)
+          if content.is_a?(::Hash)
+            attributes = content
+            content = nil
+          end
+
           super
         end
 
@@ -1393,8 +1471,15 @@ module Hanami
 
         # Submit button
         #
-        # @param content [String] The content
-        # @param attributes [Hash] HTML attributes to pass to the button tag
+        # @overload submit(content, attributes = {})
+        #   Use string content
+        #   @param content [String] The content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #
+        # @overload submit(attributes = {}, &blk)
+        #   Use block content
+        #   @param attributes [Hash] HTML attributes to pass to the button tag
+        #   @param blk [Proc] the block content
         #
         # @since 0.2.0
         #
@@ -1415,9 +1500,27 @@ module Hanami
         #
         #   <!-- output -->
         #   <button type="submit" class="btn btn-primary">Create</button>
-        def submit(content, attributes = {})
+        #
+        # @example Block
+        #   <%=
+        #     # ...
+        #     button class: "btn btn-primary" do
+        #       span class: 'oi oi-check'
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <button type="submit" class="btn btn-primary">
+        #     <span class="oi oi-check"></span>
+        #   </button>
+        def submit(content, attributes = {}, &blk)
+          if content.is_a?(::Hash)
+            attributes = content
+            content = nil
+          end
+
           attributes = { type: :submit }.merge(attributes)
-          button(content, attributes)
+          button(content, attributes, &blk)
         end
 
         protected
@@ -1583,18 +1686,21 @@ module Hanami
         end
 
         # @api private
+        # @since 1.2.0
         def _is_current_value?(input_value, value)
           return unless input_value
           value.to_s == input_value.to_s
         end
 
         # @api private
+        # @since 1.2.0
         def _is_in_selected_values?(multiple, selected, value)
           return unless multiple && selected.is_a?(Array)
           selected.include?(value)
         end
 
         # @api private
+        # @since 1.2.0
         def _is_in_input_values?(multiple, input_value, value)
           return unless multiple && input_value.is_a?(Array)
           input_value.include?(value)

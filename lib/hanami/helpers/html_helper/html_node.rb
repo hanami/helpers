@@ -22,12 +22,12 @@ module Hanami
         def initialize(name, content, attributes, _options = {})
           @builder = HtmlBuilder.new
           @name    = name
-          @content = case content
-                     when Hash
+          @content = if content.is_a?(Hash)
                        @attributes = content
                        nil
                      else
-                       @attributes = attributes.to_h if attributes.respond_to?(:to_h)
+                       attributes_hash = attributes.to_h if attributes.respond_to?(:to_h)
+                       @attributes = prepare_html_attributes(attributes_hash)
                        content
                      end
         end

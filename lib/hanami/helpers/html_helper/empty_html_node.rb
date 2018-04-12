@@ -80,7 +80,7 @@ module Hanami
         # @api private
         def initialize(name, attributes)
           @name       = name
-          @attributes = attributes
+          @attributes = prepare_html_attributes(attributes)
         end
 
         # Resolve and return the output
@@ -130,6 +130,21 @@ module Hanami
         # @api private
         def attribute(attribute_name, value)
           %(#{ATTRIBUTES_SEPARATOR}#{attribute_name}="#{value}")
+        end
+
+        # Changes any attributes values that are arrays into a string joined by
+        # a space, as HTML expects it.
+        #
+        # @param attributes [Hash] the attributes with values to be HTMLified
+        #
+        # @return [Hash] the attributes transformed into HTML friendly values, i.e space separated strings
+        #
+        # @since 1.2.0
+        def prepare_html_attributes(attributes)
+          attributes&.inject({}) do |attrs, (key, value)|
+            attrs[key] = value.is_a?(Array) ? value.join(ATTRIBUTES_SEPARATOR) : value
+            attrs
+          end
         end
       end
     end

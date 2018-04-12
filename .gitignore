@@ -22,3 +22,4 @@ tmp
 mkmf.log
 .greenbar
 .rubocop-*
+.byebug_history

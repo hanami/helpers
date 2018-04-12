@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "hanami/helpers/form_helper/form_builder"
+require "hanami/helpers/html_helper"
 
 module Hanami
   module Helpers
@@ -98,6 +99,8 @@ module Hanami
       # @since 0.2.0
       # @api private
       CSRF_TOKEN = :_csrf_token
+
+      include HtmlHelper
 
       # Form object
       #
@@ -231,7 +234,7 @@ module Hanami
       #   @option options [Hash] :values An optional payload of objects to pass
       #   @param blk [Proc] A block that describes the contents of the form
       #
-      # @overload form_for(form, attributes, &blk)
+      # @overload form_for(form, attributes = {}, &blk)
       #   Use Form
       #   @param form [Hanami::Helpers::FormHelper::Form] a form object
       #   @param attributes [Hash] HTML attributes to pass to the form tag and form values
@@ -408,15 +411,18 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url, options = {}, &blk)
+      def form_for(name, url = nil, options = {}, &blk)
         form = if name.is_a?(Form)
-                 options = url
+                 options = url || {}
                  name
                else
                  Form.new(name, url, options.delete(:values))
                end
 
-        attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(options)
+        opts = options.dup
+        opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
+        attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(opts)
+
         FormBuilder.new(form, attributes, self, &blk)
       end
 
@@ -433,6 +439,36 @@ module Hanami
         elsif defined?(locals) && locals[:session]
           locals[:session][CSRF_TOKEN]
         end
+      end
+
+      # Prints CSRF meta tags for Unobtrusive JavaScript (UJS) purposes.
+      #
+      # @return [Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the tags if `csrf_token` is not `nil`
+      #
+      # @since 1.2.0
+      #
+      # @example
+      #   <html>
+      #     <head>
+      #       <!-- ... -->
+      #       <%= csrf_meta_tags %>
+      #     </head>
+      #     <!-- ... -->
+      #   </html>
+      #
+      #   <html>
+      #     <head>
+      #       <!-- ... -->
+      #       <meta name="csrf-param" value="_csrf_token">
+      #       <meta name="csrf-token" value="4a038be85b7603c406dcbfad4b9cdf91ec6ca138ed6441163a07bb0fdfbe25b5">
+      #     </head>
+      #     <!-- ... -->
+      #   </html>
+      def csrf_meta_tags
+        return if csrf_token.nil?
+
+        html.meta(name: "csrf-param", value: CSRF_TOKEN) +
+          html.meta(name: "csrf-token", value: csrf_token)
       end
     end
   end

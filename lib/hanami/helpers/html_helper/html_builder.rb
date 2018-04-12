@@ -381,8 +381,8 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def method_missing(m, *args, &blk)
-          @context.__send__(m, *args, &blk)
+        def method_missing(method_name, *args, &blk)
+          @context.__send__(method_name, *args, &blk)
         end
       end
     end

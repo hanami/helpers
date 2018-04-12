@@ -7,10 +7,10 @@ unless ENV['TRAVIS']
   gem 'yard', require: false
 end
 
-gem 'hanami-utils',       '~> 1.2', git: 'https://github.com/hanami/utils.git',       branch: 'master'
-gem 'hanami-validations', '~> 1.2', git: 'https://github.com/hanami/validations.git', branch: 'master'
-gem 'hanami-controller',  '~> 1.2', git: 'https://github.com/hanami/controller.git',  branch: 'master'
-gem 'hanami-view',        '~> 1.2', git: 'https://github.com/hanami/view.git',        branch: 'master'
+gem 'hanami-utils',       '~> 1.3.beta', git: 'https://github.com/hanami/utils.git',       branch: 'develop'
+gem 'hanami-validations', '~> 1.3.beta', git: 'https://github.com/hanami/validations.git', branch: 'develop'
+gem 'hanami-controller',  '~> 1.3.beta', git: 'https://github.com/hanami/controller.git',  branch: 'develop'
+gem 'hanami-view',        '~> 1.3.beta', git: 'https://github.com/hanami/view.git',        branch: 'develop'
 
 gem 'hanami-devtools', git: 'https://github.com/hanami/devtools.git', require: false
 gem 'coveralls', require: false

@@ -1676,7 +1676,7 @@ module Hanami
         # @api private
         def _select_option_selected?(value, selected, input_value, multiple)
           if input_value && selected.nil?
-            value.to_s == input_value
+            value.to_s == input_value.to_s
           else
             (value == selected) ||
               _is_in_selected_values?(multiple, selected, value) ||

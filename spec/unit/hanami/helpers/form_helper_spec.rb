@@ -35,6 +35,17 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to eq(%(<form action="/books" method="GET" accept-charset="utf-8" id="book-form"></form>))
     end
 
+    it 'correctly nests tag with block' do
+      actual = view.form_for(:foo, '/') do
+        tag 'label' do
+          radio_button 'radio_button', 'high'
+          text 'bar'
+        end
+      end.to_s
+
+      expect(actual).to eq(%(<form action="/" method="POST" accept-charset="utf-8" id="foo-form">\n<label>\n<input type="radio" name="foo[radio_button]" value="high">\nbar\n</label>\n</form>))
+    end
+
     %i[patch put delete].each do |verb|
       it "allows to override 'method' attribute (#{verb})" do
         actual = view.form_for(:book, action, method: verb) do

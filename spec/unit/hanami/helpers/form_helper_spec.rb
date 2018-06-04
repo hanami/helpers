@@ -2631,6 +2631,20 @@ RSpec.describe Hanami::Helpers::FormHelper do
           expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<select name="book[category]" id="book-category">\n<option value="">N&#x2F;A</option>\n<option value="horror" selected="selected">Horror</option>\n<option value="scify">SciFy</option>\n</select>\n</form>))
         end
       end
+
+      describe 'with non String values' do
+        let(:values)        { Hash[book: Book.new(category: val)] }
+        let(:option_values) { Hash['Horror' => "1", 'SciFy' => "2"] }
+        let(:val)           { 1 }
+
+        it 'sets correct value as selected' do
+          actual = view.form_for(:book, action, values: values) do
+            select :category, option_values
+          end.to_s
+
+          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<select name="book[category]" id="book-category">\n<option value="1" selected="selected">Horror</option>\n<option value="2">SciFy</option>\n</select>\n</form>))
+        end
+      end
     end
   end
 

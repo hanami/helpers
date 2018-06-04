@@ -2632,12 +2632,12 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe 'with non String values' do
+      describe "with non String values" do
         let(:values)        { Hash[book: Book.new(category: val)] }
-        let(:option_values) { Hash['Horror' => "1", 'SciFy' => "2"] }
+        let(:option_values) { Hash["Horror" => "1", "SciFy" => "2"] }
         let(:val)           { 1 }
 
-        it 'sets correct value as selected' do
+        it "sets correct value as selected" do
           actual = view.form_for(:book, action, values: values) do
             select :category, option_values
           end.to_s

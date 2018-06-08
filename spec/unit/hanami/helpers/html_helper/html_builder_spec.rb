@@ -52,7 +52,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
           Building K<br>
           Mountain View, CA 94043-0801<br>
           USA
-CONTENT
+        CONTENT
       )
 
       result = @builder.address(content).to_s

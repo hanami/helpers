@@ -1,1 +1,1 @@
-require 'hanami/helpers' # rubocop:disable Naming/FileName
+require 'hanami/helpers'

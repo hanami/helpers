@@ -4,5 +4,3 @@ inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
 Naming/HeredocDelimiterNaming:
   Enabled: false
-Style/MethodMissing:
-  Enabled: false

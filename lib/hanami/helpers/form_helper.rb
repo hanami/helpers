@@ -457,16 +457,16 @@ module Hanami
       #   <html>
       #     <head>
       #       <!-- ... -->
-      #       <meta name="csrf-param" value="_csrf_token">
-      #       <meta name="csrf-token" value="4a038be85b7603c406dcbfad4b9cdf91ec6ca138ed6441163a07bb0fdfbe25b5">
+      #       <meta name="csrf-param" content="_csrf_token">
+      #       <meta name="csrf-token" content="4a038be85b7603c406dcbfad4b9cdf91ec6ca138ed6441163a07bb0fdfbe25b5">
       #     </head>
       #     <!-- ... -->
       #   </html>
       def csrf_meta_tags
         return if csrf_token.nil?
 
-        html.meta(name: "csrf-param", value: CSRF_TOKEN) +
-          html.meta(name: "csrf-token", value: csrf_token)
+        html.meta(name: "csrf-param", content: CSRF_TOKEN) +
+          html.meta(name: "csrf-token", content: csrf_token)
       end
     end
   end

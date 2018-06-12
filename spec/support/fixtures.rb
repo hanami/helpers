@@ -260,7 +260,7 @@ class EscapeView
 end
 
 class Book < Dry::Struct
-  transform_types { |t| t.meta(omittable: true) }
+  constructor_type :schema
 
   attribute :title,               Types::String.optional
   attribute :search_title,        Types::String.optional

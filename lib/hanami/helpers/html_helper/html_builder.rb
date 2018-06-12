@@ -379,8 +379,14 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def method_missing(method_name, *args, &blk)
+        def method_missing(method_name, *args, &blk) # rubocop:disable Style/MethodMissingSuper
           @context.__send__(method_name, *args, &blk)
+        end
+
+        # @since 1.2.2
+        # @api private
+        def respond_to_missing?(method_name, include_all)
+          @context.respond_to?(method_name, include_all)
         end
       end
     end

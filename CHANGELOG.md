@@ -1,6 +1,10 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.2.2 - 2018-06-12
+### Fixed
+- [Sean Collins] Ensure `csrf_meta_tags` helper to generate `<meta>` tags with `content` attribute instead of `value`
+
 ## v1.2.1 - 2018-06-04
 ### Fixed
 - [Lucas Gomes] Ensure to mark `<option>` as selected when `select` helper has a collection of non-`String` values

@@ -383,7 +383,7 @@ module Hanami
           @context.__send__(method_name, *args, &blk)
         end
 
-        # @since x.x.x
+        # @since 1.2.2
         # @api private
         def respond_to_missing?(method_name, include_all)
           @context.respond_to?(method_name, include_all)

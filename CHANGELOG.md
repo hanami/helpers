@@ -3,6 +3,10 @@ View helpers for Ruby web applications
 
 ## v1.3.0.beta1 (unreleased)
 
+## v1.2.2 - 2018-06-12
+### Fixed
+- [Sean Collins] Ensure `csrf_meta_tags` helper to generate `<meta>` tags with `content` attribute instead of `value`
+
 ## v1.2.1 - 2018-06-04
 ### Fixed
 - [Lucas Gomes] Ensure to mark `<option>` as selected when `select` helper has a collection of non-`String` values
@@ -95,11 +99,11 @@ View helpers for Ruby web applications
 - [Cang Ta] Added `datalist` form helper
 
 ### Changed
-– [Luca Guidi] Drop support for Ruby 2.0 and 2.1. Official support for JRuby 9.0.5.0+.
+- [Luca Guidi] Drop support for Ruby 2.0 and 2.1. Official support for JRuby 9.0.5.0+.
 - [Luca Guidi] Inverted options (label, value) for `select` form helper. Now the syntax is `select :store, { 'Italy' => 'it', 'United States' => 'us' }`
 
 ### Fixed
-– [Nikolay Shebanov] Explicitly require some `hanami-utils` dependencies
+- [Nikolay Shebanov] Explicitly require some `hanami-utils` dependencies
 
 ## v0.3.0 - 2016-01-22
 ### Changed

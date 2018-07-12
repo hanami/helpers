@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 gemspec
 
-unless ENV["TRAVIS"]
+unless ENV["CI"]
   gem "byebug", require: false, platforms: :mri
   gem "pry-debugger-jruby", require: false, platforms: :jruby
   gem "yard", require: false
@@ -15,4 +15,3 @@ gem "hanami-controller",  "~> 2.0.alpha", git: "https://github.com/hanami/contro
 gem "hanami-view",        "~> 2.0.alpha", git: "https://github.com/hanami/view.git",        branch: "unstable"
 
 gem "hanami-devtools", git: "https://github.com/hanami/devtools.git", require: false
-gem "coveralls", require: false

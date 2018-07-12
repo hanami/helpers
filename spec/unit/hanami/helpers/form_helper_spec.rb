@@ -100,7 +100,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:csrf_token) { "abc123" }
 
       it "prints meta tags" do
-        expected = %(<meta name="csrf-param" value="_csrf_token">\n<meta name="csrf-token" value="#{csrf_token}">)
+        expected = %(<meta name="csrf-param" content="_csrf_token">\n<meta name="csrf-token" content="#{csrf_token}">)
         expect(view.csrf_meta_tags.to_s).to eq(expected)
       end
 

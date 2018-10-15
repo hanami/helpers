@@ -48,6 +48,7 @@ module Hanami
 
           tail.each do |k|
             break if result.nil?
+
             result = _dig(result, k)
           end
 

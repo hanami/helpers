@@ -1689,6 +1689,7 @@ module Hanami
         # @since 1.2.0
         def _is_current_value?(input_value, value)
           return unless input_value
+
           value.to_s == input_value.to_s
         end
 
@@ -1696,6 +1697,7 @@ module Hanami
         # @since 1.2.0
         def _is_in_selected_values?(multiple, selected, value)
           return unless multiple && selected.is_a?(Array)
+
           selected.include?(value)
         end
 
@@ -1703,6 +1705,7 @@ module Hanami
         # @since 1.2.0
         def _is_in_input_values?(multiple, input_value, value)
           return unless multiple && input_value.is_a?(Array)
+
           input_value.include?(value)
         end
 

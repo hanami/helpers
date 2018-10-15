@@ -103,6 +103,7 @@ module Hanami
         # @api private
         def attributes
           return unless defined?(@attributes) && !@attributes.nil?
+
           result = ""
 
           @attributes.each do |attribute_name, value|

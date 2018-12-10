@@ -1643,8 +1643,8 @@ module Hanami
           return unless attributes[:value].nil? || !attributes[:unchecked_value].nil?
 
           input(
-            type:  :hidden,
-            name:  attributes[:name] || _displayed_input_name(name),
+            type: :hidden,
+            name: attributes[:name] || _displayed_input_name(name),
             value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
           )
         end
@@ -1657,9 +1657,9 @@ module Hanami
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         def _attributes_for_check_box(name, attributes)
           attributes = {
-            type:  :checkbox,
-            name:  _displayed_input_name(name),
-            id:    _input_id(name),
+            type: :checkbox,
+            name: _displayed_input_name(name),
+            id: _input_id(name),
             value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
           }.merge(attributes)
 

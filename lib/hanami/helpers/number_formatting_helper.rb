@@ -82,7 +82,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::NumberFormatter::Formatter#delimitate
-        DELIMITATION_REGEX = /(\d)(?=(\d{3})+$)/
+        DELIMITATION_REGEX = /(\d)(?=(\d{3})+$)/.freeze
 
         # Regex to guess if the number is a integer
         #
@@ -92,7 +92,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::NumberFormatter::Formatter#to_number
-        INTEGER_REGEXP     = /\A[\d]+\z/
+        INTEGER_REGEXP     = /\A[\d]+\z/.freeze
 
         # Default separator
         #

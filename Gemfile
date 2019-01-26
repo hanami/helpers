@@ -5,8 +5,7 @@ gemspec
 
 unless ENV["CI"]
   gem "byebug", require: false, platforms: :mri
-  gem "pry-debugger-jruby", require: false, platforms: :jruby
-  gem "yard", require: false
+  gem "yard",   require: false
 end
 
 gem "hanami-utils",       "~> 2.0.alpha", git: "https://github.com/hanami/utils.git",       branch: "unstable"

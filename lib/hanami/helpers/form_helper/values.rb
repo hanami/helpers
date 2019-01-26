@@ -38,7 +38,7 @@ module Hanami
         # @since 0.5.0
         # @api private
         def _get_from_params(*keys)
-          keys.map! { |key| key.to_s =~ /\A\d+\z/ ? key.to_s.to_i : key }
+          keys.map! { |key| /\A\d+\z/.match?(key.to_s) ? key.to_s.to_i : key }
           @params.dig(*keys)
         end
 

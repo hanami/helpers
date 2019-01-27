@@ -16,6 +16,16 @@ Store = Struct.new(:code, :label) do
   end
 end
 
+class HashSerializable
+  def initialize(data)
+    @data = data
+  end
+
+  def to_hash
+    @data
+  end
+end
+
 class Signup < Dry::Struct
   attribute :password, Types::String.optional
 end

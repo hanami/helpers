@@ -1532,7 +1532,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def options
-          Hash[name: @name, values: @values, verb: @verb, csrf_token: @csrf_token]
+          ::Hash[name: @name, values: @values, verb: @verb, csrf_token: @csrf_token]
         end
 
         private

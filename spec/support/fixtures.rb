@@ -7,7 +7,7 @@ require "hanami/helpers/escape_helper"
 require "dry/struct"
 
 module Types
-  include Dry::Types.module
+  include Dry.Types(default: :nominal)
 end
 
 Store = Struct.new(:code, :label) do
@@ -272,25 +272,26 @@ class EscapeView
 end
 
 class Book < Dry::Struct
-  constructor_type :schema
+  transform_keys(&:to_sym)
+  transform_types(&:omittable)
 
   attribute :title,               Types::String.optional
   attribute :search_title,        Types::String.optional
   attribute :description,         Types::String.optional
-  attribute :author_id,           Types::Form::Int.optional
+  attribute :author_id,           Types::Params::Integer.optional
   attribute :category,            Types::String.optional
   attribute :cover,               Types::String.optional
   attribute :image_cover,         Types::String.optional
-  attribute :percent_read,        Types::Form::Int.optional
-  attribute :discount_percentage, Types::Form::Int.optional
+  attribute :percent_read,        Types::Params::Integer.optional
+  attribute :discount_percentage, Types::Params::Integer.optional
   attribute :published_at,        Types::String.optional
   attribute :website,             Types::String.optional
   attribute :publisher_email,     Types::String.optional
   attribute :publisher_telephone, Types::String.optional
-  attribute :release_date,        Types::Form::Date.optional
+  attribute :release_date,        Types::Params::Date.optional
   attribute :release_hour,        Types::String.optional
   attribute :release_week,        Types::String.optional
-  attribute :release_month,       Types::Form::Date.optional
+  attribute :release_month,       Types::String.optional
   attribute :store,               Types::String.optional
 end
 
@@ -419,9 +420,9 @@ end
 class DeliveryParams < Hanami::Action::Params
   params do
     required(:delivery).schema do
-      required(:customer_id, :int).filled
+      required(:customer_id).filled(:integer)
       required(:address).schema do
-        required(:street, :string).filled
+        required(:street).filled(:string)
       end
     end
   end
@@ -432,7 +433,7 @@ class BillParams < Hanami::Action::Params
     required(:bill).schema do
       required(:addresses).each do
         schema do
-          required(:street, :string).filled
+          required(:street).filled(:string)
         end
       end
     end

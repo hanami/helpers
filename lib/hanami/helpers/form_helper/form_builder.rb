@@ -1224,7 +1224,7 @@ module Hanami
         #
         #   <!-- output -->
         #   <select name="book[store]" id="book-store" class="form-control">
-        #     <option>Select a store</option>
+        #     <option disabled="disabled">Select a store</option>
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1287,7 +1287,7 @@ module Hanami
           input_value = _value(name)
 
           super(attributes) do
-            option(prompt) unless prompt.nil?
+            option(prompt, disabled: true) if prompt
 
             already_selected = nil
             values.each do |content, value|

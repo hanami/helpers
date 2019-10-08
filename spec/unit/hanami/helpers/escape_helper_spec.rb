@@ -1,24 +1,26 @@
+# frozen_string_literal: true
+
 RSpec.describe Hanami::Helpers::EscapeHelper do
   before do
     @view = EscapeView.new
   end
 
-  it 'has a private escape html method' do
+  it "has a private escape html method" do
     expect { @view.escape_html }.to raise_error(NoMethodError)
   end
 
-  it 'has a private escape html attribute method' do
+  it "has a private escape html attribute method" do
     expect { @view.escape_html_attribute }.to raise_error(NoMethodError)
   end
 
-  it 'has a private escape url method' do
+  it "has a private escape url method" do
     expect { @view.escape_url }.to raise_error(NoMethodError)
   end
 
-  it 'has a private raw method' do
+  it "has a private raw method" do
     expect { @view.raw }.to raise_error(NoMethodError)
   end
-  it 'autoscape evil string' do
+  it "autoscape evil string" do
     expect(@view.evil_string).to eq(%(&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;))
   end
 
@@ -26,7 +28,7 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
     expect(@view.good_string).to eq(%(this is a good string))
   end
 
-  it 'autoscape attributes evil string' do
+  it "autoscape attributes evil string" do
     expect(@view.good_attributes_string).to eq(%(<a title='foo'>link</a>))
   end
 
@@ -34,7 +36,7 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
     expect(@view.evil_attributes_string).to eq(%(<a title='&lt;script&gt;alert&#x28;&#x27;xss&#x27;&#x29;&lt;&#x2f;script&gt;'>link</a>))
   end
 
-  it 'autoscape url evil string' do
+  it "autoscape url evil string" do
     expect(@view.good_url_string).to eq(%(http://hanamirb.org))
   end
 
@@ -42,23 +44,23 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
     expect(@view.evil_url_string).to be_empty
   end
 
-  it 'raw string is returned' do
+  it "raw string is returned" do
     expect(@view.raw_string).to eq(%(<div>I'm a raw string</div>))
   end
 
-  it 'raw string is a Hanami::Helpers::Escape::SafeString class' do
+  it "raw string is a Hanami::Helpers::Escape::SafeString class" do
     expect(@view.raw_string.class).to eq(Hanami::Utils::Escape::SafeString)
   end
 
-  it 'html helper alias' do
+  it "html helper alias" do
     expect(@view.html_string_alias).to eq(%(this is a good string))
   end
 
-  it 'html attribute helper alias' do
+  it "html attribute helper alias" do
     expect(@view.html_attribute_string_alias).to eq(%(<a title='foo'>link</a>))
   end
 
-  it 'url helper alias' do
+  it "url helper alias" do
     expect(@view.url_string_alias).to eq(%(http://hanamirb.org))
   end
 end

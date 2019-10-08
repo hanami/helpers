@@ -1,5 +1,7 @@
-require 'hanami/helpers/form_helper/form_builder'
-require 'hanami/helpers/html_helper'
+# frozen_string_literal: true
+
+require "hanami/helpers/form_helper/form_builder"
+require "hanami/helpers/html_helper"
 
 module Hanami
   module Helpers
@@ -82,13 +84,13 @@ module Hanami
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_METHOD = 'POST'.freeze
+      DEFAULT_METHOD = "POST"
 
       # Default charset
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_CHARSET = 'utf-8'.freeze
+      DEFAULT_CHARSET = "utf-8"
 
       # CSRF Token session key
       #

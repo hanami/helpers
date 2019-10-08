@@ -1,4 +1,6 @@
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "hanami/utils/hash"
 
 module Hanami
   module Helpers
@@ -13,7 +15,7 @@ module Hanami
       class Values
         # @since 0.2.0
         # @api private
-        GET_SEPARATOR = '.'.freeze
+        GET_SEPARATOR = "."
 
         # @since 0.2.0
         # @api private
@@ -36,7 +38,7 @@ module Hanami
         # @since 0.5.0
         # @api private
         def _get_from_params(*keys)
-          keys.map! { |key| key.to_s =~ /\A\d+\z/ ? key.to_s.to_i : key }
+          keys.map! { |key| /\A\d+\z/.match?(key.to_s) ? key.to_s.to_i : key }
           @params.dig(*keys)
         end
 

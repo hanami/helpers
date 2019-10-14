@@ -1,4 +1,6 @@
-require 'hanami/utils/string'
+# frozen_string_literal: true
+
+require "hanami/utils/string"
 
 module Hanami
   module Helpers

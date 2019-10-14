@@ -1,4 +1,6 @@
-require 'hanami/helpers/html_helper'
+# frozen_string_literal: true
+
+require "hanami/helpers/html_helper"
 
 module Hanami
   module Helpers

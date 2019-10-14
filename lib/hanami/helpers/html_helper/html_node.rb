@@ -1,5 +1,7 @@
-require 'hanami/helpers/html_helper/empty_html_node'
-require 'hanami/utils/escape'
+# frozen_string_literal: true
+
+require "hanami/helpers/html_helper/empty_html_node"
+require "hanami/utils/escape"
 
 module Hanami
   module Helpers
@@ -22,7 +24,7 @@ module Hanami
         def initialize(name, content, attributes, _options = {})
           @builder = HtmlBuilder.new
           @name    = name
-          @content = if content.is_a?(Hash)
+          @content = if content.is_a?(::Hash)
                        @attributes = content
                        nil
                      else

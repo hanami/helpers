@@ -363,12 +363,7 @@ module Hanami
         #   <!-- output -->
         #   <label for="delivery-address-city">City</label>
         #   <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
-        def label(content, attributes = {}, &blk)
-          if content.is_a?(::Hash)
-            attributes = content
-            content = nil
-          end
-
+        def label(content = nil, **attributes, &blk)
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content
                        when String, Hanami::Utils::String, NilClass

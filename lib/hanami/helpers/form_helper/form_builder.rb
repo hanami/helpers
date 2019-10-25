@@ -363,16 +363,16 @@ module Hanami
         #   <!-- output -->
         #   <label for="delivery-address-city">City</label>
         #   <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
-        def label(content, attributes = {})
+        def label(content = nil, **attributes, &blk)
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content
-                       when String, Hanami::Utils::String
+                       when String, Hanami::Utils::String, NilClass
                          content
                        else
                          Utils::String.capitalize(content)
                        end
 
-          super(content, attributes)
+          super(content, attributes, &blk)
         end
 
         # Fieldset

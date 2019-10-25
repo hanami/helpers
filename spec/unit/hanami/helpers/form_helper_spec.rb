@@ -266,6 +266,26 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<label for="book-free-shipping">Free Shipping</label>))
     end
 
+    it 'renders a label with block' do
+      actual = view.form_for(:book, action) do
+        label for: :free_shipping do
+          text 'Free Shipping'
+          abbr '*', title: 'optional', 'aria-label': 'optional'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <label for="book-free-shipping">
+        Free Shipping
+        <abbr title="optional" aria-label="optional">*</abbr>
+        </label>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
+    end
+
     it 'accepts a string as explicit "for" attribute' do
       actual = view.form_for(:book, action) do
         label :free_shipping, for: 'free-shipping'

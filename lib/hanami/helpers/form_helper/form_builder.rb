@@ -363,6 +363,21 @@ module Hanami
         #   <!-- output -->
         #   <label for="delivery-address-city">City</label>
         #   <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
+        #
+        # @example Block syntax
+        #   <%=
+        #     # ...
+        #     label for: :free_shipping do
+        #       text "Free shipping"
+        #       abbr "*", title: "optional", "aria-label": "optional"
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <label for="book-free-shipping">
+        #     Free Shipping
+        #     <abbr title="optional" aria-label="optional">*</abbr>
+        #   </label>
         def label(content = nil, **attributes, &blk)
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content

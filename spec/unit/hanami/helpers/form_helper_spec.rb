@@ -127,6 +127,21 @@ RSpec.describe Hanami::Helpers::FormHelper do
         expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
       end
     end
+
+    context "inline params" do
+      let(:view)   { FormHelperView.new(params) }
+      let(:params) { { song: { title: "Orphans" } } }
+      let(:inline_params) { { song: { title: "Arabesque" } } }
+      let(:action) { '/songs' }
+
+      it "renders" do
+        actual = view.form_for(:song, action, params: inline_params) do
+          text_field :title
+        end.to_s
+
+        expect(actual).to eq(%(<form action="/songs" method="POST" accept-charset="utf-8" id="song-form">\n<input type="text" name="song[title]" id="song-title" value="#{inline_params.dig(:song, :title)}">\n</form>))
+      end
+    end
   end
 
   #

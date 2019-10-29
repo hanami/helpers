@@ -99,7 +99,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def initialize(form, attributes, context = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def initialize(form, attributes, context = nil, params = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super()
 
           @context    = context
@@ -115,7 +115,7 @@ module Hanami
           else
             @form        = form
             @name        = form.name
-            @values      = Values.new(form.values, @context.params)
+            @values      = Values.new(form.values, params || @context.params)
             @attributes  = attributes
             @verb_method = verb_method
             @csrf_token  = csrf_token

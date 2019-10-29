@@ -409,7 +409,7 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url = nil, options = {}, &blk)
+      def form_for(name, url = nil, options = {}, &blk) # rubocop:disable Metrics/MethodLength
         form = if name.is_a?(Form)
                  options = url || {}
                  name
@@ -417,11 +417,12 @@ module Hanami
                  Form.new(name, url, options.delete(:values))
                end
 
+        params = options.delete(:params)
         opts = options.dup
         opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
         attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(opts)
 
-        FormBuilder.new(form, attributes, self, &blk)
+        FormBuilder.new(form, attributes, self, params, &blk)
       end
 
       # Returns CSRF Protection Token stored in session.

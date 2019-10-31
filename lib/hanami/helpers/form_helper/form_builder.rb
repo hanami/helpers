@@ -81,11 +81,12 @@ module Hanami
 
         # Instantiate a form builder
         #
-        # @overload initialize(form, attributes, context, &blk)
+        # @overload initialize(form, attributes, context, params, &blk)
         #   Top level form
         #   @param form [Hanami::Helpers:FormHelper::Form] the form
         #   @param attributes [::Hash] a set of HTML attributes
         #   @param context [Hanami::Helpers::FormHelper]
+        #   @param params [Hash] optional set of params to override the ones that are coming from the view context
         #   @param blk [Proc] a block that describes the contents of the form
         #
         # @overload initialize(form, attributes, params, &blk)
@@ -99,7 +100,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def initialize(form, attributes, context = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def initialize(form, attributes, context = nil, params = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super()
 
           @context    = context
@@ -115,7 +116,7 @@ module Hanami
           else
             @form        = form
             @name        = form.name
-            @values      = Values.new(form.values, @context.params)
+            @values      = Values.new(form.values, params || @context.params)
             @attributes  = attributes
             @verb_method = verb_method
             @csrf_token  = csrf_token

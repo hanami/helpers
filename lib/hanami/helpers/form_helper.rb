@@ -230,6 +230,7 @@ module Hanami
       #   @param url [String] the form action URL
       #   @param options [Hash] HTML attributes to pass to the form tag and form values
       #   @option options [Hash] :values An optional payload of objects to pass
+      #   @option options [Hash] :params An optional override of params
       #   @param blk [Proc] A block that describes the contents of the form
       #
       # @overload form_for(form, attributes = {}, &blk)
@@ -406,6 +407,24 @@ module Hanami
       #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
       #     <input type="text" name="delivery[customer_name]" id="delivery-customer-name" value="">
       #     <input type="text" name="delivery[address][city]" id="delivery-address-city" value="">
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
+      #
+      # @example Override params
+      #   <%=
+      #     form_for :song, routes.songs_path, params: { song: { title: "Envision" } } do
+      #       text_field :title
+      #
+      #       submit 'Create'
+      #     end
+      #   %>
+      #
+      #   <!-- output -->
+      #
+      #   <form action="/songs" accept-charset="utf-8" id="song-form" method="POST">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <input type="text" name="song[title]" id="song-title" value="Envision">
       #
       #     <button type="submit">Create</button>
       #   </form>

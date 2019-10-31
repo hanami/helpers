@@ -127,6 +127,21 @@ RSpec.describe Hanami::Helpers::FormHelper do
         expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
       end
     end
+
+    context "inline params" do
+      let(:view)   { FormHelperView.new(params) }
+      let(:params) { { song: { title: "Orphans" } } }
+      let(:inline_params) { { song: { title: "Arabesque" } } }
+      let(:action) { '/songs' }
+
+      it "renders" do
+        actual = view.form_for(:song, action, params: inline_params) do
+          text_field :title
+        end.to_s
+
+        expect(actual).to eq(%(<form action="/songs" method="POST" accept-charset="utf-8" id="song-form">\n<input type="text" name="song[title]" id="song-title" value="#{inline_params.dig(:song, :title)}">\n</form>))
+      end
+    end
   end
 
   #
@@ -264,6 +279,26 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end.to_s
 
       expect(actual).to include(%(<label for="book-free-shipping">Free Shipping</label>))
+    end
+
+    it 'renders a label with block' do
+      actual = view.form_for(:book, action) do
+        label for: :free_shipping do
+          text 'Free Shipping'
+          abbr '*', title: 'optional', 'aria-label': 'optional'
+        end
+      end.to_s
+
+      expected = <<~END
+        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
+        <label for="book-free-shipping">
+        Free Shipping
+        <abbr title="optional" aria-label="optional">*</abbr>
+        </label>
+        </form>
+      END
+
+      expect(actual).to eq(expected.chomp)
     end
 
     it 'accepts a string as explicit "for" attribute' do
@@ -2514,7 +2549,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, options: { prompt: 'Select a store' }
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
       end
 
       it 'allows blank string' do
@@ -2522,7 +2557,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, options: { prompt: '' }
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled"></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
       end
 
       describe 'with values' do
@@ -2534,7 +2569,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
             select :store, option_values, options: { prompt: 'Select a store' }
           end.to_s
 
-          expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
+          expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
         end
       end
 
@@ -2548,7 +2583,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
               select :store, option_values, options: { prompt: 'Select a store' }
             end.to_s
 
-            expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option>Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
+            expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
           end
         end
 

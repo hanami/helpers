@@ -1,6 +1,10 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.3.3 - 2020-02-03
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.7
+
 ## v1.3.2 - 2019-10-31
 ### Added
 - [Nenad] Support block syntax for `label` helper

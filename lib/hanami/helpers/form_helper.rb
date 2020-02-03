@@ -230,6 +230,7 @@ module Hanami
       #   @param url [String] the form action URL
       #   @param options [Hash] HTML attributes to pass to the form tag and form values
       #   @option options [Hash] :values An optional payload of objects to pass
+      #   @option options [Hash] :params An optional override of params
       #   @param blk [Proc] A block that describes the contents of the form
       #
       # @overload form_for(form, attributes = {}, &blk)
@@ -409,7 +410,25 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url = nil, options = {}, &blk)
+      #
+      # @example Override params
+      #   <%=
+      #     form_for :song, routes.songs_path, params: { song: { title: "Envision" } } do
+      #       text_field :title
+      #
+      #       submit 'Create'
+      #     end
+      #   %>
+      #
+      #   <!-- output -->
+      #
+      #   <form action="/songs" accept-charset="utf-8" id="song-form" method="POST">
+      #     <input type="hidden" name="_csrf_token" value="920cd5bfaecc6e58368950e790f2f7b4e5561eeeab230aa1b7de1b1f40ea7d5d">
+      #     <input type="text" name="song[title]" id="song-title" value="Envision">
+      #
+      #     <button type="submit">Create</button>
+      #   </form>
+      def form_for(name, url = nil, options = {}, &blk) # rubocop:disable Metrics/MethodLength
         form = if name.is_a?(Form)
                  options = url || {}
                  name
@@ -417,11 +436,12 @@ module Hanami
                  Form.new(name, url, options.delete(:values))
                end
 
+        params = options.delete(:params)
         opts = options.dup
         opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
         attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(opts)
 
-        FormBuilder.new(form, attributes, self, &blk)
+        FormBuilder.new(form, attributes, self, params, &blk)
       end
 
       # Returns CSRF Protection Token stored in session.

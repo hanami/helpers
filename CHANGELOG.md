@@ -1,6 +1,18 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
+## v1.3.3 - 2020-02-03
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.7
+
+## v1.3.2 - 2019-10-31
+### Added
+- [Nenad] Support block syntax for `label` helper
+- [Luca Guidi] Allow `form_for` to accept `params:` argument to override params coming from the view
+
+### Fixed
+- [Danny Santos] When `prompt:` option is used in `select` helper, set to `disabled="disabled"` the related `<option>` HTML tag
+
 ## v1.3.1 - 2019-01-18
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.6

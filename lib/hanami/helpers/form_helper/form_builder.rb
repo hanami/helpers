@@ -81,11 +81,12 @@ module Hanami
 
         # Instantiate a form builder
         #
-        # @overload initialize(form, attributes, context, &blk)
+        # @overload initialize(form, attributes, context, params, &blk)
         #   Top level form
         #   @param form [Hanami::Helpers:FormHelper::Form] the form
         #   @param attributes [::Hash] a set of HTML attributes
         #   @param context [Hanami::Helpers::FormHelper]
+        #   @param params [Hash] optional set of params to override the ones that are coming from the view context
         #   @param blk [Proc] a block that describes the contents of the form
         #
         # @overload initialize(form, attributes, params, &blk)
@@ -99,7 +100,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def initialize(form, attributes, context = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def initialize(form, attributes, context = nil, params = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super()
 
           @context    = context
@@ -115,7 +116,7 @@ module Hanami
           else
             @form        = form
             @name        = form.name
-            @values      = Values.new(form.values, @context.params)
+            @values      = Values.new(form.values, params || @context.params)
             @attributes  = attributes
             @verb_method = verb_method
             @csrf_token  = csrf_token
@@ -363,16 +364,31 @@ module Hanami
         #   <!-- output -->
         #   <label for="delivery-address-city">City</label>
         #   <input type="text" name="delivery[address][city] id="delivery-address-city" value="">
-        def label(content, attributes = {})
+        #
+        # @example Block syntax
+        #   <%=
+        #     # ...
+        #     label for: :free_shipping do
+        #       text "Free shipping"
+        #       abbr "*", title: "optional", "aria-label": "optional"
+        #     end
+        #   %>
+        #
+        #   <!-- output -->
+        #   <label for="book-free-shipping">
+        #     Free Shipping
+        #     <abbr title="optional" aria-label="optional">*</abbr>
+        #   </label>
+        def label(content = nil, **attributes, &blk)
           attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
           content    = case content
-                       when String, Hanami::Utils::String
+                       when String, Hanami::Utils::String, NilClass
                          content
                        else
                          Utils::String.capitalize(content)
                        end
 
-          super(content, attributes)
+          super(content, attributes, &blk)
         end
 
         # Fieldset
@@ -1224,7 +1240,7 @@ module Hanami
         #
         #   <!-- output -->
         #   <select name="book[store]" id="book-store" class="form-control">
-        #     <option>Select a store</option>
+        #     <option disabled="disabled">Select a store</option>
         #     <option value="it">Italy</option>
         #     <option value="us">United States</option>
         #   </select>
@@ -1287,7 +1303,7 @@ module Hanami
           input_value = _value(name)
 
           super(attributes) do
-            option(prompt) unless prompt.nil?
+            option(prompt, disabled: true) if prompt
 
             already_selected = nil
             values.each do |content, value|

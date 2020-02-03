@@ -109,7 +109,7 @@ RSpec.describe 'Form helper' do
         @params   = BillParams.new({})
         @session  = Session.new(_csrf_token: 's14')
 
-        @actual   = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)
+        @actual = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)
       end
 
       it 'renders the form' do
@@ -125,7 +125,7 @@ RSpec.describe 'Form helper' do
         @params   = BillParams.new(bill: { addresses: [{ street: 'Mulholland Drive' }, { street: 'Quaint Edge' }] })
         @session  = Session.new(_csrf_token: 's14')
 
-        @actual   = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)
+        @actual = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)
       end
 
       it 'renders the form' do
@@ -141,7 +141,7 @@ RSpec.describe 'Form helper' do
         @params   = BillParams.new({})
         @session  = Session.new(_csrf_token: 's14')
 
-        @actual   = FullStack::Views::Bills::Edit2.render(format: :html, bill: @bill, params: @params, session: @session)
+        @actual = FullStack::Views::Bills::Edit2.render(format: :html, bill: @bill, params: @params, session: @session)
       end
 
       it 'renders the form' do

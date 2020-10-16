@@ -1,4 +1,6 @@
-require 'hanami/utils/hash'
+# frozen_string_literal: true
+
+require "hanami/utils/hash"
 
 module Hanami
   module Helpers
@@ -13,7 +15,7 @@ module Hanami
       class Values
         # @since 0.2.0
         # @api private
-        GET_SEPARATOR = '.'.freeze
+        GET_SEPARATOR = "."
 
         # @since 0.2.0
         # @api private

@@ -1,10 +1,12 @@
-require 'hanami/utils'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/escape'
-require 'hanami/helpers/html_helper/empty_html_node'
-require 'hanami/helpers/html_helper/html_node'
-require 'hanami/helpers/html_helper/html_fragment'
-require 'hanami/helpers/html_helper/text_node'
+# frozen_string_literal: true
+
+require "hanami/utils"
+require "hanami/utils/class_attribute"
+require "hanami/utils/escape"
+require "hanami/helpers/html_helper/empty_html_node"
+require "hanami/helpers/html_helper/html_node"
+require "hanami/helpers/html_helper/html_fragment"
+require "hanami/helpers/html_helper/text_node"
 
 module Hanami
   module Helpers
@@ -12,7 +14,7 @@ module Hanami
       # HTML Builder
       #
       # @since 0.1.0
-      class HtmlBuilder # rubocop:disable Metrics/ClassLength
+      class HtmlBuilder
         # HTML5 content tags
         #
         # @since 0.1.0
@@ -152,7 +154,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        NEWLINE = "\n".freeze
+        NEWLINE = "\n"
 
         CONTENT_TAGS.each do |tag|
           class_eval %{
@@ -318,7 +320,7 @@ module Hanami
 
         # @since 0.2.5
         # @api private
-        alias + text
+        alias_method :+, :text
 
         # Resolves all the nodes and generates the markup
         #
@@ -369,7 +371,7 @@ module Hanami
           # @since 0.1.0
           # @api private
           def resolve(&blk)
-            @context = eval('self', blk.binding, __FILE__, __LINE__)
+            @context = eval("self", blk.binding, __FILE__, __LINE__)
             instance_exec(&blk)
           end
         end

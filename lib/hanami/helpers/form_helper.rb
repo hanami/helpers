@@ -1,5 +1,7 @@
-require 'hanami/helpers/form_helper/form_builder'
-require 'hanami/helpers/html_helper'
+# frozen_string_literal: true
+
+require "hanami/helpers/form_helper/form_builder"
+require "hanami/helpers/html_helper"
 
 module Hanami
   module Helpers
@@ -82,13 +84,13 @@ module Hanami
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_METHOD = 'POST'.freeze
+      DEFAULT_METHOD = "POST"
 
       # Default charset
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_CHARSET = 'utf-8'.freeze
+      DEFAULT_CHARSET = "utf-8"
 
       # CSRF Token session key
       #
@@ -428,7 +430,7 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url = nil, options = {}, &blk) # rubocop:disable Metrics/MethodLength
+      def form_for(name, url = nil, options = {}, &blk)
         form = if name.is_a?(Form)
                  options = url || {}
                  name
@@ -439,7 +441,7 @@ module Hanami
         params = options.delete(:params)
         opts = options.dup
         opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
-        attributes = { action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form" }.merge(opts)
+        attributes = {action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form"}.merge(opts)
 
         FormBuilder.new(form, attributes, self, params, &blk)
       end

@@ -54,7 +54,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def content # rubocop:disable Metrics/MethodLength
+        def content
           case @content
           when Proc
             result = @builder.resolve(&@content)

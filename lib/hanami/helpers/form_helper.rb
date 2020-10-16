@@ -430,7 +430,7 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url = nil, options = {}, &blk) # rubocop:disable Metrics/MethodLength
+      def form_for(name, url = nil, options = {}, &blk)
         form = if name.is_a?(Form)
                  options = url || {}
                  name

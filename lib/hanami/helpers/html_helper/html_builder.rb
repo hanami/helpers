@@ -14,7 +14,7 @@ module Hanami
       # HTML Builder
       #
       # @since 0.1.0
-      class HtmlBuilder # rubocop:disable Metrics/ClassLength
+      class HtmlBuilder
         # HTML5 content tags
         #
         # @since 0.1.0

@@ -14,7 +14,7 @@ module Hanami
       # @since 0.2.0
       #
       # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
-      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder # rubocop:disable Metrics/ClassLength
+      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder
         # Set of HTTP methods that are understood by web browsers
         #
         # @since 0.2.0
@@ -102,7 +102,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        def initialize(form, attributes, context = nil, params = nil, &blk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def initialize(form, attributes, context = nil, params = nil, &blk)
           super()
 
           @context    = context
@@ -1296,7 +1296,7 @@ module Hanami
         #     ...
         #     <option value="zw">Zimbabwe</option>
         #   </select>
-        def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def select(name, values, attributes = {})
           options     = attributes.delete(:options) { {} }
           multiple    = attributes[:multiple]
           attributes  = {name: _select_input_name(name, multiple), id: _input_id(name)}.merge(attributes)
@@ -1382,7 +1382,7 @@ module Hanami
         #     <option value="Italy" class="form-control"></option>
         #     <option value="United States" class="form-control"></option>
         #   </datalist>
-        def datalist(name, values, list, attributes = {}) # rubocop:disable Metrics/MethodLength
+        def datalist(name, values, list, attributes = {})
           attrs    = attributes.dup
           options  = attrs.delete(:options)  || {}
           datalist = attrs.delete(:datalist) || {}

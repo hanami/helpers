@@ -1,5 +1,5 @@
-require 'hanami/helpers/html_helper/empty_html_node'
-require 'hanami/utils/escape'
+require "hanami/helpers/html_helper/empty_html_node"
+require "hanami/utils/escape"
 
 module Hanami
   module Helpers

@@ -1,4 +1,4 @@
-require 'hanami/helpers/html_helper'
+require "hanami/helpers/html_helper"
 
 module Hanami
   module Helpers

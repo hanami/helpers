@@ -1,10 +1,10 @@
-require 'hanami/utils'
-require 'hanami/utils/class_attribute'
-require 'hanami/utils/escape'
-require 'hanami/helpers/html_helper/empty_html_node'
-require 'hanami/helpers/html_helper/html_node'
-require 'hanami/helpers/html_helper/html_fragment'
-require 'hanami/helpers/html_helper/text_node'
+require "hanami/utils"
+require "hanami/utils/class_attribute"
+require "hanami/utils/escape"
+require "hanami/helpers/html_helper/empty_html_node"
+require "hanami/helpers/html_helper/html_node"
+require "hanami/helpers/html_helper/html_fragment"
+require "hanami/helpers/html_helper/text_node"
 
 module Hanami
   module Helpers
@@ -369,7 +369,7 @@ module Hanami
           # @since 0.1.0
           # @api private
           def resolve(&blk)
-            @context = eval('self', blk.binding, __FILE__, __LINE__)
+            @context = eval("self", blk.binding, __FILE__, __LINE__)
             instance_exec(&blk)
           end
         end

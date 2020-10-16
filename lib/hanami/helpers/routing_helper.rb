@@ -1,4 +1,4 @@
-require 'hanami/utils/string'
+require "hanami/utils/string"
 
 module Hanami
   module Helpers

@@ -65,7 +65,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        ATTRIBUTES_SEPARATOR = ' '.freeze
+        ATTRIBUTES_SEPARATOR = " ".freeze
 
         # Initialize a new empty HTML node
         #
@@ -102,7 +102,7 @@ module Hanami
         def attributes
           return unless defined?(@attributes) && !@attributes.nil?
 
-          result = ''
+          result = ""
 
           @attributes.each do |attribute_name, value|
             if boolean_attribute?(attribute_name)

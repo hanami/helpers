@@ -1,4 +1,4 @@
-require 'hanami/utils/kernel'
+require "hanami/utils/kernel"
 
 module Hanami
   module Helpers
@@ -98,7 +98,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        DEFAULT_SEPARATOR  = '.'.freeze
+        DEFAULT_SEPARATOR  = ".".freeze
 
         # Default delimiter
         #
@@ -106,7 +106,7 @@ module Hanami
         #
         # @since 0.2.0
         # @api private
-        DEFAULT_DELIMITER  = ','.freeze
+        DEFAULT_DELIMITER  = ",".freeze
 
         # Default precision
         #

@@ -1,8 +1,8 @@
-require 'hanami/helpers/form_helper/html_node'
-require 'hanami/helpers/form_helper/values'
-require 'hanami/helpers/html_helper/html_builder'
-require 'hanami/helpers/escape_helper'
-require 'hanami/utils/string'
+require "hanami/helpers/form_helper/html_node"
+require "hanami/helpers/form_helper/values"
+require "hanami/helpers/html_helper/html_builder"
+require "hanami/helpers/escape_helper"
+require "hanami/utils/string"
 
 module Hanami
   module Helpers
@@ -31,7 +31,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#radio_button
-        CHECKED = 'checked'.freeze
+        CHECKED = "checked".freeze
 
         # Selected attribute value for option
         #
@@ -39,7 +39,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#select
-        SELECTED = 'selected'.freeze
+        SELECTED = "selected".freeze
 
         # Separator for accept attribute of file input
         #
@@ -47,7 +47,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#file_input
-        ACCEPT_SEPARATOR = ','.freeze
+        ACCEPT_SEPARATOR = ",".freeze
 
         # Replacement for input id interpolation
         #
@@ -63,7 +63,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
-        DEFAULT_UNCHECKED_VALUE = '0'.freeze
+        DEFAULT_UNCHECKED_VALUE = "0".freeze
 
         # Default value for checked check box
         #
@@ -71,7 +71,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
-        DEFAULT_CHECKED_VALUE = '1'.freeze
+        DEFAULT_CHECKED_VALUE = "1".freeze
 
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
 
@@ -1612,7 +1612,7 @@ module Hanami
         # @api private
         # @since 1.0.0
         def _displayed_input_name(name)
-          _input_name(name).gsub(/\[\d+\]/, '[]')
+          _input_name(name).gsub(/\[\d+\]/, "[]")
         end
 
         # Input <tt>id</tt> HTML attribute

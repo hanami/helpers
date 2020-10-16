@@ -1,1 +1,1 @@
-require 'hanami/helpers'
+require "hanami/helpers"

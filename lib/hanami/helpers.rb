@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "hanami/helpers/version"
 require "hanami/helpers/html_helper"
 require "hanami/helpers/escape_helper"

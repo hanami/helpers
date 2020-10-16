@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe "Html helper" do
   before do
     @book   = Book.new(title: "The Work of Art in the Age of Mechanical Reproduction")

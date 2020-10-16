@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "hanami/helpers/form_helper/form_builder"
 require "hanami/helpers/html_helper"
 

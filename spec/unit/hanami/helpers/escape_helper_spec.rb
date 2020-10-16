@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Hanami::Helpers::EscapeHelper do
   before do
     @view = EscapeView.new

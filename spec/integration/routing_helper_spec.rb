@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe "Routing helper" do
   before do
     @actual = FullStack::Views::Dashboard::Index.render(format: :html)

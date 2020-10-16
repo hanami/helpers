@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Hanami::Helpers::RoutingHelper do
   before do
     @template = Hanami::View::Template.new("spec/support/fixtures/templates/full_stack/dashboard/index.html.erb", "utf-8")

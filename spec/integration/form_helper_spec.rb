@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe "Form helper" do
   before do
     Hanami::View.load!

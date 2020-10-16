@@ -1,4 +1,6 @@
-require 'hanami/utils/escape'
+# frozen_string_literal: true
+
+require "hanami/utils/escape"
 
 module Hanami
   module Helpers
@@ -76,7 +78,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias h escape_html
+      alias_method :h, :escape_html
 
       # Escape the given HTML tag attribute.
       #
@@ -148,7 +150,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias ha escape_html_attribute
+      alias_method :ha, :escape_html_attribute
 
       # Escape an URL to be used in HTML attributes
       #
@@ -226,7 +228,7 @@ module Hanami
       end
 
       # @since 0.1.0
-      alias hu escape_url
+      alias_method :hu, :escape_url
 
       # Bypass escape.
       #

@@ -14,7 +14,7 @@ module Hanami
       # HTML Builder
       #
       # @since 0.1.0
-      class HtmlBuilder # rubocop:disable Metrics/ClassLength
+      class HtmlBuilder
         # HTML5 content tags
         #
         # @since 0.1.0
@@ -320,7 +320,7 @@ module Hanami
 
         # @since 0.2.5
         # @api private
-        alias + text
+        alias_method :+, :text
 
         # Resolves all the nodes and generates the markup
         #
@@ -381,13 +381,13 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def method_missing(method_name, *args, &blk) # rubocop:disable Style/MethodMissingSuper
+        def method_missing(method_name, *args, &blk) # rubocop:disable Lint/MissingSuper
           @context.__send__(method_name, *args, &blk)
         end
 
         # @since 1.2.2
         # @api private
-        def respond_to_missing?(method_name, include_all)
+        def respond_to_missing?(method_name, include_all) # rubocop:disable Lint/MissingSuper
           @context.respond_to?(method_name, include_all)
         end
       end

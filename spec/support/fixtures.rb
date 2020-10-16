@@ -302,7 +302,7 @@ module TestView
     view.class_eval do
       include Hanami::View
       include Hanami::Helpers
-      root __dir__ + "/fixtures/templates"
+      root "#{__dir__}/fixtures/templates"
     end
   end
 end
@@ -385,7 +385,7 @@ class SessionFormHelperView < FormHelperView
   end
 
   def session
-    { _csrf_token: @csrf_token }
+    {_csrf_token: @csrf_token}
   end
 end
 
@@ -491,7 +491,7 @@ module FullStack
     module Dashboard
       class Index
         include TestView
-        root __dir__ + "/fixtures/templates/full_stack"
+        root "#{__dir__}/fixtures/templates/full_stack"
         template "dashboard/index"
 
         def routing_helper_path
@@ -550,7 +550,7 @@ module FullStack
         def form
           Form.new(:delivery,
                    routes.delivery_path(id: delivery.id),
-                   { delivery: delivery }, method: :patch)
+                   {delivery: delivery}, method: :patch)
         end
 
         def submit_label
@@ -565,7 +565,7 @@ module FullStack
         template "bills/edit"
 
         def form
-          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
+          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
         end
 
         def submit_label
@@ -578,7 +578,7 @@ module FullStack
         template "bills/edit2"
 
         def form
-          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
+          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
         end
 
         def submit_label
@@ -591,7 +591,7 @@ end
 
 class ViewWithoutRoutingHelper
   include TestView
-  root __dir__ + "/fixtures/templates/full_stack"
+  root "#{__dir__}/fixtures/templates/full_stack"
   template "dashboard/index"
 
   def routing_helper_path
@@ -654,7 +654,7 @@ class LinkTo
 
   class Routes
     def self.path(name, id = nil)
-      "/#{name}" + "/#{id}"
+      "/#{name}/#{id}"
     end
   end
 

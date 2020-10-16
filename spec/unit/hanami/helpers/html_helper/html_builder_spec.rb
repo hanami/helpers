@@ -248,7 +248,6 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
       expect(result).to eq('<input required="required" value="Title "book"" something="bar">')
     end
 
-    # rubocop:disable Style/SymbolArray
     it "renders empty node with array value as joined with space" do
       result = @builder.input("class" => [:ui, :form]).to_s
       expect(result).to eq('<input class="ui form">')
@@ -258,7 +257,6 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
       result = @builder.span("foo", "class" => [:ui, :form]).to_s
       expect(result).to eq('<span class="ui form">foo</span>')
     end
-    # rubocop:enable Style/SymbolArray
   end
 
   ##############################################################################
@@ -292,7 +290,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
 
     it "allows concatenation with raw string" do
       result = @builder.p do
-        span("Foo") +
+        span("Foo") + # rubocop:disable Style/StringConcatenation
           "Bar"
       end.to_s
 

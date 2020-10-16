@@ -21,7 +21,7 @@ module Hanami
         # @param _options [Hash] a optional set of data
         #
         # @return [Hanami::Helpers::HtmlHelper::HtmlNode]
-        def initialize(name, content, attributes, _options = {})
+        def initialize(name, content, attributes, _options = {}) # rubocop:disable Lint/MissingSuper
           @builder = HtmlBuilder.new
           @name    = name
           @content = if content.is_a?(::Hash)
@@ -54,7 +54,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def content # rubocop:disable Metrics/MethodLength
+        def content
           case @content
           when Proc
             result = @builder.resolve(&@content)

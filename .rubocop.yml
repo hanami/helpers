@@ -4,3 +4,9 @@ inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop.yml
 Naming/HeredocDelimiterNaming:
   Enabled: false
+Layout/LineLength:
+  Exclude:
+    - "lib/hanami/helpers/escape_helper.rb"
+    - "lib/hanami/helpers/form_helper.rb"
+    - "lib/hanami/helpers/form_helper/form_builder.rb"
+    - "spec/**/*.rb"

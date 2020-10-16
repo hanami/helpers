@@ -1,5 +1,7 @@
-require 'hanami/helpers/html_helper/empty_html_node'
-require 'hanami/utils/escape'
+# frozen_string_literal: true
+
+require "hanami/helpers/html_helper/empty_html_node"
+require "hanami/utils/escape"
 
 module Hanami
   module Helpers
@@ -52,7 +54,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def content # rubocop:disable Metrics/MethodLength
+        def content
           case @content
           when Proc
             result = @builder.resolve(&@content)

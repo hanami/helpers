@@ -1,10 +1,12 @@
-require 'hanami/helpers/version'
-require 'hanami/helpers/html_helper'
-require 'hanami/helpers/escape_helper'
-require 'hanami/helpers/routing_helper'
-require 'hanami/helpers/link_to_helper'
-require 'hanami/helpers/form_helper'
-require 'hanami/helpers/number_formatting_helper'
+# frozen_string_literal: true
+
+require "hanami/helpers/version"
+require "hanami/helpers/html_helper"
+require "hanami/helpers/escape_helper"
+require "hanami/helpers/routing_helper"
+require "hanami/helpers/link_to_helper"
+require "hanami/helpers/form_helper"
+require "hanami/helpers/number_formatting_helper"
 
 # @since 0.1.0
 module Hanami

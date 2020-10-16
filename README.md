@@ -5,8 +5,6 @@ View helpers for Ruby applications
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-helpers.svg)](https://badge.fury.io/rb/hanami-helpers)
-[![TravisCI](https://travis-ci.org/hanami/helpers.svg?branch=master)](https://travis-ci.org/hanami/helpers)
-[![Build Status](https://ci.hanamirb.org/api/badges/hanami/helpers/status.svg)](https://ci.hanamirb.org/hanami/helpers)
 [![CircleCI](https://circleci.com/gh/hanami/helpers/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/helpers/tree/master)
 [![Test Coverage](https://codecov.io/gh/hanami/helpers/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/helpers)
 [![Depfu](https://badges.depfu.com/badges/7b30c5d2a2a78954e2ad86e5c7230c23/overview.svg)](https://depfu.com/github/hanami/helpers?project=Bundler)

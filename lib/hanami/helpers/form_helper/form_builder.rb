@@ -1040,7 +1040,7 @@ module Hanami
         def text_field(name, attributes = {})
           input _attributes(:text, name, attributes)
         end
-        alias input_text text_field
+        alias_method :input_text, :text_field
 
         # Search input
         #

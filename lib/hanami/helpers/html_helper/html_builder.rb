@@ -320,7 +320,7 @@ module Hanami
 
         # @since 0.2.5
         # @api private
-        alias + text
+        alias_method :+, :text
 
         # Resolves all the nodes and generates the markup
         #

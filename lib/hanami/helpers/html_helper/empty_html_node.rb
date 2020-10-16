@@ -67,7 +67,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        ATTRIBUTES_SEPARATOR = " ".freeze
+        ATTRIBUTES_SEPARATOR = " "
 
         # Initialize a new empty HTML node
         #

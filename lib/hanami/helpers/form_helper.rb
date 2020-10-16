@@ -84,13 +84,13 @@ module Hanami
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_METHOD = "POST".freeze
+      DEFAULT_METHOD = "POST"
 
       # Default charset
       #
       # @since 0.2.0
       # @api private
-      DEFAULT_CHARSET = "utf-8".freeze
+      DEFAULT_CHARSET = "utf-8"
 
       # CSRF Token session key
       #

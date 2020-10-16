@@ -33,7 +33,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#radio_button
-        CHECKED = "checked".freeze
+        CHECKED = "checked"
 
         # Selected attribute value for option
         #
@@ -41,7 +41,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#select
-        SELECTED = "selected".freeze
+        SELECTED = "selected"
 
         # Separator for accept attribute of file input
         #
@@ -49,7 +49,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#file_input
-        ACCEPT_SEPARATOR = ",".freeze
+        ACCEPT_SEPARATOR = ","
 
         # Replacement for input id interpolation
         #
@@ -57,7 +57,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#_input_id
-        INPUT_ID_REPLACEMENT = '-\k<token>'.freeze
+        INPUT_ID_REPLACEMENT = '-\k<token>'
 
         # Default value for unchecked check box
         #
@@ -65,7 +65,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
-        DEFAULT_UNCHECKED_VALUE = "0".freeze
+        DEFAULT_UNCHECKED_VALUE = "0"
 
         # Default value for checked check box
         #
@@ -73,7 +73,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
-        DEFAULT_CHECKED_VALUE = "1".freeze
+        DEFAULT_CHECKED_VALUE = "1"
 
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
 

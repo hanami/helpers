@@ -154,7 +154,7 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        NEWLINE = "\n".freeze
+        NEWLINE = "\n"
 
         CONTENT_TAGS.each do |tag|
           class_eval %{

@@ -42,7 +42,7 @@ RSpec.describe "Form helper" do
 
     describe "after a failed form submission" do
       before do
-        @params  = DeliveryParams.new(delivery: { address: { street: "5th Ave" } })
+        @params  = DeliveryParams.new(delivery: {address: {street: "5th Ave"}})
         @session = Session.new(_csrf_token: "m15")
 
         @actual = FullStack::Views::Deliveries::New.render(format: :html, params: @params, session: @session)
@@ -73,7 +73,7 @@ RSpec.describe "Form helper" do
       before do
         @address  = Address.new(street: "5th Ave")
         @delivery = Delivery.new(id: 1, customer_id: 23, address: @address)
-        @params   = DeliveryParams.new(delivery: { address: { street: "Mulholland Drive" } })
+        @params   = DeliveryParams.new(delivery: {address: {street: "Mulholland Drive"}})
         @session  = Session.new(_csrf_token: "s14")
 
         @actual = FullStack::Views::Deliveries::Edit.render(format: :html, delivery: @delivery, params: @params, session: @session)
@@ -88,7 +88,7 @@ RSpec.describe "Form helper" do
       before do
         @address  = Address.new(street: "5th Ave")
         @delivery = Delivery.new(id: 1, customer_id: 23, address: @address)
-        @params   = DeliveryParams.new(delivery: { address: { street: "" } })
+        @params   = DeliveryParams.new(delivery: {address: {street: ""}})
         @session  = Session.new(_csrf_token: "s14")
 
         @actual = FullStack::Views::Deliveries::Edit.render(format: :html, delivery: @delivery, params: @params, session: @session)
@@ -122,7 +122,7 @@ RSpec.describe "Form helper" do
         @address1 = Address.new(street: "5th Ave")
         @address2 = Address.new(street: "4th Ave")
         @bill     = Bill.new(id: 1, addresses: [@address1, @address2])
-        @params   = BillParams.new(bill: { addresses: [{ street: "Mulholland Drive" }, { street: "Quaint Edge" }] })
+        @params   = BillParams.new(bill: {addresses: [{street: "Mulholland Drive"}, {street: "Quaint Edge"}]})
         @session  = Session.new(_csrf_token: "s14")
 
         @actual = FullStack::Views::Bills::Edit.render(format: :html, bill: @bill, params: @params, session: @session)

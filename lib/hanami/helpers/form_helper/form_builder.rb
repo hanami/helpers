@@ -380,7 +380,7 @@ module Hanami
         #     <abbr title="optional" aria-label="optional">*</abbr>
         #   </label>
         def label(content = nil, **attributes, &blk)
-          attributes = { for: _for(content, attributes.delete(:for)) }.merge(attributes)
+          attributes = {for: _for(content, attributes.delete(:for))}.merge(attributes)
           content    = case content
                        when String, Hanami::Utils::String, NilClass
                          content
@@ -884,7 +884,7 @@ module Hanami
         #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, attributes = {})
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
-          attributes = { type: :file, name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = {type: :file, name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
 
           input(attributes)
         end
@@ -1007,7 +1007,7 @@ module Hanami
             content    = nil
           end
 
-          attributes = { name: _displayed_input_name(name), id: _input_id(name) }.merge(attributes)
+          attributes = {name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
           textarea(content || _value(name), attributes)
         end
 
@@ -1119,7 +1119,7 @@ module Hanami
         #   <input type="radio" name="book[category]" value="Fiction">
         #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, attributes = {})
-          attributes = { type: :radio, name: _displayed_input_name(name), value: value }.merge(attributes)
+          attributes = {type: :radio, name: _displayed_input_name(name), value: value}.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
           input(attributes)
         end
@@ -1140,7 +1140,7 @@ module Hanami
         #   <!-- output -->
         #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, attributes = {})
-          input({ type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil }.merge(attributes))
+          input({type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil}.merge(attributes))
         end
 
         # Select input
@@ -1297,7 +1297,7 @@ module Hanami
         def select(name, values, attributes = {}) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           options     = attributes.delete(:options) { {} }
           multiple    = attributes[:multiple]
-          attributes  = { name: _select_input_name(name, multiple), id: _input_id(name) }.merge(attributes)
+          attributes  = {name: _select_input_name(name, multiple), id: _input_id(name)}.merge(attributes)
           prompt      = options.delete(:prompt)
           selected    = options.delete(:selected)
           input_value = _value(name)
@@ -1308,9 +1308,9 @@ module Hanami
             already_selected = nil
             values.each do |content, value|
               if (multiple || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, multiple))
-                option(content, { value: value, selected: SELECTED }.merge(options))
+                option(content, {value: value, selected: SELECTED}.merge(options))
               else
-                option(content, { value: value }.merge(options))
+                option(content, {value: value}.merge(options))
               end
             end
           end
@@ -1391,7 +1391,7 @@ module Hanami
           text_field(name, attrs)
           super(datalist) do
             values.each do |value, content|
-              option(content, { value: value }.merge(options))
+              option(content, {value: value}.merge(options))
             end
           end
         end
@@ -1535,7 +1535,7 @@ module Hanami
             content = nil
           end
 
-          attributes = { type: :submit }.merge(attributes)
+          attributes = {type: :submit}.merge(attributes)
           button(content, attributes, &blk)
         end
 
@@ -1592,7 +1592,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = { type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name) }
+          attrs = {type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name)}
           attrs.merge!(attributes)
           attrs[:value] = escape_html(attrs[:value])
           attrs

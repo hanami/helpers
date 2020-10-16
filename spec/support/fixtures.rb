@@ -372,7 +372,7 @@ class SessionFormHelperView < FormHelperView
   end
 
   def session
-    { _csrf_token: @csrf_token }
+    {_csrf_token: @csrf_token}
   end
 end
 
@@ -537,7 +537,7 @@ module FullStack
         def form
           Form.new(:delivery,
                    routes.delivery_path(id: delivery.id),
-                   { delivery: delivery }, method: :patch)
+                   {delivery: delivery}, method: :patch)
         end
 
         def submit_label
@@ -552,7 +552,7 @@ module FullStack
         template "bills/edit"
 
         def form
-          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
+          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
         end
 
         def submit_label
@@ -565,7 +565,7 @@ module FullStack
         template "bills/edit2"
 
         def form
-          Form.new(:bill, routes.bill_path(id: bill.id), { bill: bill }, method: :patch)
+          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
         end
 
         def submit_label

@@ -130,8 +130,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     context "inline params" do
       let(:view)   { FormHelperView.new(params) }
-      let(:params) { { song: { title: "Orphans" } } }
-      let(:inline_params) { { song: { title: "Arabesque" } } }
+      let(:params) { {song: {title: "Orphans"}} }
+      let(:inline_params) { {song: {title: "Arabesque"}} }
       let(:action) { "/songs" }
 
       it "renders" do
@@ -168,7 +168,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { title: "TDD", categories: { name: "foo", name2: "bar", subcategories: { name: "sub" } } }] }
+      let(:params) { Hash[book: {title: "TDD", categories: {name: "foo", name2: "bar", subcategories: {name: "sub"}}}] }
 
       it "renders" do
         actual = view.form_for(:book, action) do
@@ -191,7 +191,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
   end
 
   describe "#fields_for_collection" do
-    let(:params) { Hash[book: { categories: [{ name: "foo", new: true, genre: nil }] }] }
+    let(:params) { Hash[book: {categories: [{name: "foo", new: true, genre: nil}]}] }
 
     it "renders" do
       actual = view.form_for(:book, action) do
@@ -504,7 +504,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { free_shipping: val }] }
+      let(:params) { Hash[book: {free_shipping: val}] }
 
       describe "when the params value equals to check box value" do
         let(:val) { "1" }
@@ -551,7 +551,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "when multiple params are present" do
-        let(:params) { Hash[book: { languages: ["italian"] }] }
+        let(:params) { Hash[book: {languages: ["italian"]}] }
 
         it "handles multiple checkboxes" do
           actual = view.form_for(:book, action) do
@@ -564,7 +564,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "checked_value is boolean" do
-        let(:params) { Hash[book: { free_shipping: "true" }] }
+        let(:params) { Hash[book: {free_shipping: "true"}] }
 
         it "renders with 'checked' attribute" do
           actual = view.form_for(:book, action) do
@@ -576,7 +576,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "checked_value is boolean" do
-        let(:params) { Hash[book: { free_shipping: "true" }] }
+        let(:params) { Hash[book: {free_shipping: "true"}] }
 
         it "renders with 'checked' attribute" do
           actual = view.form_for(:book, action) do
@@ -668,7 +668,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { cover: val }] }
+      let(:params) { Hash[book: {cover: val}] }
       let(:val) { "#d3397e" }
 
       it "renders with value" do
@@ -752,7 +752,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { release_date: val }] }
+      let(:params) { Hash[book: {release_date: val}] }
       let(:val)    { "2014-06-23" }
 
       it "renders with value" do
@@ -836,7 +836,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { published_at: val }] }
+      let(:params) { Hash[book: {published_at: val}] }
       let(:val)    { "2015-02-19T12:56:31Z" }
 
       it "renders with value" do
@@ -899,7 +899,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { released_at: val }] }
+      let(:params) { Hash[book: {released_at: val}] }
       let(:val)    { "2015-02-19T14:11:19+01:00" }
 
       it "renders with value" do
@@ -983,7 +983,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { release_hour: val }] }
+      let(:params) { Hash[book: {release_hour: val}] }
       let(:val)    { "11:30" }
 
       it "renders with value" do
@@ -1067,7 +1067,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { release_month: val }] }
+      let(:params) { Hash[book: {release_month: val}] }
       let(:val)    { "2017-10" }
 
       it "renders with value" do
@@ -1151,7 +1151,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { release_week: val }] }
+      let(:params) { Hash[book: {release_week: val}] }
       let(:val)    { "2017-W44" }
 
       it "renders with value" do
@@ -1243,7 +1243,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { publisher_email: val }] }
+      let(:params) { Hash[book: {publisher_email: val}] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
@@ -1335,7 +1335,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { website: val }] }
+      let(:params) { Hash[book: {website: val}] }
       let(:val)    { "http://publisher.org" }
 
       it "renders with value" do
@@ -1448,7 +1448,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { publisher_telephone: val }] }
+      let(:params) { Hash[book: {publisher_telephone: val}] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
@@ -1560,7 +1560,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { image_cover: val }] }
+      let(:params) { Hash[book: {image_cover: val}] }
       let(:val)    { "image" }
 
       it "ignores value" do
@@ -1636,7 +1636,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { author_id: val }] }
+      let(:params) { Hash[book: {author_id: val}] }
       let(:val)    { "1" }
 
       it "renders with value" do
@@ -1765,7 +1765,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { percent_read: val }] }
+      let(:params) { Hash[book: {percent_read: val}] }
       let(:val)    { 95 }
 
       it "renders with value" do
@@ -1894,7 +1894,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { discount_percentage: val }] }
+      let(:params) { Hash[book: {discount_percentage: val}] }
       let(:val)    { 95 }
 
       it "renders with value" do
@@ -2024,7 +2024,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { description: val }] }
+      let(:params) { Hash[book: {description: val}] }
       let(:val) { "A short description of the book" }
 
       it "renders with value" do
@@ -2132,7 +2132,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { title: val }] }
+      let(:params) { Hash[book: {title: val}] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
@@ -2216,7 +2216,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { search_title: val }] }
+      let(:params) { Hash[book: {search_title: val}] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
@@ -2300,7 +2300,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[signup: { password: val }] }
+      let(:params) { Hash[signup: {password: val}] }
       let(:val)    { "secret" }
 
       it "ignores value" do
@@ -2365,7 +2365,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     describe "with filled params" do
       describe "string value" do
-        let(:params) { Hash[book: { category: val }] }
+        let(:params) { Hash[book: {category: val}] }
         let(:val)    { "Non-Fiction" }
 
         it "renders with value" do
@@ -2379,7 +2379,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "decimal value" do
-        let(:params) { Hash[book: { price: val }] }
+        let(:params) { Hash[book: {price: val}] }
         let(:val)    { "20.0" }
 
         it "renders with value" do
@@ -2431,7 +2431,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for options" do
       actual = view.form_for(:book, action) do
-        select :store, option_values, options: { class: "form-option" }
+        select :store, option_values, options: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" class="form-option">Italy</option>\n<option value="us" class="form-option">United States</option>\n</select>))
@@ -2448,7 +2448,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "allows to select values" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, multiple: true, options: { selected: %w[it us] }
+          select :store, option_values, multiple: true, options: {selected: %w[it us]}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple">\n<option value="it" selected="selected">Italy</option>\n<option value="us" selected="selected">United States</option>\n</select>))
@@ -2467,7 +2467,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "and filled params" do
-        let(:params) { Hash[book: { store: val }] }
+        let(:params) { Hash[book: {store: val}] }
         let(:val)    { "it" }
 
         it "renders with value" do
@@ -2504,7 +2504,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       describe "and filled params" do
-        let(:params) { Hash[book: { store: val }] }
+        let(:params) { Hash[book: {store: val}] }
         let(:val)    { "it" }
 
         it "renders with value" do
@@ -2531,7 +2531,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with filled params" do
-      let(:params) { Hash[book: { store: val }] }
+      let(:params) { Hash[book: {store: val}] }
       let(:val)    { "it" }
 
       it "renders with value" do
@@ -2546,7 +2546,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     describe "with prompt option" do
       it "allows string" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { prompt: "Select a store" }
+          select :store, option_values, options: {prompt: "Select a store"}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
@@ -2554,7 +2554,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "allows blank string" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { prompt: "" }
+          select :store, option_values, options: {prompt: ""}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled"></option>\n<option value="it">Italy</option>\n<option value="us">United States</option>\n</select>))
@@ -2566,7 +2566,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         it "renders with value" do
           actual = view.form_for(:book, action, values: values) do
-            select :store, option_values, options: { prompt: "Select a store" }
+            select :store, option_values, options: {prompt: "Select a store"}
           end.to_s
 
           expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
@@ -2575,12 +2575,12 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       describe "with filled params" do
         describe "string values" do
-          let(:params) { Hash[book: { store: val }] }
+          let(:params) { Hash[book: {store: val}] }
           let(:val)    { "it" }
 
           it "renders with value" do
             actual = view.form_for(:book, action) do
-              select :store, option_values, options: { prompt: "Select a store" }
+              select :store, option_values, options: {prompt: "Select a store"}
             end.to_s
 
             expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option disabled="disabled">Select a store</option>\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
@@ -2589,7 +2589,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         describe "integer values" do
           let(:values) { Hash["Brave new world" => 1, "Solaris" => 2] }
-          let(:params) { Hash[bookshelf: { book: val }] }
+          let(:params) { Hash[bookshelf: {book: val}] }
           let(:val)    { "1" }
 
           it "renders" do
@@ -2604,12 +2604,12 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     describe "with selected attribute" do
-      let(:params) { Hash[book: { store: val }] }
+      let(:params) { Hash[book: {store: val}] }
       let(:val)    { "it" }
 
       it "sets the selected attribute" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { selected: val }
+          select :store, option_values, options: {selected: val}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n</select>))
@@ -2629,7 +2629,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "set as selected the option with nil value" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { selected: nil }
+          select :store, option_values, options: {selected: nil}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N&#x2F;A</option>\n</select>))
@@ -2637,7 +2637,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "set as selected the option with a value" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { selected: "it" }
+          select :store, option_values, options: {selected: "it"}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
@@ -2645,7 +2645,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "allows to force the selection of none" do
         actual = view.form_for(:book, action) do
-          select :store, option_values, options: { selected: "none" }
+          select :store, option_values, options: {selected: "none"}
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
@@ -2718,7 +2718,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for options" do
       actual = view.form_for(:book, action) do
-        datalist :store, values, "books", options: { class: "form-option" }
+        datalist :store, values, "books", options: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist id="books">\n<option value="Italy" class="form-option"></option>\n<option value="United States" class="form-option"></option>\n</datalist>))
@@ -2726,7 +2726,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for datalist" do
       actual = view.form_for(:book, action) do
-        datalist :store, values, "books", datalist: { class: "form-option" }
+        datalist :store, values, "books", datalist: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books">\n<datalist class="form-option" id="books">\n<option value="Italy"></option>\n<option value="United States"></option>\n</datalist>))

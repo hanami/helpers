@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Hanami::Helpers::HtmlHelper do
   before do
     @view = HtmlView.new

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe "Escape helper" do
   before do
     @user   = LinkTo.new

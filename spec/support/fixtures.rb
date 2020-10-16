@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/view"
 require "hanami/controller"
 require "hanami/helpers/html_helper"
@@ -641,7 +642,7 @@ class LinkTo
 
   class Routes
     def self.path(name, id = nil)
-      "/#{name}" << "/#{id}"
+      "/#{name}/#{id}"
     end
   end
 

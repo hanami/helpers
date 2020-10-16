@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Hanami
   module Helpers
     module HtmlHelper
@@ -106,9 +107,9 @@ module Hanami
 
           @attributes.each do |attribute_name, value|
             if boolean_attribute?(attribute_name)
-              result << boolean_attribute(attribute_name, value) if value
+              result += boolean_attribute(attribute_name, value) if value
             else
-              result << attribute(attribute_name, value)
+              result += attribute(attribute_name, value)
             end
           end
 

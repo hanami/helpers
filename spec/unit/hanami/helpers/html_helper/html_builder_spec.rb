@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
   before do
     @builder = Hanami::Helpers::HtmlHelper::HtmlBuilder.new

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Hanami::Helpers::NumberFormattingHelper do
   before do
     @view = NumbersView.new

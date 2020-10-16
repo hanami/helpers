@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/utils"
 require "hanami/utils/class_attribute"
 require "hanami/utils/escape"

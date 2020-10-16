@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/helpers/form_helper/html_node"
 require "hanami/helpers/form_helper/values"
 require "hanami/helpers/html_helper/html_builder"

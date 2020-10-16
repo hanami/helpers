@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe "Number formatting helper" do
   before do
     @rendered = FullStack::Views::Cart::Show.render(format: :html, total: 1234.56)

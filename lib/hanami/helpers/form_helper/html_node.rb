@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "hanami/helpers/html_helper/html_node"
 
 module Hanami

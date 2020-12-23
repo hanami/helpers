@@ -297,20 +297,17 @@ end
 
 User = Struct.new(:name, :website, :snippet)
 
-module TestView
-  def self.included(view)
-    view.class_eval do
-      include Hanami::View
-      include Hanami::Helpers
-      root "#{__dir__}/fixtures/templates"
-    end
-  end
+class TestScope < Hanami::View::Scope
+  include Hanami::Helpers
+end
+
+class TestView < Hanami::View
+  config.scope = TestScope
+  config.paths = [File.join(__dir__, "fixtures", "templates")]
 end
 
 module Books
-  class Show
-    include TestView
-
+  class Show < TestView
     def title_widget
       html.div do
         h1 book.title
@@ -318,9 +315,7 @@ module Books
     end
   end
 
-  class Error
-    include TestView
-
+  class Error < TestView
     def error_widget
       html.div do
         unknown_local_variable
@@ -334,9 +329,7 @@ module Books
 end
 
 module Users
-  class Show
-    include TestView
-
+  class Show < TestView
     def title
       html.h1(user.name)
     end
@@ -487,30 +480,44 @@ module FullStack
     Routes.new
   end
 
+  class ApplicationView < Hanami::View
+    class Context < Hanami::View::Context
+      def initialize(routes: Routes.new, **)
+        @routes = routes
+        super
+      end
+
+      # private
+
+      attr_reader :routes
+    end
+
+    config.paths = [File.join(__dir__, "fixtures", "templates", "full_stack")]
+    config.default_context = Context.new
+  end
+
   module Views
     module Dashboard
-      class Index
-        include TestView
-        root "#{__dir__}/fixtures/templates/full_stack"
-        template "dashboard/index"
+      class Index < ApplicationView
+        config.template = "dashboard/index"
 
-        def routing_helper_path
-          routes.path(:dashboard)
+        scope do
+          def routing_helper_path
+            routes.path(:dashboard)
+          end
         end
       end
     end
 
     module Sessions
-      class New
-        include TestView
-        template "sessions/new"
+      class New < ApplicationView
+        config.template = "sessions/new"
       end
     end
 
     module Settings
-      class Edit
-        include TestView
-        template "settings/edit"
+      class Edit < ApplicationView
+        config.template = "settings/edit"
 
         def form
           Form.new(:settings, routes.settings_path)
@@ -519,9 +526,8 @@ module FullStack
     end
 
     module Cart
-      class Show
-        include TestView
-        template "cart/show"
+      class Show < ApplicationView
+        config.template = "cart/show"
 
         def total
           format_number locals[:total]
@@ -530,9 +536,8 @@ module FullStack
     end
 
     module Deliveries
-      class New
-        include TestView
-        template "deliveries/new"
+      class New < ApplicationView
+        config.template = "deliveries/new"
 
         def form
           Form.new(:delivery, routes.deliveries_path)
@@ -543,9 +548,8 @@ module FullStack
         end
       end
 
-      class Edit
-        include TestView
-        template "deliveries/edit"
+      class Edit < ApplicationView
+        config.template = "deliveries/edit"
 
         def form
           Form.new(:delivery,
@@ -560,9 +564,8 @@ module FullStack
     end
 
     module Bills
-      class Edit
-        include TestView
-        template "bills/edit"
+      class Edit < ApplicationView
+        config.template = "bills/edit"
 
         def form
           Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
@@ -573,9 +576,8 @@ module FullStack
         end
       end
 
-      class Edit2
-        include TestView
-        template "bills/edit2"
+      class Edit2 < ApplicationView
+        config.template = "bills/edit2"
 
         def form
           Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
@@ -589,10 +591,9 @@ module FullStack
   end
 end
 
-class ViewWithoutRoutingHelper
-  include TestView
-  root "#{__dir__}/fixtures/templates/full_stack"
-  template "dashboard/index"
+class ViewWithoutRoutingHelper < TestView
+  config.paths = [File.join(__dir__, "fixtures", "templates", "full_stack")]
+  config.template = "dashboard/index"
 
   def routing_helper_path
     routes.path(:dashboard)
@@ -602,9 +603,7 @@ end
 class LinkTo
   include Hanami::Helpers::LinkToHelper
 
-  class Index
-    include TestView
-
+  class Index < TestView
     def link_to_home
       link_to("Home", "/")
     end

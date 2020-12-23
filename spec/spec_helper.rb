@@ -8,4 +8,3 @@ require "hanami/helpers"
 require_relative "./support/fixtures"
 
 Hanami::Utils.require!("spec/support")
-Hanami::View.load!

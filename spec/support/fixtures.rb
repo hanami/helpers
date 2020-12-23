@@ -307,41 +307,69 @@ class TestView < Hanami::View
 end
 
 module Books
-  class Show < TestView
-    def title_widget
-      html.div do
-        h1 book.title
+  class ApplicationView < Hanami::View
+    class Scope < Hanami::View::Scope
+      include Hanami::Helpers
+    end
+
+    config.paths = [File.join(__dir__, "fixtures", "templates", "books")]
+    config.scope = Scope
+  end
+
+  class Show < ApplicationView
+    config.template = "show"
+    expose :book
+
+    scope do
+      def title_widget
+        html.div do
+          h1 book.title
+        end
       end
     end
   end
 
-  class Error < TestView
-    def error_widget
-      html.div do
-        unknown_local_variable
-      end
-    end
+  class Error < ApplicationView
+    config.template = "error"
 
-    def render
-      error_widget.to_s
+    scope do
+      def error_widget
+        html.div do
+          unknown_local_variable
+        end
+      end
     end
   end
 end
 
 module Users
-  class Show < TestView
-    def title
-      html.h1(user.name)
+  class ApplicationView < Hanami::View
+    class Scope < Hanami::View::Scope
+      include Hanami::Helpers
     end
 
-    def details
-      html.div(id: "details") do
-        ul do
-          li do
-            a("website", href: hu(user.website), title: "#{ha(user.name)}'s website")
-          end
+    config.paths = [File.join(__dir__, "fixtures", "templates", "users")]
+    config.scope = Scope
+  end
 
-          li raw(user.snippet)
+  class Show < ApplicationView
+    config.template = "show"
+    expose :user
+
+    scope do
+      def title
+        html.h1(user.name)
+      end
+
+      def details
+        html.div(id: "details") do
+          ul do
+            li do
+              a("website", href: hu(user.website), title: "#{ha(user.name)}'s website")
+            end
+
+            li raw(user.snippet)
+          end
         end
       end
     end
@@ -487,13 +515,18 @@ module FullStack
         super
       end
 
-      # private
-
       attr_reader :routes
+    end
+
+    class Scope < Hanami::View::Scope
+      include Hanami::Helpers
     end
 
     config.paths = [File.join(__dir__, "fixtures", "templates", "full_stack")]
     config.default_context = Context.new
+    config.scope = Scope
+
+    expose :params, :session
   end
 
   module Views
@@ -519,8 +552,10 @@ module FullStack
       class Edit < ApplicationView
         config.template = "settings/edit"
 
-        def form
-          Form.new(:settings, routes.settings_path)
+        scope do
+          def form
+            Hanami::Helpers::FormHelper::Form.new(:settings, routes.settings_path)
+          end
         end
       end
     end
@@ -528,9 +563,15 @@ module FullStack
     module Cart
       class Show < ApplicationView
         config.template = "cart/show"
+        expose :total
+        # expose :total do |total:|
+        #   format_number total
+        # end
 
-        def total
-          format_number locals[:total]
+        scope do
+          def total
+            format_number _locals[:total]
+          end
         end
       end
     end
@@ -539,26 +580,31 @@ module FullStack
       class New < ApplicationView
         config.template = "deliveries/new"
 
-        def form
-          Form.new(:delivery, routes.deliveries_path)
-        end
+        scope do
+          def form
+            Hanami::Helpers::FormHelper::Form.new(:delivery, routes.deliveries_path)
+          end
 
-        def submit_label
-          "Create"
+          def submit_label
+            "Create"
+          end
         end
       end
 
       class Edit < ApplicationView
         config.template = "deliveries/edit"
+        expose :delivery
 
-        def form
-          Form.new(:delivery,
-                   routes.delivery_path(id: delivery.id),
-                   {delivery: delivery}, method: :patch)
-        end
+        scope do
+          def form
+            Hanami::Helpers::FormHelper::Form.new(:delivery,
+                                                  routes.delivery_path(id: delivery.id),
+                                                  {delivery: delivery}, method: :patch)
+          end
 
-        def submit_label
-          "Update"
+          def submit_label
+            "Update"
+          end
         end
       end
     end
@@ -566,25 +612,31 @@ module FullStack
     module Bills
       class Edit < ApplicationView
         config.template = "bills/edit"
+        expose :bill
 
-        def form
-          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
-        end
+        scope do
+          def form
+            Hanami::Helpers::FormHelper::Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
+          end
 
-        def submit_label
-          "Update"
+          def submit_label
+            "Update"
+          end
         end
       end
 
       class Edit2 < ApplicationView
         config.template = "bills/edit2"
+        expose :bill
 
-        def form
-          Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
-        end
+        scope do
+          def form
+            Hanami::Helpers::FormHelper::Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
+          end
 
-        def submit_label
-          "Update"
+          def submit_label
+            "Update"
+          end
         end
       end
     end
@@ -600,53 +652,64 @@ class ViewWithoutRoutingHelper < TestView
   end
 end
 
-class LinkTo
-  include Hanami::Helpers::LinkToHelper
-
-  class Index < TestView
-    def link_to_home
-      link_to("Home", "/")
+module LinkTo
+  class ApplicationView < Hanami::View
+    class Scope < Hanami::View::Scope
+      include Hanami::Helpers::LinkToHelper
     end
 
-    def link_to_relative
-      link_to("Relative", "relative")
-    end
+    config.paths = [File.join(__dir__, "fixtures", "templates", "link_to")]
+    config.scope = Scope
+  end
 
-    def link_to_home_with_html_content
-      link_to("/") do
-        p "Home with html content"
+  class Index < ApplicationView
+    config.template = "index"
+
+    scope do
+      def link_to_home
+        link_to("Home", "/")
       end
-    end
 
-    def link_to_home_with_html_content_id_and_class
-      link_to("/", id: "home__link", class: "first") do
-        p "Home with html content, id and class"
+      def link_to_relative
+        link_to("Relative", "relative")
       end
-    end
 
-    def link_to_external_url_with_content
-      link_to("External", "http://external.com")
-    end
-
-    def link_to_external_url_with_html_content
-      link_to("http://external.com") do
-        strong "External with html content"
+      def link_to_home_with_html_content
+        link_to("/") do
+          p "Home with html content"
+        end
       end
-    end
 
-    def link_to_xss_content
-      link_to(%(<script>alert('xss')</script>), "/")
-    end
-
-    def link_to_xss_raw_content_block
-      link_to("/") do
-        %(<script>alert('xss2')</script>)
+      def link_to_home_with_html_content_id_and_class
+        link_to("/", id: "home__link", class: "first") do
+          p "Home with html content, id and class"
+        end
       end
-    end
 
-    def link_to_xss_html_builder_content_block
-      link_to("/") do
-        p %(<script>alert('xss3')</script>)
+      def link_to_external_url_with_content
+        link_to("External", "http://external.com")
+      end
+
+      def link_to_external_url_with_html_content
+        link_to("http://external.com") do
+          strong "External with html content"
+        end
+      end
+
+      def link_to_xss_content
+        link_to(%(<script>alert('xss')</script>), "/")
+      end
+
+      def link_to_xss_raw_content_block
+        link_to("/") do
+          %(<script>alert('xss2')</script>)
+        end
+      end
+
+      def link_to_xss_html_builder_content_block
+        link_to("/") do
+          p %(<script>alert('xss3')</script>)
+        end
       end
     end
   end
@@ -657,66 +720,74 @@ class LinkTo
     end
   end
 
-  def routes
-    Routes
-  end
+  class StandaloneView
+    include Hanami::Helpers::LinkToHelper
 
-  def link_to_relative_posts
-    link_to("Posts", "posts")
-  end
-
-  def link_to_posts
-    link_to("Posts", routes.path(:posts))
-  end
-
-  def link_to_post
-    link_to("Post", routes.path(:post, 1))
-  end
-
-  def link_to_with_class
-    link_to("Post", routes.path(:posts), class: "first")
-  end
-
-  def link_to_with_id
-    link_to("Post", routes.path(:posts), id: "posts__link")
-  end
-
-  def link_to_with_html_content
-    link_to(routes.path(:posts)) do
-      strong "Post"
+    def initialize(routes: Routes)
+      @routes = routes
     end
-  end
 
-  def link_to_with_content_and_html_content
-    link_to("Post", routes.path(:posts)) do
-      strong "Post"
+    def link_to_relative_posts
+      link_to("Posts", "posts")
     end
-  end
 
-  def link_to_with_html_content_id_and_class
-    link_to(routes.path(:posts), id: "posts__link", class: "first") do
-      strong "Post"
+    def link_to_posts
+      link_to("Posts", routes.path(:posts))
     end
-  end
 
-  def link_to_without_args
-    link_to
-  end
-
-  def link_to_without_args_and_empty_block
-    link_to do
-      # this block was left intentionally blank ;)
+    def link_to_post
+      link_to("Post", routes.path(:post, 1))
     end
-  end
 
-  def link_to_with_only_content
-    link_to "Post"
-  end
-
-  def link_to_with_content_html_content_id_and_class
-    link_to("Post", routes.path(:posts), id: "posts__link", class: "first") do
-      strong "Post"
+    def link_to_with_class
+      link_to("Post", routes.path(:posts), class: "first")
     end
+
+    def link_to_with_id
+      link_to("Post", routes.path(:posts), id: "posts__link")
+    end
+
+    def link_to_with_html_content
+      link_to(routes.path(:posts)) do
+        strong "Post"
+      end
+    end
+
+    def link_to_with_content_and_html_content
+      link_to("Post", routes.path(:posts)) do
+        strong "Post"
+      end
+    end
+
+    def link_to_with_html_content_id_and_class
+      link_to(routes.path(:posts), id: "posts__link", class: "first") do
+        strong "Post"
+      end
+    end
+
+    def link_to_without_args
+      link_to
+    end
+
+    def link_to_without_args_and_empty_block
+      link_to do
+        # this block was left intentionally blank ;)
+      end
+    end
+
+    def link_to_with_only_content
+      link_to "Post"
+    end
+
+    def link_to_with_content_html_content_id_and_class
+      link_to("Post", routes.path(:posts), id: "posts__link", class: "first") do
+        strong "Post"
+      end
+    end
+
+    private
+
+    attr_reader :routes
   end
 end
 

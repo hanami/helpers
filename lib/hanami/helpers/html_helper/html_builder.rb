@@ -187,6 +187,7 @@ module Hanami
         # @api private
         def initialize
           @nodes = []
+          @context = nil
         end
 
         # @api private

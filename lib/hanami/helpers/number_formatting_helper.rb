@@ -14,8 +14,6 @@ module Hanami
     #
     # @since 0.2.0
     module NumberFormattingHelper
-      private
-
       # Format the given number, according to the options
       #
       # It accepts a number (<tt>Numeric</tt>) or a string representation.

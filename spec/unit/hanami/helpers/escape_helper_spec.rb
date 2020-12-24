@@ -5,42 +5,27 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
     @view = EscapeView.new
   end
 
-  it "has a private escape html method" do
-    expect { @view.escape_html }.to raise_error(NoMethodError)
-  end
-
-  it "has a private escape html attribute method" do
-    expect { @view.escape_html_attribute }.to raise_error(NoMethodError)
-  end
-
-  it "has a private escape url method" do
-    expect { @view.escape_url }.to raise_error(NoMethodError)
-  end
-
-  it "has a private raw method" do
-    expect { @view.raw }.to raise_error(NoMethodError)
-  end
-  it "autoscape evil string" do
+  it "auto-escape evil string" do
     expect(@view.evil_string).to eq(%(&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;))
   end
 
-  it "don't autoscape safe string" do
+  it "don't auto-escape safe string" do
     expect(@view.good_string).to eq(%(this is a good string))
   end
 
-  it "autoscape attributes evil string" do
+  it "auto-escape attributes evil string" do
     expect(@view.good_attributes_string).to eq(%(<a title='foo'>link</a>))
   end
 
-  it "don't autoscape attributes safe string" do
+  it "don't auto-escape attributes safe string" do
     expect(@view.evil_attributes_string).to eq(%(<a title='&lt;script&gt;alert&#x28;&#x27;xss&#x27;&#x29;&lt;&#x2f;script&gt;'>link</a>))
   end
 
-  it "autoscape url evil string" do
+  it "auto-escape url evil string" do
     expect(@view.good_url_string).to eq(%(http://hanamirb.org))
   end
 
-  it "don't autoscape url evil string" do
+  it "don't auto-escape url evil string" do
     expect(@view.evil_url_string).to be_empty
   end
 

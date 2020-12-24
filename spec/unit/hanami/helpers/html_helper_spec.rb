@@ -5,10 +5,6 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
     @view = HtmlView.new
   end
 
-  it "has a private html builder" do
-    expect { @view.html }.to raise_error(NoMethodError)
-  end
-
   it "returns an empty tag" do
     expect(@view.empty_div.to_s).to eq(%(<div></div>))
   end

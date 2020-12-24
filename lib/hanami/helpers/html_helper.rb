@@ -187,8 +187,6 @@ module Hanami
     #     #      <h1>The Work of Art in the Age of Mechanical Reproduction</h1>
     #     #    </div>
     module HtmlHelper
-      private
-
       # Instantiate an HTML builder
       #
       # @param blk [Proc,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content block

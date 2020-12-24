@@ -297,23 +297,23 @@ end
 
 User = Struct.new(:name, :website, :snippet)
 
-class TestScope < Hanami::View::Scope
+class TestContext < Hanami::View::Context
   include Hanami::Helpers
 end
 
 class TestView < Hanami::View
-  config.scope = TestScope
   config.paths = [File.join(__dir__, "fixtures", "templates")]
+  config.default_context = TestContext.new
 end
 
 module Books
   class ApplicationView < Hanami::View
-    class Scope < Hanami::View::Scope
+    class Context < Hanami::View::Context
       include Hanami::Helpers
     end
 
     config.paths = [File.join(__dir__, "fixtures", "templates", "books")]
-    config.scope = Scope
+    config.default_context = Context.new
   end
 
   class Show < ApplicationView
@@ -344,12 +344,12 @@ end
 
 module Users
   class ApplicationView < Hanami::View
-    class Scope < Hanami::View::Scope
+    class Context < Hanami::View::Context
       include Hanami::Helpers
     end
 
     config.paths = [File.join(__dir__, "fixtures", "templates", "users")]
-    config.scope = Scope
+    config.default_context = Context.new
   end
 
   class Show < ApplicationView
@@ -510,16 +510,17 @@ module FullStack
 
   class ApplicationView < Hanami::View
     class Context < Hanami::View::Context
+      include Hanami::Helpers
+
+      attr_reader :routes
+
       def initialize(routes: Routes.new, **)
         @routes = routes
         super
       end
-
-      attr_reader :routes
     end
 
     class Scope < Hanami::View::Scope
-      include Hanami::Helpers
     end
 
     config.paths = [File.join(__dir__, "fixtures", "templates", "full_stack")]
@@ -654,12 +655,12 @@ end
 
 module LinkTo
   class ApplicationView < Hanami::View
-    class Scope < Hanami::View::Scope
+    class Context < Hanami::View::Context
       include Hanami::Helpers::LinkToHelper
     end
 
     config.paths = [File.join(__dir__, "fixtures", "templates", "link_to")]
-    config.scope = Scope
+    config.default_context = Context.new
   end
 
   class Index < ApplicationView

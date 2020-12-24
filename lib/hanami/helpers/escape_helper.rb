@@ -14,8 +14,6 @@ module Hanami
     #
     # @since 0.1.0
     module EscapeHelper
-      private
-
       # Escape the given HTML tag content.
       #
       # This should be used only for untrusted contents: user input.

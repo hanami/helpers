@@ -5,7 +5,7 @@ View helpers for Ruby applications
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-helpers.svg)](https://badge.fury.io/rb/hanami-helpers)
-[![CircleCI](https://circleci.com/gh/hanami/helpers/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/helpers/tree/master)
+[![CI](https://github.com/hanami/helpers/workflows/ci/badge.svg?branch=master)](https://github.com/hanami/helpers/actions?query=workflow%3Aci+branch%3Amaster)
 [![Test Coverage](https://codecov.io/gh/hanami/helpers/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/helpers)
 [![Depfu](https://badges.depfu.com/badges/7b30c5d2a2a78954e2ad86e5c7230c23/overview.svg)](https://depfu.com/github/hanami/helpers?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/helpers.svg)](http://inch-ci.org/github/hanami/helpers)
@@ -383,6 +383,6 @@ __Hanami::Helpers__ uses [Semantic Versioning 2.0.0](http://semver.org)
 
 ## Copyright
 
-Copyright © 2014-2017 Luca Guidi – Released under MIT License
+Copyright © 2014-2021 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-helpers`).

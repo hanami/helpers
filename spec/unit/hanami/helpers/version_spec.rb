@@ -2,6 +2,6 @@
 
 RSpec.describe "Hanami::Helpers::VERSION" do
   it "exposes version" do
-    expect(Hanami::Helpers::VERSION).to eq("1.3.3")
+    expect(Hanami::Helpers::VERSION).to eq("2.0.0.alpha1")
   end
 end

@@ -92,7 +92,7 @@ module Hanami
         # @api private
         #
         # @see Hanami::Helpers::NumberFormatter::Formatter#to_number
-        INTEGER_REGEXP     = /\A[\d]+\z/.freeze
+        INTEGER_REGEXP     = /\A\d+\z/.freeze
 
         # Default separator
         #

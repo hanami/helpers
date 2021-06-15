@@ -5,6 +5,6 @@ module Hanami
     # Define version
     #
     # @since 0.1.0
-    VERSION = "1.3.3"
+    VERSION = "2.0.0.alpha1"
   end
 end

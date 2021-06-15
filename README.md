@@ -5,8 +5,8 @@ View helpers for Ruby applications
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-helpers.svg)](https://badge.fury.io/rb/hanami-helpers)
-[![CI](https://github.com/hanami/helpers/workflows/ci/badge.svg?branch=master)](https://github.com/hanami/helpers/actions?query=workflow%3Aci+branch%3Amaster)
-[![Test Coverage](https://codecov.io/gh/hanami/helpers/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/helpers)
+[![CI](https://github.com/hanami/helpers/workflows/ci/badge.svg?branch=unstable)](https://github.com/hanami/helpers/actions?query=workflow%3Aci+branch%3Aunstable)
+[![Test Coverage](https://codecov.io/gh/hanami/helpers/branch/unstable/graph/badge.svg)](https://codecov.io/gh/hanami/helpers)
 [![Depfu](https://badges.depfu.com/badges/7b30c5d2a2a78954e2ad86e5c7230c23/overview.svg)](https://depfu.com/github/hanami/helpers?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/helpers.svg)](http://inch-ci.org/github/hanami/helpers)
 
@@ -21,7 +21,7 @@ View helpers for Ruby applications
 
 ## Rubies
 
-__Hanami::Helpers__ supports Ruby (MRI) 2.3+ and JRuby 9.1.5.0+
+__Hanami::Helpers__ supports Ruby (MRI) 2.6+
 
 ## Installation
 

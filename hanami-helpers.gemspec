@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "dry-struct", "~> 1.1"
   spec.add_development_dependency "rake",       "~> 13"
   spec.add_development_dependency "rspec",      "~> 3.9"
-  spec.add_development_dependency "rubocop",    "0.91"
+  spec.add_development_dependency "rubocop",    "1.18.2"
 end

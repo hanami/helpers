@@ -156,21 +156,23 @@ module Hanami
         # @api private
         NEWLINE = "\n"
 
+        # rubocop:disable Layout/LineLength
         CONTENT_TAGS.each do |tag|
           class_eval %{
-            def #{tag}(content = nil, attributes = nil, &blk)
-              @nodes << self.class.html_node.new(:#{tag}, blk || content, attributes || content, options)
-              self
-            end
+            def #{tag}(content = nil, attributes = nil, &blk)                                              # def div(content = nil, attributes = nil, &blk)
+              @nodes << self.class.html_node.new(:#{tag}, blk || content, attributes || content, options)  #   @nodes << self.class.html_node.new(:div, blk || content, attributes || content, options)
+              self                                                                                         #   self
+            end                                                                                            # end
           }, __FILE__, __LINE__ - 5
         end
+        # rubocop:enable Layout/LineLength
 
         EMPTY_TAGS.each do |tag|
           class_eval %{
-            def #{tag}(attributes = nil)
-              @nodes << EmptyHtmlNode.new(:#{tag}, attributes)
-              self
-            end
+            def #{tag}(attributes = nil)                        # def br(attributes = nil)
+              @nodes << EmptyHtmlNode.new(:#{tag}, attributes)  #   @nodes << EmptyHtmlNode.new(:br, attributes)
+              self                                              #   self
+            end                                                 # end
           }, __FILE__, __LINE__ - 5
         end
 
@@ -356,13 +358,13 @@ module Hanami
           @nodes.any?
         end
 
-        if !Utils.jruby?
+        if Utils.jruby?
           # Resolve the context for nested contents
           #
           # @since 0.1.0
           # @api private
           def resolve(&blk)
-            @context = blk.binding.receiver
+            @context = eval("self", blk.binding, __FILE__, __LINE__)
             instance_exec(&blk)
           end
         else
@@ -371,7 +373,7 @@ module Hanami
           # @since 0.1.0
           # @api private
           def resolve(&blk)
-            @context = eval("self", blk.binding, __FILE__, __LINE__)
+            @context = blk.binding.receiver
             instance_exec(&blk)
           end
         end
@@ -381,13 +383,13 @@ module Hanami
         #
         # @since 0.1.0
         # @api private
-        def method_missing(method_name, *args, &blk) # rubocop:disable Lint/MissingSuper
+        def method_missing(method_name, *args, &blk)
           @context.__send__(method_name, *args, &blk)
         end
 
         # @since 1.2.2
         # @api private
-        def respond_to_missing?(method_name, include_all) # rubocop:disable Lint/MissingSuper
+        def respond_to_missing?(method_name, include_all)
           @context.respond_to?(method_name, include_all)
         end
       end

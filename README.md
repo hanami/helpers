@@ -21,7 +21,7 @@ View helpers for Ruby applications
 
 ## Rubies
 
-__Hanami::Helpers__ supports Ruby (MRI) 2.6+
+__Hanami::Helpers__ supports Ruby (MRI) 3.0+
 
 ## Installation
 

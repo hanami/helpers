@@ -636,7 +636,7 @@ module Hanami
         #   <!-- output -->
         #   <input type="datetime-local" name="delivery[delivered_at]" id="delivery-delivered-at" value="" class="form-control">
         def datetime_local_field(name, attributes = {})
-          input _attributes(:'datetime-local', name, attributes)
+          input _attributes(:"datetime-local", name, attributes)
         end
 
         # Time field
@@ -1731,7 +1731,7 @@ module Hanami
         def _check_box_checked?(value, input_value)
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||
-            input_value.is_a?(Array) && input_value.include?(value))
+            (input_value.is_a?(Array) && input_value.include?(value)))
         end
       end
     end

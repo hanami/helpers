@@ -441,7 +441,7 @@ module Hanami
         params = options.delete(:params)
         opts = options.dup
         opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
-        attributes = {action: form.url, method: form.verb, 'accept-charset': DEFAULT_CHARSET, id: "#{form.name}-form"}.merge(opts)
+        attributes = {action: form.url, method: form.verb, "accept-charset": DEFAULT_CHARSET, id: "#{form.name}-form"}.merge(opts)
 
         FormBuilder.new(form, attributes, self, params, &blk)
       end

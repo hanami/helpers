@@ -97,7 +97,7 @@ class HtmlView
   #   html.div('data-where': 'up')
   # end
   def div_with_data_attr
-    html.div('data-where': "up")
+    html.div("data-where": "up")
   end
 
   def div_with_attrs

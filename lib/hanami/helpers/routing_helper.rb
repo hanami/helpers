@@ -48,9 +48,9 @@ module Hanami
         factory = "#{Utils::String.namespace(base)}.routes"
 
         base.class_eval <<-END_EVAL, __FILE__, __LINE__ + 1
-          def routes
-            #{factory}
-          end
+          def routes    # def routes
+            #{factory}  #   Web.routes
+          end           # end
         END_EVAL
       end
     end

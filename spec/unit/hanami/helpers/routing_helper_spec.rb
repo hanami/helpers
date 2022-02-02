@@ -7,7 +7,7 @@ RSpec.describe Hanami::Helpers::RoutingHelper do
 
   describe "when routing constant is defined" do
     before do
-      @view = FullStack::Views::Dashboard::Index.new(@template, {})
+      @view = FullStack::Views::Dashboard::Index.new(@template)
     end
 
     it "has access to routing helper" do
@@ -17,7 +17,7 @@ RSpec.describe Hanami::Helpers::RoutingHelper do
 
   describe "when routing constant is not defined" do
     before do
-      @view = ViewWithoutRoutingHelper.new(@template, {})
+      @view = ViewWithoutRoutingHelper.new(@template)
     end
 
     it "raises an exception when trying to access routing helper" do

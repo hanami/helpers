@@ -10,3 +10,6 @@ Layout/LineLength:
     - "lib/hanami/helpers/form_helper.rb"
     - "lib/hanami/helpers/form_helper/form_builder.rb"
     - "spec/**/*.rb"
+Lint/EmptyBlock:
+  Exclude:
+    - "spec/unit/hanami/helpers/form_helper_spec.rb"

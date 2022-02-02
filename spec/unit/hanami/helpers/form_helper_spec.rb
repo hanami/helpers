@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "ostruct"
-
 RSpec.describe Hanami::Helpers::FormHelper do
   let(:view)   { FormHelperView.new(params) }
   let(:params) { Hash[] }
@@ -287,7 +285,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       actual = view.form_for(:book, action) do
         label for: :free_shipping do
           text "Free Shipping"
-          abbr "*", title: "optional", 'aria-label': "optional"
+          abbr "*", title: "optional", "aria-label": "optional"
         end
       end.to_s
 
@@ -593,7 +591,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     describe "automatic values" do
       describe "checkbox" do
         describe "value boolean, helper boolean, values differ" do
-          let(:values) { Hash[book: OpenStruct.new(free_shipping: false)] }
+          let(:values) { Hash[book: Struct.new(:free_shipping, keyword_init: true).new(free_shipping: false)] }
 
           it "renders" do
             actual = view.form_for(:book, action, values: values) do

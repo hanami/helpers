@@ -166,7 +166,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     it "generates HTML4 content type" do
       # RUBY_VERSION >= 2.2
       # result = @builder.meta('http-equiv': 'Content-Type', content: 'text/html; charset=utf-8').to_s
-      result = @builder.meta('http-equiv': "Content-Type", content: "text/html; charset=utf-8").to_s
+      result = @builder.meta("http-equiv": "Content-Type", content: "text/html; charset=utf-8").to_s
       expect(result).to eq(%(<meta http-equiv="Content-Type" content="text/html; charset=utf-8">))
     end
 
@@ -178,7 +178,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     it "generates a page refresh" do
       # RUBY_VERSION >= 2.2
       # result = @builder.meta('http-equiv': 'refresh', content: '23;url=http://hanamirb.org').to_s
-      result = @builder.meta('http-equiv': "refresh", content: "23;url=http://hanamirb.org").to_s
+      result = @builder.meta("http-equiv": "refresh", content: "23;url=http://hanamirb.org").to_s
       expect(result).to eq(%(<meta http-equiv="refresh" content="23;url=http://hanamirb.org">))
     end
   end

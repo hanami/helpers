@@ -14,7 +14,7 @@ module Hanami
     #
     # @since 0.2.0
     module NumberFormattingHelper
-      private
+      # private
 
       # Format the given number, according to the options
       #

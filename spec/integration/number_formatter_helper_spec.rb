@@ -6,9 +6,8 @@ RSpec.describe "Number formatting helper" do
       config.paths = TEMPLATES_PATH
       config.template = "cart/show"
 
-      expose :total do |total:|
-        # format_number(total) # NoMethodError for View class
-        total
+      expose :total do |total:, context:|
+        context.format_number(total)
       end
     end.new
   }

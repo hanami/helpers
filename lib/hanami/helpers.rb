@@ -25,12 +25,14 @@ module Hanami
     def self.included(base)
       base.class_eval do
         include Hanami::Helpers::HtmlHelper
-        include Hanami::Helpers::EscapeHelper
-        include Hanami::Helpers::RoutingHelper
-        include Hanami::Helpers::LinkToHelper
-        include Hanami::Helpers::FormHelper
-        include Hanami::Helpers::NumberFormattingHelper
+        # include Hanami::Helpers::EscapeHelper
+        # include Hanami::Helpers::RoutingHelper
+        # include Hanami::Helpers::LinkToHelper
+        # include Hanami::Helpers::FormHelper
+        # include Hanami::Helpers::NumberFormattingHelper
       end
+
+      super
     end
   end
 end

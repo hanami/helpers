@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/utils/string"
-
 module Hanami
   module Helpers
     # Routing helper for full stack Hanami web applications.
@@ -15,11 +13,14 @@ module Hanami
     # @since 0.1.0
     #
     # @example Basic usage in template
-    #   require 'hanami'
+    #   require "hanami"
     #
-    #   module Web::Views::Home
-    #     class Index
-    #       include Web::View
+    #   module Main
+    #     module Views
+    #       module Home
+    #         class Index < Main::View::Base
+    #         end
+    #       end
     #     end
     #   end
     #
@@ -27,14 +28,17 @@ module Hanami
     #   # <%= routes.home_path %>
     #
     # @example Basic usage in view
-    #   require 'hanami'
+    #   require "hanami"
     #
-    #   module Web::Views::Home
-    #     class Index
-    #       include Web::View
+    #   module Main
+    #     module Views
+    #       module Home
+    #         class Index < Main::View::Base
     #
-    #       def link_to_home
-    #         %(<a href="#{ routes.home_path }">Home</a>)
+    #           def link_to_home
+    #             %(<a href="#{ routes.home_path }">Home</a>)
+    #           end
+    #         end
     #       end
     #     end
     #   end
@@ -45,13 +49,11 @@ module Hanami
       # @since 0.1.0
       # @api private
       def self.included(base)
-        factory = "#{Utils::String.namespace(base)}.routes"
+        base.class_eval do
+          include Import["routes"]
+        end
 
-        base.class_eval <<-END_EVAL, __FILE__, __LINE__ + 1
-          def routes    # def routes
-            #{factory}  #   Web.routes
-          end           # end
-        END_EVAL
+        super
       end
     end
   end

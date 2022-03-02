@@ -297,58 +297,63 @@ end
 
 User = Struct.new(:name, :website, :snippet)
 
-module TestView
-  def self.included(view)
-    view.class_eval do
-      include Hanami::View
+module MyApp
+  module View
+    class Context < Hanami::View::Context
       include Hanami::Helpers
-      root "#{__dir__}/fixtures/templates"
+    end
+
+    class Base < Hanami::View
+      config.default_context = Context.new
+      config.paths = "#{__dir__}/fixtures/templates"
     end
   end
 end
 
-module Books
-  class Show
-    include TestView
-
-    def title_widget
-      html.div do
-        h1 book.title
-      end
-    end
-  end
-
-  class Error
-    include TestView
-
-    def error_widget
-      html.div do
-        unknown_local_variable
-      end
-    end
-
-    def render
-      error_widget.to_s
-    end
-  end
-end
-
-module Users
-  class Show
-    include TestView
-
-    def title
-      html.h1(user.name)
-    end
-
-    def details
-      html.div(id: "details") do
-        ul do
-          li do
-            a("website", href: hu(user.website), title: "#{ha(user.name)}'s website")
+module MyApp
+  module Views
+    module Books
+      class Show < MyApp::View::Base
+        def title_widget
+          html.div do
+            h1 book.title
           end
+        end
+      end
 
-          li raw(user.snippet)
+      class Error < MyApp::View::Base
+        def error_widget
+          html.div do
+            unknown_local_variable
+          end
+        end
+
+        def render
+          error_widget.to_s
+        end
+      end
+    end
+  end
+end
+
+module MyApp
+  module Views
+    module Users
+      class Show < MyApp::View::Base
+        def title
+          html.h1(user.name)
+        end
+
+        def details
+          html.div(id: "details") do
+            ul do
+              li do
+                a("website", href: hu(user.website), title: "#{ha(user.name)}'s website")
+              end
+
+              li raw(user.snippet)
+            end
+          end
         end
       end
     end
@@ -487,12 +492,22 @@ module FullStack
     Routes.new
   end
 
+  class Container
+    def initialize
+      @data = {"routes" => Routes.new}
+    end
+
+    def [](key)
+      @data[key]
+    end
+  end
+
   module Views
     module Dashboard
-      class Index
-        include TestView
-        root "#{__dir__}/fixtures/templates/full_stack"
-        template "dashboard/index"
+      class Index < MyApp::View::Base
+        config.paths = "#{__dir__}/fixtures/templates/full_stack"
+        config.template = "dashboard/index"
+        include Hanami::Helpers
 
         def routing_helper_path
           routes.path(:dashboard)
@@ -501,16 +516,14 @@ module FullStack
     end
 
     module Sessions
-      class New
-        include TestView
-        template "sessions/new"
+      class New < MyApp::View::Base
+        config.template = "sessions/new"
       end
     end
 
     module Settings
-      class Edit
-        include TestView
-        template "settings/edit"
+      class Edit < MyApp::View::Base
+        config.template = "settings/edit"
 
         def form
           Form.new(:settings, routes.settings_path)
@@ -519,9 +532,8 @@ module FullStack
     end
 
     module Cart
-      class Show
-        include TestView
-        template "cart/show"
+      class Show < MyApp::View::Base
+        config.template = "cart/show"
 
         def total
           format_number locals[:total]
@@ -530,9 +542,8 @@ module FullStack
     end
 
     module Deliveries
-      class New
-        include TestView
-        template "deliveries/new"
+      class New < MyApp::View::Base
+        config.template = "deliveries/new"
 
         def form
           Form.new(:delivery, routes.deliveries_path)
@@ -543,9 +554,8 @@ module FullStack
         end
       end
 
-      class Edit
-        include TestView
-        template "deliveries/edit"
+      class Edit < MyApp::View::Base
+        config.template = "deliveries/edit"
 
         def form
           Form.new(:delivery,
@@ -560,9 +570,8 @@ module FullStack
     end
 
     module Bills
-      class Edit
-        include TestView
-        template "bills/edit"
+      class Edit < MyApp::View::Base
+        config.template = "bills/edit"
 
         def form
           Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
@@ -573,9 +582,8 @@ module FullStack
         end
       end
 
-      class Edit2
-        include TestView
-        template "bills/edit2"
+      class Edit2 < MyApp::View::Base
+        config.template = "bills/edit2"
 
         def form
           Form.new(:bill, routes.bill_path(id: bill.id), {bill: bill}, method: :patch)
@@ -589,10 +597,9 @@ module FullStack
   end
 end
 
-class ViewWithoutRoutingHelper
-  include TestView
-  root "#{__dir__}/fixtures/templates/full_stack"
-  template "dashboard/index"
+class ViewWithoutRoutingHelper < MyApp::View::Base
+  config.paths = "#{__dir__}/fixtures/templates/full_stack"
+  config.template = "dashboard/index"
 
   def routing_helper_path
     routes.path(:dashboard)
@@ -602,9 +609,7 @@ end
 class LinkTo
   include Hanami::Helpers::LinkToHelper
 
-  class Index
-    include TestView
-
+  class Index < MyApp::View::Base
     def link_to_home
       link_to("Home", "/")
     end

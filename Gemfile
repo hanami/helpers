@@ -8,9 +8,11 @@ unless ENV["CI"]
   gem "yard", require: false
 end
 
-gem "hanami-utils",       "~> 1.3", git: "https://github.com/hanami/utils.git", branch: "1.3.x"
-gem "hanami-validations", "~> 2.0.alpha", git: "https://github.com/hanami/validations.git", branch: "main"
-gem "hanami-controller",  "~> 1.3", git: "https://github.com/hanami/controller.git",  branch: "1.3.x"
-gem "hanami-view",        "~> 1.3", git: "https://github.com/hanami/view.git",        branch: "1.3.x"
+gem "erbse"
 
-gem "hanami-devtools", git: "https://github.com/hanami/devtools.git", branch: "1.3.x", require: false
+gem "hanami-utils",       "~> 2.0.alpha", git: "https://github.com/hanami/utils.git",       branch: "main"
+gem "hanami-validations", "~> 2.0.alpha", git: "https://github.com/hanami/validations.git", branch: "main"
+gem "hanami-controller",  "~> 2.0.alpha", git: "https://github.com/hanami/controller.git",  branch: "main"
+gem "hanami-view",        "~> 2.0.alpha", git: "https://github.com/hanami/view.git",        branch: "main"
+
+gem "hanami-devtools", git: "https://github.com/hanami/devtools.git", branch: "main", require: false

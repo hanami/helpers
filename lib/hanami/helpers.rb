@@ -7,6 +7,7 @@ module Hanami
   # @since 0.1.0
   module Helpers
     require "hanami/helpers/version"
+    require "hanami/helpers/errors"
     require "hanami/helpers/html_helper"
     require "hanami/helpers/link_to_helper"
     require "hanami/helpers/form_helper"

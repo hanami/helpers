@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/utils/kernel"
+require "hanami/helpers/types"
 
 module Hanami
   module Helpers
@@ -14,6 +14,33 @@ module Hanami
     #
     # @since 0.2.0
     module NumberFormattingHelper
+      # Default delimiter
+      #
+      # @return [String] default delimiter
+      #
+      # @since 2.0.0
+      # @api private
+      DEFAULT_DELIMITER = ","
+      private_constant :DEFAULT_DELIMITER
+
+      # Default separator
+      #
+      # @return [String] default separator
+      #
+      # @since 2.0.0
+      # @api private
+      DEFAULT_SEPARATOR = "."
+      private_constant :DEFAULT_SEPARATOR
+
+      # Default precision
+      #
+      # @return [Integer] default rounding precision
+      #
+      # @since 2.0.0
+      # @api private
+      DEFAULT_PRECISION = 2
+      private_constant :DEFAULT_PRECISION
+
       private
 
       # Format the given number, according to the options
@@ -26,18 +53,21 @@ module Hanami
       # <tt>Complex</tt>, <tt>Rational</tt>.
       #
       # If the argument cannot be coerced into a number, it will raise a
-      # <tt>TypeError</tt>.
+      # <tt>Hanami::Helpers::CoercionError</tt>.
       #
       # @param number [Numeric,String] the number to be formatted
+      # @param delimiter [String] hundred delimiter
+      # @param separator [String] fractional part separator
+      # @param precision [String] rounding precision
       #
       # @return [String] formatted number
       #
-      # @raise [TypeError] if number can't be formatted
+      # @raise [Hanami::Helpers::CoercionError] if number can't be formatted
       #
       # @since 0.2.0
       #
       # @example
-      #   require 'hanami/helpers/number_formatting_helper'
+      #   require "hanami/helpers/number_formatting_helper"
       #
       #   class Checkout
       #     include Hanami::Helpers::NumberFormattingHelper
@@ -47,11 +77,11 @@ module Hanami
       #     end
       #
       #     def euros
-      #       format_number 1256.95, delimiter: '.', separator: ','
+      #       format_number(1256.95, delimiter: ".", separator: ",")
       #     end
       #
       #     def visitors_count
-      #       format_number '1000'
+      #       format_number "1000"
       #     end
       #   end
       #
@@ -65,8 +95,8 @@ module Hanami
       #
       #   view.visitors_count
       #     # => "1,000"
-      def format_number(number, options = {})
-        Formatter.new(number, options).format
+      def format_number(number, delimiter: DEFAULT_DELIMITER, separator: DEFAULT_SEPARATOR, precision: DEFAULT_PRECISION) # rubocop:disable Layout/LineLength
+        Formatter.call(number, delimiter: delimiter, separator: separator, precision: precision)
       end
 
       # Formatter
@@ -94,155 +124,78 @@ module Hanami
         # @see Hanami::Helpers::NumberFormatter::Formatter#to_number
         INTEGER_REGEXP     = /\A\d+\z/
 
-        # Default separator
-        #
-        # @return [String] default separator
-        #
-        # @since 0.2.0
-        # @api private
-        DEFAULT_SEPARATOR  = "."
+        def self.call(number, delimiter:, separator:, precision:)
+          number = coerce(number)
+          str = to_str(number, precision)
+          array = parts(str, delimiter)
 
-        # Default delimiter
-        #
-        # @return [String] default delimiter
-        #
-        # @since 0.2.0
-        # @api private
-        DEFAULT_DELIMITER  = ","
-
-        # Default precision
-        #
-        # @return [Integer] default precision
-        #
-        # @since 0.2.0
-        # @api private
-        DEFAULT_PRECISION  = 2
-
-        # Initialize a new formatter
-        #
-        # @param number [Numeric,String] the number to format
-        # @param options [Hash] options for number formatting
-        # @option options [String] :delimiter hundred delimiter
-        # @option options [String] :separator fractional part delimiter
-        # @option options [Integer] :precision rounding precision
-        #
-        # @since 0.2.0
-        # @api private
-        #
-        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_DELIMITER
-        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_SEPARATOR
-        # @see Hanami::Helpers::NumberFormatter::Formatter::DEFAULT_PRECISION
-        def initialize(number, options)
-          @number = number
-          @delimiter = options.fetch(:delimiter, DEFAULT_DELIMITER)
-          @separator = options.fetch(:separator, DEFAULT_SEPARATOR)
-          @precision = options.fetch(:precision, nil)
-        end
-
-        # Format number according to the specified options
-        #
-        # @return [String] formatted number
-        #
-        # @raise [TypeError] if number can't be formatted
-        #
-        # @since 0.2.0
-        # @api private
-        def format
-          parts.join(@separator)
-        end
-
-        private
-
-        # Return integer and fractional parts
-        #
-        # @return [Array] parts
-        #
-        # @since 0.2.0
-        # @api private
-        def parts
-          integer_part, fractional_part = to_str.split(DEFAULT_SEPARATOR)
-          [delimitate(integer_part), fractional_part].compact
-        end
-
-        # Delimitate the given part
-        #
-        # @return [String] delimitated string
-        #
-        # @since 0.2.0
-        # @api private
-        def delimitate(part)
-          part.gsub(DELIMITATION_REGEX) { |digit| "#{digit}#{@delimiter}" }
-        end
-
-        # String coercion
-        #
-        # @return [String] coerced number
-        #
-        # @raise [TypeError] if number can't be formatted
-        #
-        # @since 0.2.0
-        # @api private
-        def to_str
-          number = to_number
-          if precision_requested_explicitly?
-            Kernel.format("%.#{precision}f", number)
-          else
-            number.to_s
-          end
+          array.join(separator)
         end
 
         # Numeric coercion
         #
         # @return [Numeric] coerced number
         #
-        # @raise [TypeError] if number can't be formatted
+        # @raise [Hanami::Helpers::CoercionError] if number can't be formatted
         #
-        # @since 0.2.0
+        # @since 2.0.0
         # @api private
-        def to_number
-          case @number
+        def self.coerce(number)
+          case number
           when NilClass
-            raise TypeError
+            raise Hanami::Helpers::CoercionError.new("failed to convert #{number.inspect} to number")
           when ->(n) { n.to_s.match(INTEGER_REGEXP) }
-            Utils::Kernel.Integer(@number)
+            Types::Coercible::Integer[number]
           else
-            Utils::Kernel.Float(rounded_number)
+            begin
+              Types::Coercible::Float[number]
+            rescue Dry::Types::CoercionError
+              raise Hanami::Helpers::CoercionError.new("failed to convert #{number.inspect} to float")
+            end
           end
         end
 
-        # Returns precision with a fallback to default value
+        # String coercion
         #
-        # @return [Numeric] precision
+        # @param number [Numeric] number to be coerced to string
+        # @param precision [Integer] rounding precision
         #
-        # @since 1.0.0
+        # @return [String] coerced number to string
+        #
+        # @raise [Hanami::Helpers::CoercionError] if number can't be formatted
+        #
+        # @since 2.0.0
         # @api private
-        def precision
-          @precision || DEFAULT_PRECISION
-        end
-
-        # Checks if precision was requested in options
-        #
-        # @return [TrueClass,FalseClass] the result of the check
-        #
-        # @since 1.0.0
-        # @api private
-        def precision_requested_explicitly?
-          !@precision.nil?
-        end
-
-        # Round number in case we need to return a <tt>Float</tt> representation.
-        # If <tt>@number</tt> doesn't respond to <tt>#round</tt> return the number as it is.
-        #
-        # @return [Float,Complex,Rational,BigDecimal] rounded number, if applicable
-        #
-        # @since 0.2.0
-        # @api private
-        def rounded_number
-          if @number.respond_to?(:round)
-            @number.round(precision)
+        def self.to_str(number, precision)
+          case number
+          when Integer
+            number.to_s
           else
-            @number
+            ::Kernel.format("%.#{precision}f", number)
           end
+        end
+
+        # Return integer and fractional parts
+        #
+        # @param string [String] string representation of the number
+        #
+        # @return [Array<String>] parts
+        #
+        # @since 2.0.0
+        # @api private
+        def self.parts(string, delimiter)
+          integer_part, fractional_part = string.split(DEFAULT_SEPARATOR)
+          [delimitate(integer_part, delimiter), fractional_part].compact
+        end
+
+        # Delimitate the given part
+        #
+        # @return [String] delimitated string
+        #
+        # @since 2.0.0
+        # @api private
+        def self.delimitate(part, delimiter)
+          part.gsub(DELIMITATION_REGEX) { |digit| "#{digit}#{delimiter}" }
         end
       end
     end

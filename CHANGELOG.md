@@ -1,9 +1,14 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v2.0.0.alpha1 (unreleased)
+## v2.0.0.alpha7 (unreleased)
+### Fixed
+- [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#format_number` to return consistent rounding. `1.0` will be formatted as `"1.00"` by default.
+
 ### Changed
-- [Luca Guidi] Drop support for Ruby: MRI 2.3, 2.4, and 2.5
+- [Luca Guidi] Drop support for Ruby: MRI 2.3, 2.4, 2.5, 2.6, and 2.7
+- [Luca Guidi] Moved `Hanami::Helpers::RoutingHelper` to `hanami` as `Hanami::Helpers::Routes`
+- [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#format_number` raises a `Hanami::Helpers::CoercionError` instead of `TypeError`
 
 ## v1.3.3 - 2020-02-03
 ### Added

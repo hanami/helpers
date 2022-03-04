@@ -83,6 +83,10 @@ module Hanami
       #     def visitors_count
       #       format_number "1000"
       #     end
+      #
+      #     def pi
+      #       format_number(Math::PI, precision: 2)
+      #     end
       #   end
       #
       #   view = Checkout.new
@@ -95,6 +99,9 @@ module Hanami
       #
       #   view.visitors_count
       #     # => "1,000"
+      #
+      #   view.pi
+      #     # => "3.14"
       def format_number(number, delimiter: DEFAULT_DELIMITER, separator: DEFAULT_SEPARATOR, precision: DEFAULT_PRECISION) # rubocop:disable Layout/LineLength
         Formatter.call(number, delimiter: delimiter, separator: separator, precision: precision)
       end
@@ -108,22 +115,47 @@ module Hanami
         #
         # @return [Regexp] the delimitation regex
         #
-        # @since 0.2.0
+        # @since 2.0.0
         # @api private
         #
         # @see Hanami::Helpers::NumberFormatter::Formatter#delimitate
         DELIMITATION_REGEX = /(\d)(?=(\d{3})+$)/
+        private_constant :DELIMITATION_REGEX
 
         # Regex to guess if the number is a integer
         #
         # @return [Regexp] the guessing regex
         #
-        # @since 0.2.0
+        # @since 2.0.0
         # @api private
         #
         # @see Hanami::Helpers::NumberFormatter::Formatter#to_number
-        INTEGER_REGEXP     = /\A\d+\z/
+        INTEGER_REGEXP = /\A\d+\z/
+        private_constant :INTEGER_REGEXP
 
+        # Format the given number, according to the options
+        #
+        # It accepts a number (<tt>Numeric</tt>) or a string representation.
+        #
+        # If an integer is given, no precision is applied.
+        # For the rest of the numbers, it will format as a float representation.
+        # This is the case of: <tt>Float</tt>, <tt>BigDecimal</tt>,
+        # <tt>Complex</tt>, <tt>Rational</tt>.
+        #
+        # If the argument cannot be coerced into a number, it will raise a
+        # <tt>Hanami::Helpers::CoercionError</tt>.
+        #
+        # @param number [Numeric,String] the number to be formatted
+        # @param delimiter [String] hundred delimiter
+        # @param separator [String] fractional part separator
+        # @param precision [String] rounding precision
+        #
+        # @return [String] formatted number
+        #
+        # @raise [Hanami::Helpers::CoercionError] if number can't be formatted
+        #
+        # @since 2.0.0
+        # @api private
         def self.call(number, delimiter:, separator:, precision:)
           number = coerce(number)
           str = to_str(number, precision)
@@ -178,8 +210,9 @@ module Hanami
         # Return integer and fractional parts
         #
         # @param string [String] string representation of the number
+        # @param delimiter [String] hundred delimiter
         #
-        # @return [Array<String>] parts
+        # @return [Array<String>] integer and fractional parts
         #
         # @since 2.0.0
         # @api private
@@ -188,14 +221,17 @@ module Hanami
           [delimitate(integer_part, delimiter), fractional_part].compact
         end
 
-        # Delimitate the given part
+        # Delimitate the given integer part
+        #
+        # @param integer_part [String] integer part of the number
+        # @param delimiter [String] hundred delimiter
         #
         # @return [String] delimitated string
         #
         # @since 2.0.0
         # @api private
-        def self.delimitate(part, delimiter)
-          part.gsub(DELIMITATION_REGEX) { |digit| "#{digit}#{delimiter}" }
+        def self.delimitate(integer_part, delimiter)
+          integer_part.gsub(DELIMITATION_REGEX) { |digit| "#{digit}#{delimiter}" }
         end
       end
     end

@@ -20,11 +20,11 @@ class NumbersView
   end
 
   def precision_default_format
-    format_number 3.141592
+    format_number Math::PI
   end
 
   def precision_format
-    format_number 3.141592, precision: 4
+    format_number Math::PI, precision: 4
   end
 
   def precision_higher_than_numbers_precision

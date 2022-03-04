@@ -8,6 +8,7 @@ View helpers for Ruby web applications
 ### Changed
 - [Luca Guidi] Drop support for Ruby: MRI 2.3, 2.4, 2.5, 2.6, and 2.7
 - [Luca Guidi] Moved `Hanami::Helpers::RoutingHelper` to `hanami` as `Hanami::Helpers::Routes`
+- [Luca Guidi] Made `Hanami::Helpers::NumberFormattingHelper#format_number` a public method
 - [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#format_number` raises a `Hanami::Helpers::CoercionError` instead of `TypeError`
 
 ## v1.3.3 - 2020-02-03

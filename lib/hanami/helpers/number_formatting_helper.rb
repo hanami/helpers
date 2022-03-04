@@ -41,8 +41,6 @@ module Hanami
       DEFAULT_PRECISION = 2
       private_constant :DEFAULT_PRECISION
 
-      private
-
       # Format the given number, according to the options
       #
       # It accepts a number (<tt>Numeric</tt>) or a string representation.

@@ -23,6 +23,7 @@ module Hanami
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
     def self.included(base)
       base.class_eval do
+        include Hanami::Helpers::HtmlHelper
         include Hanami::Helpers::NumberFormattingHelper
       end
 

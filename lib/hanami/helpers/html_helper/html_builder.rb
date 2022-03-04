@@ -2,7 +2,7 @@
 
 require "hanami/utils"
 require "hanami/utils/class_attribute"
-require "hanami/utils/escape"
+require "hanami/helpers/escape"
 require "hanami/helpers/html_helper/empty_html_node"
 require "hanami/helpers/html_helper/html_node"
 require "hanami/helpers/html_helper/html_fragment"
@@ -326,14 +326,14 @@ module Hanami
 
         # Resolves all the nodes and generates the markup
         #
-        # @return [Hanami::Utils::Escape::SafeString] the output
+        # @return [Temple::HTML::SafeString] the output
         #
         # @since 0.1.0
         # @api private
         #
-        # @see http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape/SafeString
+        # @see https://www.rubydoc.info/gems/temple/Temple/HTML/SafeString
         def to_s
-          Utils::Escape::SafeString.new(@nodes.map(&:to_s).join(NEWLINE))
+          Helpers::Escape.safe_string(@nodes.map(&:to_s).join(NEWLINE))
         end
 
         # Encode the content with the given character encoding

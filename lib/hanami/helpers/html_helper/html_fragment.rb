@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/utils/escape"
+require "hanami/helpers/escape"
 
 module Hanami
   module Helpers
@@ -41,7 +41,7 @@ module Hanami
           if @builder.nested?
             @builder.to_s
           else
-            Utils::Escape.html(result)
+            Helpers::Escape.(result)
           end
         end
       end

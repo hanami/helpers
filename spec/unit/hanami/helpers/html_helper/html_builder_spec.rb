@@ -45,7 +45,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
 
   describe "<addr>" do
     it "generates an address" do
-      content = Hanami::Utils::Escape::SafeString.new(
+      content = Hanami::Helpers::Escape.safe_string(
         <<~CONTENT
           Mozilla Foundation<br>
           1981 Landings Drive<br>
@@ -67,7 +67,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     end
 
     it "generates a script tag with javascript code" do
-      result = @builder.script { Hanami::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
+      result = @builder.script { Hanami::Helpers::Escape.safe_string(%(alert("hello"))) }.to_s
       expect(result).to eq(%(<script>\nalert("hello")\n</script>))
     end
   end
@@ -82,7 +82,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     end
 
     it "generates a script tag with javascript code" do
-      result = @builder.script { Hanami::Utils::Escape::SafeString.new(%(alert("hello"))) }.to_s
+      result = @builder.script { Hanami::Helpers::Escape.safe_string(%(alert("hello"))) }.to_s
       expect(result).to eq(%(<script>\nalert("hello")\n</script>))
     end
   end
@@ -299,7 +299,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
 
     it "escapes HTML inside" do
       result = @builder.text(%(<p>Foo</p>)).to_s
-      expect(result).to eq("&lt;p&gt;Foo&lt;&#x2F;p&gt;")
+      expect(result).to eq("&lt;p&gt;Foo&lt;/p&gt;")
     end
   end
 end

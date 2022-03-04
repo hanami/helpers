@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hanami/utils/escape"
+require "hanami/helpers/escape"
 
 module Hanami
   module Helpers
@@ -29,7 +29,7 @@ module Hanami
         # @since 0.2.5
         # @api private
         def to_s
-          Utils::Escape.html(@content)
+          Helpers::Escape.(@content)
         end
       end
     end

@@ -20,8 +20,9 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
   it "has a private raw method" do
     expect { @view.raw }.to raise_error(NoMethodError)
   end
+
   it "autoscape evil string" do
-    expect(@view.evil_string).to eq(%(&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;))
+    expect(@view.evil_string).to eq(%(&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;))
   end
 
   it "don't autoscape safe string" do
@@ -48,8 +49,8 @@ RSpec.describe Hanami::Helpers::EscapeHelper do
     expect(@view.raw_string).to eq(%(<div>I'm a raw string</div>))
   end
 
-  it "raw string is a Hanami::Helpers::Escape::SafeString class" do
-    expect(@view.raw_string.class).to eq(Hanami::Utils::Escape::SafeString)
+  it "raw string is a Temple::HTML::SafeString class" do
+    expect(@view.raw_string.class).to eq(Temple::HTML::SafeString)
   end
 
   it "html helper alias" do

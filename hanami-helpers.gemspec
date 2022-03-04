@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0"
 
   spec.add_dependency "hanami-utils", "~> 2.0.alpha"
+  spec.add_dependency "temple", "~> 0.8"
   spec.add_dependency "dry-types", "~> 1.5"
 
   spec.add_development_dependency "bundler",    ">= 1.6", "< 3"
@@ -32,4 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake",       "~> 13"
   spec.add_development_dependency "rspec",      "~> 3.9"
   spec.add_development_dependency "rubocop",    "~> 1.0"
+  spec.add_development_dependency "erbse",      "~> 0.1"
+  spec.add_development_dependency "slim",       "~> 4.1"
 end

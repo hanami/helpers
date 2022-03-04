@@ -2624,7 +2624,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N&#x2F;A</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N/A</option>\n</select>))
       end
 
       it "set as selected the option with nil value" do
@@ -2632,7 +2632,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, options: {selected: nil}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N&#x2F;A</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="" selected="selected">N/A</option>\n</select>))
       end
 
       it "set as selected the option with a value" do
@@ -2640,7 +2640,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, options: {selected: "it"}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it" selected="selected">Italy</option>\n<option value="us">United States</option>\n<option value="">N/A</option>\n</select>))
       end
 
       it "allows to force the selection of none" do
@@ -2648,7 +2648,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           select :store, option_values, options: {selected: "none"}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="">N&#x2F;A</option>\n</select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store">\n<option value="it">Italy</option>\n<option value="us">United States</option>\n<option value="">N/A</option>\n</select>))
       end
 
       describe "with values" do
@@ -2661,7 +2661,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
             select :category, option_values
           end.to_s
 
-          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<select name="book[category]" id="book-category">\n<option value="">N&#x2F;A</option>\n<option value="horror" selected="selected">Horror</option>\n<option value="scify">SciFy</option>\n</select>\n</form>))
+          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form">\n<select name="book[category]" id="book-category">\n<option value="">N/A</option>\n<option value="horror" selected="selected">Horror</option>\n<option value="scify">SciFy</option>\n</select>\n</form>))
         end
       end
 

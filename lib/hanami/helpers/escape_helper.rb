@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "hanami/helpers/escape"
 require "hanami/utils/escape"
 
 module Hanami
@@ -74,7 +75,7 @@ module Hanami
       #   view.evil_content
       #     # => "<div>\n&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>"
       def escape_html(input)
-        Utils::Escape.html(input)
+        Helpers::Escape.(input)
       end
 
       # @since 0.1.0
@@ -267,7 +268,7 @@ module Hanami
       #   view.evil_content
       #     # => "<script>alert('xss')</script>"
       def raw(input)
-        Utils::Escape::SafeString.new(input)
+        Helpers::Escape.safe_string(input)
       end
     end
   end

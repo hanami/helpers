@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
+require "hanami/helpers/html_new_builder"
+
 class HtmlView
-  include Hanami::Helpers::HtmlHelper
+  def html(&blk)
+    Hanami::Helpers::HtmlNewBuilder.new(&blk)
+  end
+
+  def empty
+    html.to_s
+  end
 
   def empty_div
-    html.div
+    html.div {}
   end
 
   def div_with_string_content
@@ -12,7 +20,7 @@ class HtmlView
   end
 
   def div_with_block_content_as_string
-    html.div { "hola" }
+    html.div { txt("hola") }
   end
 
   def div_with_block_content_with_tag_helper
@@ -59,7 +67,7 @@ class HtmlView
   end
 
   def div_with_attr
-    html.div(id: "container")
+    html.div(id: "container") {}
   end
 
   # RUBY_VERSION >= '2.2'
@@ -67,11 +75,11 @@ class HtmlView
   #   html.div('data-where': 'up')
   # end
   def div_with_data_attr
-    html.div("data-where": "up")
+    html.div("data-where": "up") {}
   end
 
   def div_with_attrs
-    html.div(id: "content", class: "filled")
+    html.div(id: "content", class: "filled") {}
   end
 
   def div_with_string_content_and_attrs
@@ -79,15 +87,15 @@ class HtmlView
   end
 
   def div_with_block_content_as_string_and_attrs
-    html.div(id: "sidebar", class: "blue") { "bonjour" }
+    html.div(id: "sidebar", class: "blue") { txt "bonjour" }
   end
 
   def custom_tag
-    html.tag(:custom, "Foo", id: "next")
+    html.custom("Foo", id: "next")
   end
 
   def custom_empty_tag
-    html.empty_tag(:xr, id: "next")
+    html.xr(id: "next")
   end
 
   def evil_string_content
@@ -95,7 +103,7 @@ class HtmlView
   end
 
   def evil_block_content
-    html.div { "<script>alert('xss')</script>" }
+    html.div { txt "<script>alert('xss')</script>" }
   end
 
   def evil_tag_helper

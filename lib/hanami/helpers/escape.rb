@@ -7,7 +7,7 @@ module Hanami
   module Helpers
     module Escape
       def self.call(string)
-        Temple::Utils.escape_html_safe(string.to_s)
+        Temple::Utils.escape_html_safe(string)
       end
 
       def self.safe_string(string)

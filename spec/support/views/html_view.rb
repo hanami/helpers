@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require "hanami/helpers/html_new_builder"
+require "hanami/helpers/html_helper"
 
 class HtmlView
-  def html(&blk)
-    Hanami::Helpers::HtmlNewBuilder.new(&blk)
-  end
+  include Hanami::Helpers::HtmlHelper
 
   def empty
     html.to_s
@@ -20,7 +18,7 @@ class HtmlView
   end
 
   def div_with_block_content_as_string
-    html.div { txt("hola") }
+    html.div { text("hola") }
   end
 
   def div_with_block_content_with_tag_helper
@@ -87,7 +85,7 @@ class HtmlView
   end
 
   def div_with_block_content_as_string_and_attrs
-    html.div(id: "sidebar", class: "blue") { txt "bonjour" }
+    html.div(id: "sidebar", class: "blue") { text "bonjour" }
   end
 
   def custom_tag
@@ -95,7 +93,7 @@ class HtmlView
   end
 
   def custom_empty_tag
-    html.xr(id: "next")
+    html.empty_tag(:xr, id: "next")
   end
 
   def evil_string_content
@@ -103,7 +101,7 @@ class HtmlView
   end
 
   def evil_block_content
-    html.div { txt "<script>alert('xss')</script>" }
+    html.div { text "<script>alert('xss')</script>" }
   end
 
   def evil_tag_helper

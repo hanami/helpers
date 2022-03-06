@@ -32,7 +32,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
   end
 
   it "returns a tag with block content with multiple nested calls" do
-    expect(view.div_with_block_content_and_multiple_nested_calls.to_s).to eq(%(<form action="/users" method="POST"><div><label for="user-first-name">First name</label><input type="text" id="user-first-name" name="user[first_name]" value="L"/></div><input type="submit" value="Save changes"/></form>))
+    expect(view.div_with_block_content_and_multiple_nested_calls.to_s).to eq(%(<form action="/users" method="POST"><div><label for="user-first-name">First name</label><input type="text" id="user-first-name" name="user[first_name]" value="L"></div><input type="submit" value="Save changes"></form>))
   end
 
   it "returns a concatenation of multiple divs" do
@@ -76,7 +76,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper do
   end
 
   it "returns a custom empty tag" do
-    expect(view.custom_empty_tag.to_s).to eq(%(<xr id="next"/>))
+    expect(view.custom_empty_tag.to_s).to eq(%(<xr id="next">))
   end
 
   it "autoescapes string contents" do

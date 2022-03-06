@@ -10,7 +10,7 @@ module Hanami
     require "hanami/helpers/errors"
     require "hanami/helpers/html_helper"
     require "hanami/helpers/link_to_helper"
-    require "hanami/helpers/form_helper"
+    # require "hanami/helpers/form_helper"
     require "hanami/helpers/number_formatting_helper"
 
     # Override for Module.included

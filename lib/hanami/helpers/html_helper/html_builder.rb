@@ -1,154 +1,43 @@
 # frozen_string_literal: true
 
-require "hanami/utils"
-require "hanami/utils/class_attribute"
+require "dry/core/basic_object"
 require "hanami/helpers/escape"
-require "hanami/helpers/html_helper/empty_html_node"
-require "hanami/helpers/html_helper/html_node"
-require "hanami/helpers/html_helper/html_fragment"
-require "hanami/helpers/html_helper/text_node"
 
+# Ported from Hanami 1.x & adapted from `papercraft` gem implementation:
+#
+# Papercraft is Copyright (c) digital-fabric
+# Released under the MIT License
 module Hanami
   module Helpers
     module HtmlHelper
       # HTML Builder
       #
       # @since 0.1.0
-      class HtmlBuilder
-        # HTML5 content tags
-        #
-        # @since 0.1.0
-        # @api private
-        #
-        # @see Hanami::Helpers::HtmlHelper::HtmlNode
-        # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        CONTENT_TAGS = %w[
-          a
-          abbr
-          address
-          article
-          aside
-          audio
-          b
-          bdi
-          bdo
-          blockquote
-          body
-          button
-          canvas
-          caption
-          cite
-          code
-          colgroup
-          data
-          datalist
-          del
-          details
-          dialog
-          dfn
-          div
-          dl
-          dt
-          dd
-          em
-          fieldset
-          figcaption
-          figure
-          footer
-          form
-          h1
-          h2
-          h3
-          h4
-          h5
-          h6
-          head
-          header
-          hgroup
-          i
-          iframe
-          ins
-          kbd
-          label
-          legend
-          li
-          main
-          map
-          mark
-          math
-          menu
-          meter
-          nav
-          noscript
-          object
-          ol
-          optgroup
-          option
-          output
-          p
-          pre
-          progress
-          q
-          rp
-          rt
-          rtc
-          ruby
-          s
-          samp
-          script
-          section
-          select
-          slot
-          small
-          span
-          strong
-          style
-          sub
-          summary
-          sup
-          svg
-          table
-          tbody
-          td
-          template
-          textarea
-          tfoot
-          th
-          thead
-          time
-          title
-          tr
-          u
-          ul
-          var
-          video
-        ].freeze
-
+      class HtmlBuilder < Dry::Core::BasicObject
         # HTML5 empty tags
         #
         # @since 0.1.0
         # @api private
         #
-        # @see Hanami::Helpers::HtmlHelper::EmptyHtmlNode
         # @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-        EMPTY_TAGS = %w[
-          area
-          base
-          br
-          col
-          embed
-          hr
-          img
-          input
-          keygen
-          link
-          menuitem
-          meta
-          param
-          source
-          track
-          wbr
-        ].freeze
+        EMPTY_TAGS = {
+          area: true,
+          base: true,
+          br: true,
+          col: true,
+          embed: true,
+          hr: true,
+          img: true,
+          input: true,
+          keygen: true,
+          link: true,
+          menuitem: true,
+          meta: true,
+          param: true,
+          source: true,
+          track: true,
+          wbr: true
+        }.freeze
 
         # New line separator
         #
@@ -156,150 +45,301 @@ module Hanami
         # @api private
         NEWLINE = "\n"
 
-        # rubocop:disable Layout/LineLength
-        CONTENT_TAGS.each do |tag|
-          class_eval %{
-            def #{tag}(content = nil, attributes = nil, &blk)                                              # def div(content = nil, attributes = nil, &blk)
-              @nodes << self.class.html_node.new(:#{tag}, blk || content, attributes || content, options)  #   @nodes << self.class.html_node.new(:div, blk || content, attributes || content, options)
-              self                                                                                         #   self
-            end                                                                                            # end
-          }, __FILE__, __LINE__ - 5
-        end
-        # rubocop:enable Layout/LineLength
-
-        EMPTY_TAGS.each do |tag|
-          class_eval %{
-            def #{tag}(attributes = nil)                        # def br(attributes = nil)
-              @nodes << EmptyHtmlNode.new(:#{tag}, attributes)  #   @nodes << EmptyHtmlNode.new(:br, attributes)
-              self                                              #   self
-            end                                                 # end
-          }, __FILE__, __LINE__ - 5
-        end
-
-        include Utils::ClassAttribute
-
-        class_attribute :html_node
-        self.html_node = ::Hanami::Helpers::HtmlHelper::HtmlNode
-
-        # Initialize a new builder
-        #
-        # @return [Hanami::Helpers::HtmlHelper::HtmlBuilder] the builder
-        #
-        # @since 0.1.0
+        # @since 2.0.0
         # @api private
-        def initialize
-          @nodes = []
-        end
+        S_LT              = "<"
 
+        # @since 2.0.0
         # @api private
-        def options
+        S_GT              = ">"
+
+        # @since 2.0.0
+        # @api private
+        S_LT_SLASH        = "</"
+
+        # @since 2.0.0
+        # @api private
+        S_SPACE_LT_SLASH  = " </"
+
+        # @since 2.0.0
+        # @api private
+        S_SLASH_GT        = "/>"
+
+        # @since 2.0.0
+        # @api private
+        S_SPACE           = " "
+
+        # @since 2.0.0
+        # @api private
+        S_EQUAL_QUOTE     = '="'
+
+        # @since 2.0.0
+        # @api private
+        S_QUOTE           = '"'
+
+        # @since 2.0.0
+        # @api private
+        S_UNDERSCORE      = "_"
+
+        # @since 2.0.0
+        # @api private
+        S_DASH            = "-"
+
+        # @since 2.0.0
+        # @api private
+        S_TAG_METHOD_LINE = __LINE__ + 2
+
+        # @since 2.0.0
+        # @api private
+        S_CONTENT_TAG_METHOD = <<~RUBY
+          # @since 2.0.0
+          # @api private
+          S_TAG_%<TAG>s_PRE = %<tag_pre>s
+
+          # @since 2.0.0
+          # @api private
+          S_TAG_%<TAG>s_CLOSE = %<tag_close>s
+
+          # `%<tag>s` HTML tag
+          #
+          # @params type [Symbol,String,#to_s] HTML tag type
+          # @params content [String,NilClass] optional content
+          # @params attributes [Hash] HTML attributes
+          # @params blk [Proc] optional nested contents
+          #
+          # @return void
+          #
+          # @see #tag
+          #
+          # @since 0.1.0
+          # @api public
+          #
+          # @example
+          #   html.%<tag>s
+          #     # => <%<tag>s></%<tag>s>
+          #
+          #   html.%<tag>s(id: "foo")
+          #     # => <%<tag>s id="foo"></%<tag>s>
+          #
+          #   html.%<tag>s(id: "foo", class: "full-width")
+          #     # => <%<tag>s id="foo" class="full-width"></%<tag>s>
+          #
+          #   html.%<tag>s(class: ["foo", "bar"])
+          #     # => <%<tag>s class="foo bar"></%<tag>s>
+          #
+          #   html.%<tag>s(required: false)
+          #     # => <%<tag>s></%<tag>s>
+          #
+          #   html.%<tag>s(required: true)
+          #     # => <%<tag>s required></%<tag>s>
+          #
+          #   html.%<tag>s("Hello")
+          #     # => <%<tag>s>Hello</%<tag>s>
+          #
+          #   html.%<tag>s("Hello", id: "foo", class: "full-width")
+          #     # => <%<tag>s id="foo" class="full-width">Hello</%<tag>s>
+          #
+          #   html.%<tag>s("Hello ") do
+          #     span "World"
+          #   end
+          #     # => <%<tag>s>Hello <span>World<span></%<tag>s>
+          def %<tag>s(content = nil, **attributes, &blk)
+            if content.is_a?(::Hash) && attributes.empty?
+              attributes = content
+              content = nil
+            end
+            @buffer << S_TAG_%<TAG>s_PRE
+            emit_attributes(attributes)
+            if blk
+              @buffer << S_GT
+              instance_eval(&blk)
+              @buffer << S_TAG_%<TAG>s_CLOSE
+            elsif content
+              @buffer << S_GT << escape_content(content.to_s) << S_TAG_%<TAG>s_CLOSE
+            else
+              @buffer << S_GT << S_TAG_%<TAG>s_CLOSE
+            end
+          end
+        RUBY
+
+        # @since 2.0.0
+        # @api private
+        S_EMPTY_TAG_METHOD = <<~RUBY
+          # @since 2.0.0
+          # @api private
+          S_TAG_%<TAG>s_PRE = %<tag_pre>s
+
+          # `%<tag>s` HTML empty tag
+          #
+          # @params attributes [Hash] HTML attributes
+          #
+          # @return void
+          #
+          # @since 2.0.0
+          # @api public
+          #
+          # @see #empty_tag
+          #
+          # @example
+          #   html.%<tag>s
+          #     # => <%<tag>s>
+          #
+          #   html.%<tag>s(id: "foo")
+          #     # => <%<tag>s id="foo">
+          #
+          #   html.%<tag>s(id: "foo", class: "full-width")
+          #     # => <%<tag>s id="foo" class="full-width">
+          #
+          #   html.%<tag>s(class: ["foo", "bar"])
+          #     # => <%<tag>s class="foo bar">
+          #
+          #   html.%<tag>s(required: false)
+          #     # => <%<tag>s>
+          #
+          #   html.%<tag>s(required: true)
+          #     # => <%<tag>s required>
+          def %<tag>s(**attributes)
+            @buffer << S_TAG_%<TAG>s_PRE
+            emit_attributes(attributes)
+            @buffer << S_GT
+          end
+        RUBY
+
+        def initialize(&blk)
+          super()
+          @buffer = Escape.safe_string("")
+          instance_eval(&blk) if blk
         end
 
-        # Define a custom tag
+        # Generate HTML content tag
         #
-        # @param name [Symbol,String] the name of the tag
-        # @param content [String,Hanami::Helpers::HtmlHelper::HtmlBuilder,NilClass] the optional content
-        # @param attributes [Hash,NilClass] the optional tag attributes
-        # @param blk [Proc] the optional nested content espressed as a block
+        # @params type [Symbol,String,#to_s] HTML tag type
+        # @params content [String,NilClass] optional content
+        # @params attributes [Hash] HTML attributes
+        # @params blk [Proc] optional nested contents
         #
-        # @return [self]
+        # @return void
         #
         # @since 0.1.0
         # @api public
         #
-        # @see Hanami::Helpers::HtmlHelper
+        # @example
+        #   html.tag(:my_tag)
+        #     # => <my-tag></my-tag>
+        #
+        #   html.tag(:my_tag, id: "foo")
+        #     # => <my-tag id="foo"></my-tag>
+        #
+        #   html.tag(:my_tag, id: "foo", class: "full-width")
+        #     # => <my-tag id="foo" class="full-width"></my-tag>
+        #
+        #   html.tag(:my_tag, class: ["foo", "bar"])
+        #     # => <my-tag class="foo bar"></my-tag>
+        #
+        #   html.tag(:my_tag, required: false)
+        #     # => <my-tag></my-tag>
+        #
+        #   html.tag(:my_tag, required: true)
+        #     # => <my-tag required></my-tag>
+        #
+        #   html.tag(:my_tag, "Hello")
+        #     # => <my-tag>Hello</my-tag>
+        #
+        #   html.tag(:my_tag, "Hello", id: "foo", class: "full-width")
+        #     # => <my-tag id="foo" class="full-width">Hello</my-tag>
+        #
+        #   html.tag(:my_tag, "Hello ") do
+        #     span "World"
+        #   end
+        #     # => <my-tag>Hello <span>World<span></my-tag>
+        def tag(type, content = nil, **attributes, &blk)
+          type = tag_name(type.to_s)
+
+          if content.is_a?(::Hash) && attributes.empty?
+            attributes = content
+            content = nil
+          end
+          @buffer << S_LT << type
+          emit_attributes(attributes)
+          if blk
+            @buffer << S_GT
+            instance_eval(&blk)
+            @buffer << S_LT_SLASH << type << S_GT
+          elsif content
+            @buffer << S_GT << escape_content(content.to_s) <<
+              S_LT_SLASH << type << S_GT
+          else
+            @buffer << S_GT <<
+              S_LT_SLASH << type << S_GT
+          end
+        end
+
+        # Generate HTML empty tag
+        #
+        # @params type [Symbol,String,#to_s] HTML tag type
+        # @params attributes [Hash] HTML attributes
+        #
+        # @return void
+        #
+        # @since 0.1.0
+        # @api public
         #
         # @example
-        #   html.tag(:custom) # => <custom></custom>
+        #   html.empty_tag(:my_tag)
+        #     # => <my-tag>
         #
-        #   html.tag(:custom, 'foo') # => <custom>foo</custom>
+        #   html.empty_tag(:my_tag, id: "foo")
+        #     # => <my-tag id="foo">
         #
-        #   html.tag(:custom, html.p('hello')) # => <custom><p>hello</p></custom>
+        #   html.empty_tag(:my_tag, id: "foo", class: "full-width")
+        #     # => <my-tag id="foo" class="full-width">
         #
-        #   html.tag(:custom) { 'foo' }
-        #   # =>
-        #   #<custom>
-        #   #  foo
-        #   #</custom>
+        #   html.empty_tag(:my_tag, class: ["foo", "bar"])
+        #     # => <my-tag class="foo bar">
         #
-        #   html.tag(:custom) do
-        #     p 'hello'
-        #   end
-        #   # =>
-        #   #<custom>
-        #   #  <p>hello</p>
-        #   #</custom>
+        #   html.empty_tag(:my_tag, required: false)
+        #     # => <my-tag>
         #
-        #   html.tag(:custom, 'hello', id: 'foo', 'data-xyz': 'bar') # => <custom id="foo" data-xyz="bar">hello</custom>
-        #
-        #   html.tag(:custom, id: 'foo') { 'hello' }
-        #   # =>
-        #   #<custom id="foo">
-        #   #  hello
-        #   #</custom>
-        def tag(name, content = nil, attributes = nil, &blk)
-          @nodes << HtmlNode.new(name, blk || content, attributes || content, options)
-          self
+        #   html.empty_tag(:my_tag, required: true)
+        #     # => <my-tag required>
+        def empty_tag(type, **attributes)
+          @buffer << S_LT << tag_name(type.to_s)
+          emit_attributes(attributes)
+          @buffer << S_GT
         end
 
         # Define a HTML fragment
         #
         # @param blk [Proc] the optional nested content espressed as a block
         #
-        # @return [self]
+        # @return void
         #
         # @since 0.2.6
         # @api public
         #
-        # @see Hanami::Helpers::HtmlHelper
-        #
         # @example
-        #   html.fragment('Hanami') # => Hanami
+        #   html.fragment("Hanami") # => Hanami
         #
         #   html do
-        #     p 'hello'
-        #     p 'hanami'
+        #     p "hello"
+        #     p "hanami"
         #   end
         #   # =>
         #     <p>hello</p>
         #     <p>hanami</p>
         def fragment(&blk)
-          @nodes << HtmlFragment.new(&blk)
-          self
-        end
-
-        # Defines a custom empty tag
-        #
-        # @param name [Symbol,String] the name of the tag
-        # @param attributes [Hash,NilClass] the optional tag attributes
-        #
-        # @return [self]
-        #
-        # @since 0.1.0
-        # @api public
-        #
-        # @see Hanami::Helpers::HtmlHelper
-        #
-        # @example
-        #   html.empty_tag(:xr) # => <xr>
-        #
-        #   html.empty_tag(:xr, id: 'foo') # => <xr id="foo">
-        #
-        #   html.empty_tag(:xr, id: 'foo', 'data-xyz': 'bar') # => <xr id="foo" data-xyz="bar">
-        def empty_tag(name, attributes = nil)
-          @nodes << EmptyHtmlNode.new(name, attributes)
-          self
+          instance_eval(&blk)
         end
 
         # Defines a plain string of text. This particularly useful when you
-        # want to build more complex HTML.
+        # want to build complex HTML.
         #
         # @param content [String] the text to be rendered.
         #
-        # @return [self]
+        # @return void
         #
-        # @see Hanami::Helpers::HtmlHelper
-        # @see Hanami::Helpers::HtmlHelper::TextNode
+        # @since 0.2.5
+        # @api public
         #
         # @example
         #
@@ -316,81 +356,112 @@ module Hanami
         #     <input type="radio" name="option" value="1" />
         #   </label>
         def text(content)
-          @nodes << TextNode.new(content)
-          self
+          @buffer << escape_content(content).to_s
         end
 
-        # @since 0.2.5
-        # @api private
-        alias_method :+, :text
-
-        # Resolves all the nodes and generates the markup
+        # Concat self with another builder
         #
-        # @return [Temple::HTML::SafeString] the output
+        # @param other [Hanami::Helpers::HtmlHelper::HtmlBuilder] the other builder
+        #
+        # @retun void
+        #
+        # @since 2.0.0
+        # @api public
+        #
+        # @example Anonymous concat
+        #
+        #   html.div("Hello") + html.div("Hanami")
+        #     # => "<div>Hello</div><div>Hanami</div>"
+        #
+        # @example Assign and concat
+        #
+        #   hello  = html { div "Hello" }
+        #   hanami = html { div "Hanami" }
+        #
+        #   hello + hanami
+        #     # => "<div>Hello</div><div>Hanami</div>"
+        def +(other)
+          to_s + other.to_s
+        end
+
+        # Return HTML
+        #
+        # @return [String] the output HTML
         #
         # @since 0.1.0
-        # @api private
-        #
-        # @see https://www.rubydoc.info/gems/temple/Temple/HTML/SafeString
+        # @api public
         def to_s
-          Helpers::Escape.safe_string(@nodes.map(&:to_s).join(NEWLINE))
+          @buffer
         end
 
-        # Encode the content with the given character encoding
-        #
-        # @param encoding [Encoding,String] the encoding or its string representation
-        #
-        # @return [String] the encoded string
-        #
-        # @since 0.2.5
-        # @api private
-        def encode(encoding)
-          to_s.encode(encoding)
-        end
-
-        # Check if there are nested nodes
-        #
-        # @return [TrueClass,FalseClass] the result of the check
+        # Generates tag metods on the fly
         #
         # @since 0.1.0
         # @api private
-        def nested?
-          @nodes.any?
-        end
+        def method_missing(method_name, *args, **kwargs, &blk)
+          tag = method_name.to_s
+          type = tag_name(tag)
+          code = (EMPTY_TAGS.key?(method_name) ? S_EMPTY_TAG_METHOD : S_CONTENT_TAG_METHOD) % {
+            tag: tag,
+            TAG: tag.upcase,
+            tag_pre: "<#{type}".inspect,
+            tag_close: "</#{type}>".inspect
+          }
 
-        if Utils.jruby?
-          # Resolve the context for nested contents
-          #
-          # @since 0.1.0
-          # @api private
-          def resolve(&blk)
-            @context = eval("self", blk.binding, __FILE__, __LINE__)
-            instance_exec(&blk)
-          end
-        else
-          # Resolve the context for nested contents
-          #
-          # @since 0.1.0
-          # @api private
-          def resolve(&blk)
-            @context = blk.binding.receiver
-            instance_exec(&blk)
-          end
-        end
+          self.class.class_eval(code, __FILE__, S_TAG_METHOD_LINE)
 
-        # Forward missing methods to the current context.
-        # This allows to access views local variables from nested content blocks.
-        #
-        # @since 0.1.0
-        # @api private
-        def method_missing(method_name, *args, &blk)
-          @context.__send__(method_name, *args, &blk)
+          __send__(method_name, *args, **kwargs, &blk)
         end
 
         # @since 1.2.2
         # @api private
-        def respond_to_missing?(method_name, include_all)
-          @context.respond_to?(method_name, include_all)
+        def respond_to_missing?(*)
+          true
+        end
+
+        private
+
+        # @since 2.0.0
+        # @api private
+        def tag_name(tag)
+          tag.tr(S_UNDERSCORE, S_DASH)
+        end
+
+        # @since 2.0.0
+        # @api private
+        alias_method :attribute_name, :tag_name
+
+        # @since 2.0.0
+        # @api private
+        def escape_content(content)
+          Escape.(content)
+        end
+
+        # @since 2.0.0
+        # @api private
+        def emit_attributes(attributes) # rubocop:disable Metrics/AbcSize
+          return if attributes.empty?
+
+          attributes.each do |name, value|
+            case name
+            when :src, :href
+              @buffer << S_SPACE << name.to_s << S_EQUAL_QUOTE <<
+                Escape.uri(value) << S_QUOTE
+            else
+              case value
+              when true
+                @buffer << S_SPACE << attribute_name(name.to_s)
+              when false, nil
+                # emit nothing
+              when Array
+                @buffer << S_SPACE << name.to_s << S_EQUAL_QUOTE <<
+                  value.join(S_SPACE) << S_QUOTE
+              else
+                @buffer << S_SPACE << attribute_name(name.to_s) <<
+                  S_EQUAL_QUOTE << value.to_s << S_QUOTE
+              end
+            end
+          end
         end
       end
     end

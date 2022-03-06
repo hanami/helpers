@@ -37,13 +37,13 @@ module Hanami
     #   html.img # => <img>
     #
     #   # 2
-    #   html.div('hello') # => <div>hello</div>
+    #   html.div("hello") # => <div>hello</div>
     #
     #   # 3
-    #   html.div(html.p('hello')) # => <div><p>hello</p></div>
+    #   html.div(html.p("hello")) # => <div><p>hello</p></div>
     #
     #   # 4
-    #   html.div { 'hello' }
+    #   html.div { text "hello" }
     #   # =>
     #   #<div>
     #   #  hello
@@ -51,7 +51,7 @@ module Hanami
     #
     #   # 5
     #   html.div do
-    #     p 'hello'
+    #     p "hello"
     #   end
     #   # =>
     #   #<div>
@@ -59,10 +59,10 @@ module Hanami
     #   #</div>
     #
     #   # 6
-    #   html.div('hello', id: 'el', 'data-x': 'y') # => <div id="el" data-x="y">hello</div>
+    #   html.div("hello", id: "el", "data-x": "y") # => <div id="el" data-x="y">hello</div>
     #
     #   # 7
-    #   html.div(id: 'yay') { 'hello' }
+    #   html.div(id: "yay") { text("hello") }
     #   # =>
     #   #<div id="yay">
     #   #  hello
@@ -70,8 +70,8 @@ module Hanami
     #
     #   # 8
     #   html do
-    #     li 'Hello'
-    #     li 'Hanami'
+    #     li "Hello"
+    #     li "Hanami"
     #   end
     #   # =>
     #   #<li>Hello</li>
@@ -84,13 +84,13 @@ module Hanami
     #   # NOTICE THE LACK OF CONCATENATION BETWEEN div AND input BLOCKS <3
     #   #
     #
-    #   html.form(action: '/users', method: 'POST') do
+    #   html.form(action: "/users", method: "POST") do
     #     div do
-    #       label 'First name', for: 'user-first-name'
-    #       input type: 'text', id: 'user-first-name', name: 'user[first_name]', value: 'L'
+    #       label "First name", for: "user-first-name"
+    #       input type: "text", id: "user-first-name", name: "user[first_name]", value: "L"
     #     end
     #
-    #     input type: 'submit', value: 'Save changes'
+    #     input type: "submit", value: "Save changes"
     #   end
     #   # =>
     #   #<form action="/users" method="POST" accept-charset="utf-8">
@@ -104,32 +104,32 @@ module Hanami
     #
     #
     # @example Custom tags
-    #   html.tag(:custom, 'Foo', id: 'next') # => <custom id="next">Foo</custom>
-    #   html.empty_tag(:xr, id: 'next')      # => <xr id="next">
+    #   html.tag(:custom, "Foo", id: "next") # => <custom id="next">Foo</custom>
+    #   html.empty_tag(:xr, id: "next")      # => <xr id="next">
     #
     #
     #
     # @example Auto escape
-    #  html.div('hello')         # => <div>hello</hello>
-    #  html.div { 'hello' }      # => <div>hello</hello>
-    #  html.div(html.p('hello')) # => <div><p>hello</p></hello>
+    #  html.div("hello")         # => <div>hello</hello>
+    #  html.div { "hello" }      # => <div>hello</hello>
+    #  html.div(html.p("hello")) # => <div><p>hello</p></hello>
     #  html.div do
-    #    p 'hello'
+    #    p "hello"
     #  end # => <div><p>hello</p></hello>
     #
     #
     #
-    #  html.div("<script>alert('xss')</script>")
+    #  html.div("<script>alert("xss")</script>")
     #    # =>  "<div>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>"
     #
-    #  html.div { "<script>alert('xss')</script>" }
+    #  html.div { "<script>alert("xss")</script>" }
     #    # =>  "<div>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</div>"
     #
-    #  html.div(html.p("<script>alert('xss')</script>"))
+    #  html.div(html.p("<script>alert("xss")</script>"))
     #    # => "<div><p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p></div>"
     #
     #  html.div do
-    #    p "<script>alert('xss')</script>"
+    #    p "<script>alert("xss")</script>"
     #  end
     #    # => "<div><p>&lt;script&gt;alert(&apos;xss&apos;)&lt;&#x2F;script&gt;</p></div>"
     #
@@ -139,7 +139,7 @@ module Hanami
     #   # THE VIEW CAN BE A SIMPLE RUBY OBJECT
     #   #
     #
-    #   require 'hanami/helpers'
+    #   require "hanami/helpers"
     #
     #   class MyView
     #     include Hanami::Helpers::HtmlHelper
@@ -149,8 +149,8 @@ module Hanami
     #     #    <div>hello</hello>
     #     #  </aside>
     #     def sidebar
-    #       html.aside(id: 'sidebar') do
-    #         div 'hello'
+    #       html.aside(id: "sidebar") do
+    #         div "hello"
     #       end
     #     end
     #   end
@@ -161,26 +161,25 @@ module Hanami
     #   # LOCAL VARIABLES FROM VIEWS ARE AVAILABLE INSIDE THE NESTED BLOCKS OF HTML BUILDER
     #   #
     #
-    #   require 'hanami/view'
-    #   require 'hanami/helpers'
+    #   require "hanami/view"
+    #   require "hanami/helpers"
     #
     #   Book = Struct.new(:title)
     #
-    #   module Books
-    #     class Show
-    #       include Hanami::View
-    #       include Hanami::Helpers::HtmlHelper
-    #
-    #       def title_widget
-    #         html.div do
-    #           h1 book.title
+    #   module Admin
+    #     module View
+    #       class Context < MyApp::View::Context
+    #         def title_widget
+    #           html.div do
+    #             h1 book.title
+    #           end
     #         end
     #       end
     #     end
     #   end
     #
-    #   book     = Book.new('The Work of Art in the Age of Mechanical Reproduction')
-    #   rendered = Books::Show.render(format: :html, book: book)
+    #   book     = Book.new("The Work of Art in the Age of Mechanical Reproduction")
+    #   rendered = Books::Show.new.(book: book)
     #
     #   rendered
     #     # => <div>
@@ -200,11 +199,7 @@ module Hanami
       # @see Hanami::Helpers::HtmlHelper
       # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
       def html(&blk)
-        if block_given?
-          HtmlBuilder.new.fragment(&blk)
-        else
-          HtmlBuilder.new
-        end
+        Hanami::Helpers::HtmlHelper::HtmlBuilder.new(&blk)
       end
     end
   end

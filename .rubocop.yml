@@ -12,4 +12,4 @@ Layout/LineLength:
     - "spec/**/*.rb"
 Lint/EmptyBlock:
   Exclude:
-    - "spec/unit/hanami/helpers/form_helper_spec.rb"
+    - "spec/**/*.rb"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#RSpec.describe Hanami::Helpers::FormHelper do
+# RSpec.describe Hanami::Helpers::FormHelper do
 #  let(:view)   { FormHelperView.new(params) }
 #  let(:params) { Hash[] }
 #  let(:action) { "/books" }
@@ -2744,4 +2744,4 @@
 #      end
 #    end
 #  end
-#end
+# end

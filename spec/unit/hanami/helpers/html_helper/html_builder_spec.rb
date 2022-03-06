@@ -12,7 +12,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     end
 
     it "always closes tag, with empty block" do
-      actual = subject.div {} # rubocop:disable Lint/EmptyBlock
+      actual = subject.div {}
       expect(actual).to eq(%(<div></div>))
     end
 
@@ -44,7 +44,7 @@ RSpec.describe Hanami::Helpers::HtmlHelper::HtmlBuilder do
     end
 
     it "does not closes tag, with empty block" do
-      actual = subject.br {} # rubocop:disable Lint/EmptyBlock
+      actual = subject.br {}
       expect(actual).to eq(%(<br>))
     end
 

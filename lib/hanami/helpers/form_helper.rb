@@ -430,20 +430,8 @@ module Hanami
       #
       #     <button type="submit">Create</button>
       #   </form>
-      def form_for(name, url = nil, options = {}, &blk)
-        form = if name.is_a?(Form)
-                 options = url || {}
-                 name
-               else
-                 Form.new(name, url, options.delete(:values))
-               end
-
-        params = options.delete(:params)
-        opts = options.dup
-        opts[:"data-remote"] = opts.delete(:remote) if opts.key?(:remote)
-        attributes = {action: form.url, method: form.verb, "accept-charset": DEFAULT_CHARSET, id: "#{form.name}-form"}.merge(opts)
-
-        FormBuilder.new(form, attributes, self, params, &blk)
+      def form_for(url, **attributes, &blk)
+        FormBuilder.new(csrf_token: csrf_token, action: url, **attributes, &blk).to_s
       end
 
       # Returns CSRF Protection Token stored in session.

@@ -163,39 +163,39 @@ module MyApp
   end
 end
 
-# class FormHelperView
-#   include Hanami::Helpers::FormHelper
-#   attr_reader :params
+class FormHelperView
+  include Hanami::Helpers::FormHelper
+  attr_reader :params
 
-#   def initialize(params)
-#     @params = _build_params(params)
-#   end
+  def initialize(params)
+    @params = _build_params(params)
+  end
 
-#   private
+  private
 
-#   def _build_params(params)
-#     parameters = params.to_h
+  def _build_params(params)
+    parameters = params.to_h
 
-#     # Randomly use Hanami::Action::BaseParams or the given raw Hash in order to
-#     # simulate Hash usage during the spec setup of unit specs in Hanami projects.
-#     if parameters.respond_to?(:dig)
-#       [true, false].sample ? Hanami::Action::BaseParams.new(parameters) : parameters
-#     else
-#       Hanami::Action::BaseParams.new(parameters)
-#     end
-#   end
-# end
+    # Randomly use Hanami::Action::BaseParams or the given raw Hash in order to
+    # simulate Hash usage during the spec setup of unit specs in Hanami projects.
+    if parameters.respond_to?(:dig)
+      [true, false].sample ? Hanami::Action::BaseParams.new(parameters) : parameters
+    else
+      Hanami::Action::BaseParams.new(parameters)
+    end
+  end
+end
 
-# class SessionFormHelperView < FormHelperView
-#   def initialize(params, csrf_token)
-#     super(params)
-#     @csrf_token = csrf_token
-#   end
+class SessionFormHelperView < FormHelperView
+  def initialize(params, csrf_token)
+    super(params)
+    @csrf_token = csrf_token
+  end
 
-#   def session
-#     {_csrf_token: @csrf_token}
-#   end
-# end
+  def session
+    {_csrf_token: @csrf_token}
+  end
+end
 
 class Address
   attr_reader :id, :street

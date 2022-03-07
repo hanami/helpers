@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hanami/helpers/form_helper/html_node"
 require "hanami/helpers/form_helper/values"
 require "hanami/helpers/html_helper/html_builder"
 require "hanami/helpers/escape_helper"
@@ -14,7 +13,7 @@ module Hanami
       # @since 0.2.0
       #
       # @see Hanami::Helpers::HtmlHelper::HtmlBuilder
-      class FormBuilder < ::Hanami::Helpers::HtmlHelper::HtmlBuilder
+      class FormBuilder
         # Set of HTTP methods that are understood by web browsers
         #
         # @since 0.2.0
@@ -79,50 +78,44 @@ module Hanami
 
         include Helpers::EscapeHelper
 
-        self.html_node = ::Hanami::Helpers::FormHelper::HtmlNode
-
-        # Instantiate a form builder
-        #
-        # @overload initialize(form, attributes, context, params, &blk)
-        #   Top level form
-        #   @param form [Hanami::Helpers:FormHelper::Form] the form
-        #   @param attributes [::Hash] a set of HTML attributes
-        #   @param context [Hanami::Helpers::FormHelper]
-        #   @param params [Hash] optional set of params to override the ones that are coming from the view context
-        #   @param blk [Proc] a block that describes the contents of the form
-        #
-        # @overload initialize(form, attributes, params, &blk)
-        #   Nested form
-        #   @param form [Hanami::Helpers:FormHelper::Form] the form
-        #   @param attributes [Hanami::Helpers::FormHelper::Values] user defined
-        #     values
-        #   @param blk [Proc] a block that describes the contents of the form
-        #
-        # @return [Hanami::Helpers::FormHelper::FormBuilder] the form builder
-        #
-        # @since 0.2.0
-        # @api private
-        def initialize(form, attributes, context = nil, params = nil, &blk)
+        def initialize(html: Hanami::Helpers::HtmlHelper::HtmlBuilder.new, **attributes, &blk)
           super()
 
-          @context    = context
-          @blk        = blk
-          @verb       = nil
-          @csrf_token = nil
+          @html = html
+          @values = Values.new({}, {})
 
-          # Nested form
-          if @context.nil? && attributes.is_a?(Values)
-            @values      = attributes
-            @attributes  = {}
-            @name        = form
-          else
-            @form        = form
-            @name        = form.name
-            @values      = Values.new(form.values, params || @context.params)
-            @attributes  = attributes
-            @verb_method = verb_method
-            @csrf_token  = csrf_token
+          method_override, original_form_method = _form_method(attributes)
+          csrf_token, token = _csrf_token(attributes)
+          attributes[:accept_charset] ||= DEFAULT_CHARSET
+
+          form_builder = self
+          @html.form(**attributes) do
+            input(type: "hidden", name: "_method", value: original_form_method) if method_override
+            input(type: "hidden", name: "_csrf_token", value: token) if csrf_token
+            blk&.call(form_builder)
           end
+        end
+
+        def _form_method(attributes)
+          attributes[:method] ||= DEFAULT_METHOD
+          attributes[:method] = attributes[:method].to_s.upcase
+
+          original_form_method = attributes[:method]
+
+          if (method_override = !BROWSER_METHODS.include?(attributes[:method]))
+            attributes[:method] = DEFAULT_METHOD
+          end
+
+          [method_override, original_form_method]
+        end
+
+        def _csrf_token(attributes)
+          token = attributes.delete(:csrf_token)
+          return [] if token.nil?
+
+          return [] if EXCLUDED_CSRF_METHODS.include?(attributes[:method])
+
+          [true, token]
         end
 
         # Resolves all the nodes and generates the markup
@@ -135,12 +128,7 @@ module Hanami
         # @see Hanami::Helpers::HtmlHelper::HtmlBuilder#to_s
         # @see http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Escape/SafeString
         def to_s
-          if toplevel?
-            _method_override!
-            form(@blk, @attributes)
-          end
-
-          super
+          html.to_s
         end
 
         # Nested fields
@@ -1037,8 +1025,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="text" name="user[first_name]" id="user-first-name" value="" class="form-control">
-        def text_field(name, attributes = {})
-          input _attributes(:text, name, attributes)
+        def text_field(name, **attributes)
+          input(**_attributes(:text, name, attributes))
         end
         alias_method :input_text, :text_field
 
@@ -1541,6 +1529,10 @@ module Hanami
           button(content, attributes, &blk)
         end
 
+        def input(...)
+          html.input(...)
+        end
+
         protected
 
         # A set of options to pass to the sub form helpers.
@@ -1552,6 +1544,8 @@ module Hanami
         end
 
         private
+
+        attr_reader :html
 
         # Check the current builder is top-level
         #
@@ -1600,13 +1594,23 @@ module Hanami
           attrs
         end
 
+        INPUT_NAME_SEPARATOR = "."
+
         # Full input name, used to construct the input
         # attributes.
         #
         # @api private
         # @since 0.2.0
         def _input_name(name)
-          "#{@name}[#{name}]"
+          result = String.new
+          tokens = name.split(INPUT_NAME_SEPARATOR)
+          tokens.each_with_index do |token, i|
+            result << ("[" * i)
+            result << token
+            result << ("]" * i)
+          end
+
+          result
         end
 
         # Input <tt>name</tt> HTML attribute
@@ -1622,8 +1626,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _input_id(name)
-          name = _input_name(name).gsub(/\[(?<token>[[[:word:]]\-]*)\]/, INPUT_ID_REPLACEMENT)
-          Utils::String.dasherize(name)
+          name.tr(".", "-")
         end
 
         # Input <tt>value</tt> HTML attribute

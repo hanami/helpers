@@ -111,35 +111,35 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    xdescribe "remote: true" do
+    describe "remote: true" do
       it "adds data-remote=true to form attributes" do
-        actual = view.form_for(:book, action, remote: true) {}
-        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="true">\n\n</form>))
+        actual = view.form_for(action, "data-remote": true) {}
+        expect(actual.to_s).to eq(%(<form action="/books" data-remote method="POST" accept-charset="utf-8"></form>))
       end
 
       it "adds data-remote=false to form attributes" do
-        actual = view.form_for(:book, action, remote: false) {}
-        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="false">\n\n</form>))
+        actual = view.form_for(action, "data-remote": false) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8"></form>))
       end
 
       it "adds data-remote= to form attributes" do
-        actual = view.form_for(:book, action, remote: nil) {}
-        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form" data-remote="">\n\n</form>))
+        actual = view.form_for(action, "data-remote": nil) {}
+        expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8"></form>))
       end
     end
 
-    xcontext "inline params" do
+    context "inline params" do
       let(:view)   { FormHelperView.new(params) }
       let(:params) { {song: {title: "Orphans"}} }
       let(:inline_params) { {song: {title: "Arabesque"}} }
       let(:action) { "/songs" }
 
       it "renders" do
-        actual = view.form_for(:song, action, params: inline_params) do
-          text_field :title
+        actual = view.form_for(action, params: inline_params) do |f|
+          f.text_field "song.title"
         end.to_s
 
-        expect(actual).to eq(%(<form action="/songs" method="POST" accept-charset="utf-8" id="song-form">\n<input type="text" name="song[title]" id="song-title" value="#{inline_params.dig(:song, :title)}">\n</form>))
+        expect(actual).to eq(%(<form action="/songs" method="POST" accept-charset="utf-8"><input type="text" name="song[title]" id="song-title" value="#{inline_params.dig(:song, :title)}"></form>))
       end
     end
   end
@@ -194,7 +194,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     let(:params) { Hash[book: {categories: [{name: "foo", new: true, genre: nil}]}] }
 
     it "renders" do
-      actual = view.form_for(:book, action) do
+      actual = view.form_for(action) do
         fields_for_collection :categories do
           text_field :name
           hidden_field :name
@@ -264,49 +264,33 @@ RSpec.describe Hanami::Helpers::FormHelper do
   # LABEL
   #
 
-  xdescribe "#label" do
+  describe "#label" do
     it "renders capitalized string" do
-      actual = view.form_for(:book, action) do
-        label :free_shipping
+      actual = view.form_for(action) do |f|
+        f.label "book.free_shipping"
       end.to_s
 
       expect(actual).to include(%(<label for="book-free-shipping">Free shipping</label>))
     end
 
     it "accepts a string as custom content" do
-      actual = view.form_for(:book, action) do
-        label "Free Shipping", for: :free_shipping
+      actual = view.form_for(action) do |f|
+        f.label "Free Shipping!", for: "book.free_shipping"
       end.to_s
 
-      expect(actual).to include(%(<label for="book-free-shipping">Free Shipping</label>))
+      expect(actual).to include(%(<label for="book-free-shipping">Free Shipping!</label>))
     end
 
     it "renders a label with block" do
-      actual = view.form_for(:book, action) do
-        label for: :free_shipping do
-          text "Free Shipping"
-          abbr "*", title: "optional", "aria-label": "optional"
+      actual = view.form_for(action) do |f|
+        f.label for: "book.free_shipping" do
+          f.text "Free Shipping"
+          f.abbr "*", title: "optional", "aria-label": "optional"
         end
       end.to_s
 
-      expected = <<~END
-        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
-        <label for="book-free-shipping">
-        Free Shipping
-        <abbr title="optional" aria-label="optional">*</abbr>
-        </label>
-        </form>
-      END
-
-      expect(actual).to eq(expected.chomp)
-    end
-
-    it 'accepts a string as explicit "for" attribute' do
-      actual = view.form_for(:book, action) do
-        label :free_shipping, for: "free-shipping"
-      end.to_s
-
-      expect(actual).to include(%(<label for="free-shipping">Free shipping</label>))
+      expected = %(<form action="/books" method="POST" accept-charset="utf-8"><label for="book-free-shipping">Free Shipping<abbr title="optional" aria-label="optional">*</abbr></label></form>)
+      expect(actual).to eq(expected)
     end
   end
 
@@ -314,38 +298,31 @@ RSpec.describe Hanami::Helpers::FormHelper do
   # BUTTONS
   #
 
-  xdescribe "#button" do
+  describe "#button" do
     it "renders a button" do
-      actual = view.form_for(:book, action) do
-        button "Click me"
+      actual = view.form_for(action) do |f|
+        f.button "Click me"
       end.to_s
 
       expect(actual).to include(%(<button>Click me</button>))
     end
 
     it "renders a button with HTML attributes" do
-      actual = view.form_for(:book, action) do
-        button "Click me", class: "btn btn-secondary"
+      actual = view.form_for(action) do |f|
+        f.button "Click me", class: "btn btn-secondary"
       end.to_s
 
       expect(actual).to include(%(<button class="btn btn-secondary">Click me</button>))
     end
 
     it "renders a button with block" do
-      actual = view.form_for(:book, action) do
-        button class: "btn btn-secondary" do
-          span class: "oi oi-check"
+      actual = view.form_for(action) do |f|
+        f.button class: "btn btn-secondary" do
+          f.span class: "oi oi-check"
         end
       end.to_s
 
-      expected = <<~END
-        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
-        <button class="btn btn-secondary">
-        <span class="oi oi-check"></span>
-        </button>
-        </form>
-      END
-
+      expected = %(<form action="/books" method="POST" accept-charset="utf-8"><button class="btn btn-secondary"><span class="oi oi-check"></span></button></form>)
       expect(actual).to eq(expected.chomp)
     end
   end

@@ -82,7 +82,7 @@ module Hanami
           super()
 
           @html = html
-          @values = Values.new({}, {})
+          @values = Values.new({}, attributes.delete(:params) || {})
 
           method_override, original_form_method = _form_method(attributes)
           csrf_token, token = _csrf_token(attributes)
@@ -370,15 +370,14 @@ module Hanami
         #     <abbr title="optional" aria-label="optional">*</abbr>
         #   </label>
         def label(content = nil, **attributes, &blk)
-          attributes = {for: _for(content, attributes.delete(:for))}.merge(attributes)
-          content    = case content
-                       when String, Hanami::Utils::String, NilClass
-                         content
-                       else
-                         Utils::String.capitalize(content)
-                       end
+          for_attribute_given = attributes.key?(:for)
 
-          super(content, attributes, &blk)
+          attributes[:for] = _for(content, attributes[:for])
+          if content && !for_attribute_given
+            content = Utils::String.capitalize(content.split(INPUT_NAME_SEPARATOR).last)
+          end
+
+          html.label(content, **attributes, &blk)
         end
 
         # Fieldset
@@ -1430,13 +1429,8 @@ module Hanami
         #   <button class="btn btn-secondary">
         #     <span class="oi oi-check"></span>
         #   </button>
-        def button(content, attributes = {}, &blk)
-          if content.is_a?(::Hash)
-            attributes = content
-            content = nil
-          end
-
-          super
+        def button(...)
+          html.button(...)
         end
 
         # Image button
@@ -1547,6 +1541,18 @@ module Hanami
 
         attr_reader :html
 
+        def method_missing(method_name, *args, **kwargs, &blk)
+          if html.respond_to?(method_name)
+            html.__send__(method_name, *args, **kwargs, &blk)
+          else
+            super
+          end
+        end
+
+        def respond_to_missing?(method_name, include_all)
+          html.respond_to?(method_name, include_all)
+        end
+
         # Check the current builder is top-level
         #
         # @api private
@@ -1626,7 +1632,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _input_id(name)
-          name.tr(".", "-")
+          name.tr("._", "-")
         end
 
         # Input <tt>value</tt> HTML attribute
@@ -1644,12 +1650,7 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _for(content, name)
-          case name
-          when String, Hanami::Utils::String
-            name
-          else
-            _input_id(name || content)
-          end
+          _input_id(name || content)
         end
 
         # Hidden field for check box

@@ -406,9 +406,9 @@ module Hanami
         #     <label for="book-author-name">Name</label>
         #     <input type="text" name="book[author][name]" id="book-author-name" value="">
         #   </fieldset>
-        def fieldset(content = nil, attributes = {})
+        def fieldset(...)
           # This is here only for documentation purposes
-          super
+          html.fieldset(...)
         end
 
         # Check box
@@ -1461,12 +1461,11 @@ module Hanami
         #
         #   <!-- output -->
         #   <input name="image" width="50" type="image" src="https://hanamirb.org/assets/button.png">
-        def image_button(source, attributes = {})
-          attrs = attributes.dup
-          attrs[:type] = :image
-          attrs[:src]  = escape_url(source)
+        def image_button(source, **attributes)
+          attributes[:type] = :image
+          attributes[:src]  = escape_url(source)
 
-          input attrs
+          input(**attributes)
         end
 
         # Submit button
@@ -1513,14 +1512,14 @@ module Hanami
         #   <button type="submit" class="btn btn-primary">
         #     <span class="oi oi-check"></span>
         #   </button>
-        def submit(content, attributes = {}, &blk)
+        def submit(content = nil, **attributes, &blk)
           if content.is_a?(::Hash)
             attributes = content
             content = nil
           end
 
           attributes = {type: :submit}.merge(attributes)
-          button(content, attributes, &blk)
+          html.button(content, **attributes, &blk)
         end
 
         def input(...)

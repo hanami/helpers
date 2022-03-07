@@ -327,62 +327,55 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#submit" do
+  describe "#submit" do
     it "renders a submit button" do
-      actual = view.form_for(:book, action) do
-        submit "Create"
+      actual = view.form_for(action) do |f|
+        f.submit "Create"
       end.to_s
 
       expect(actual).to include(%(<button type="submit">Create</button>))
     end
 
     it "renders a submit button with HTML attributes" do
-      actual = view.form_for(:book, action) do
-        submit "Create", class: "btn btn-primary"
+      actual = view.form_for(action) do |f|
+        f.submit "Create", class: "btn btn-primary"
       end.to_s
 
       expect(actual).to include(%(<button type="submit" class="btn btn-primary">Create</button>))
     end
 
     it "renders a submit button with block" do
-      actual = view.form_for(:book, action) do
-        submit class: "btn btn-primary" do
-          span class: "oi oi-check"
+      actual = view.form_for(action) do |f|
+        f.submit class: "btn btn-primary" do
+          f.span class: "oi oi-check"
         end
       end.to_s
 
-      expected = <<~END
-        <form action="/books" method="POST" accept-charset="utf-8" id="book-form">
-        <button type="submit" class="btn btn-primary">
-        <span class="oi oi-check"></span>
-        </button>
-        </form>
-      END
-
+      expected = %(<form action="/books" method="POST" accept-charset="utf-8"><button type="submit" class="btn btn-primary"><span class="oi oi-check"></span></button></form>)
       expect(actual).to eq(expected.chomp)
     end
   end
 
-  xdescribe "#image_button" do
+  describe "#image_button" do
     it "renders an image button" do
-      actual = view.form_for(:book, action) do
-        image_button "https://hanamirb.org/assets/image_button.png"
+      actual = view.form_for(action) do |f|
+        f.image_button "https://hanamirb.org/assets/image_button.png"
       end.to_s
 
       expect(actual).to include(%(<input type="image" src="https://hanamirb.org/assets/image_button.png">))
     end
 
     it "renders an image button with HTML attributes" do
-      actual = view.form_for(:book, action) do
-        image_button "https://hanamirb.org/assets/image_button.png", name: "image", width: "50"
+      actual = view.form_for(action) do |f|
+        f.image_button "https://hanamirb.org/assets/image_button.png", name: "image", width: "50"
       end.to_s
 
       expect(actual).to include(%(<input name="image" width="50" type="image" src="https://hanamirb.org/assets/image_button.png">))
     end
 
     it "prevents XSS attacks" do
-      actual = view.form_for(:book, action) do
-        image_button "<script>alert('xss');</script>"
+      actual = view.form_for(action) do |f|
+        f.image_button "<script>alert('xss');</script>"
       end.to_s
 
       expect(actual).to include(%(<input type="image" src="">))
@@ -392,20 +385,21 @@ RSpec.describe Hanami::Helpers::FormHelper do
   #
   # FIELDSET
   #
-  xdescribe "#fieldset" do
+  describe "#fieldset" do
     it "renders a fieldset" do
-      actual = view.form_for(:book, action) do
-        fieldset do
-          legend "Author"
+      actual = view.form_for(action) do |f|
+        f.fieldset do
+          f.legend "Author"
 
-          fields_for :author do
-            label :name
-            text_field :name
-          end
+          # fields_for :author do
+          f.label "author.name"
+          f.text_field "author.name"
+          # end
         end
       end.to_s
 
-      expect(actual).to include(%(<fieldset>\n<legend>Author</legend>\n<label for="book-author-name">Name</label>\n<input type="text" name="book[author][name]" id="book-author-name" value="">\n</fieldset>))
+      expected = %(<fieldset><legend>Author</legend><label for="author-name">Name</label><input type="text" name="author[name]" id="author-name" value=""></fieldset>)
+      expect(actual).to include(expected)
     end
   end
 

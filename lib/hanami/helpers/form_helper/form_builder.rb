@@ -537,8 +537,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="color" name="user[background]" id="user-background" value="" class="form-control">
-        def color_field(name, attributes = {})
-          input _attributes(:color, name, attributes)
+        def color_field(name, **attributes)
+          input(**_attributes(:color, name, attributes))
         end
 
         # Date input
@@ -565,8 +565,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="date" name="user[birth_date]" id="user-birth-date" value="" class="form-control">
-        def date_field(name, attributes = {})
-          input _attributes(:date, name, attributes)
+        def date_field(name, **attributes)
+          input(**_attributes(:date, name, attributes))
         end
 
         # Datetime input
@@ -593,8 +593,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="datetime" name="delivery[delivered_at]" id="delivery-delivered-at" value="" class="form-control">
-        def datetime_field(name, attributes = {})
-          input _attributes(:datetime, name, attributes)
+        def datetime_field(name, **attributes)
+          input(**_attributes(:datetime, name, attributes))
         end
 
         # Datetime Local input
@@ -621,8 +621,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="datetime-local" name="delivery[delivered_at]" id="delivery-delivered-at" value="" class="form-control">
-        def datetime_local_field(name, attributes = {})
-          input _attributes(:"datetime-local", name, attributes)
+        def datetime_local_field(name, **attributes)
+          input(**_attributes(:"datetime-local", name, attributes))
         end
 
         # Time field
@@ -649,8 +649,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="time" name="book[release_hour]" id="book-release-hour" value="" class="form-control">
-        def time_field(name, attributes = {})
-          input _attributes(:time, name, attributes)
+        def time_field(name, **attributes)
+          input(**_attributes(:time, name, attributes))
         end
 
         # Month field
@@ -677,8 +677,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="month" name="book[release_month]" id="book-release-month" value="" class="form-control">
-        def month_field(name, attributes = {})
-          input _attributes(:month, name, attributes)
+        def month_field(name, **attributes)
+          input(**_attributes(:month, name, attributes))
         end
 
         # Week field
@@ -705,8 +705,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="week" name="book[release_week]" id="book-release-week" value="" class="form-control">
-        def week_field(name, attributes = {})
-          input _attributes(:week, name, attributes)
+        def week_field(name, **attributes)
+          input(**_attributes(:week, name, attributes))
         end
 
         # Email input

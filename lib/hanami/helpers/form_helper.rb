@@ -431,7 +431,13 @@ module Hanami
       #     <button type="submit">Create</button>
       #   </form>
       def form_for(url, **attributes, &blk)
-        FormBuilder.new(csrf_token: csrf_token, action: url, **attributes, &blk).to_s
+        attributes[:action] = url
+
+        form_values = attributes.delete(:values) || {} # FIXME: take values also from view's exposures
+        form_params = attributes.delete(:params) || params || {}
+        values = Values.new(form_values, form_params, csrf_token)
+
+        FormBuilder.new(values: values, **attributes, &blk).to_s
       end
 
       # Returns CSRF Protection Token stored in session.

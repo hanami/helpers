@@ -78,14 +78,14 @@ module Hanami
 
         include Helpers::EscapeHelper
 
-        def initialize(html: Hanami::Helpers::HtmlHelper::HtmlBuilder.new, **attributes, &blk)
+        def initialize(html: Hanami::Helpers::HtmlHelper::HtmlBuilder.new, values: Values.new, **attributes, &blk)
           super()
 
           @html = html
-          @values = Values.new({}, attributes.delete(:params) || {})
+          @values = values
 
           method_override, original_form_method = _form_method(attributes)
-          csrf_token, token = _csrf_token(attributes)
+          csrf_token, token = _csrf_token(values, attributes)
           attributes[:accept_charset] ||= DEFAULT_CHARSET
 
           form_builder = self
@@ -109,13 +109,12 @@ module Hanami
           [method_override, original_form_method]
         end
 
-        def _csrf_token(attributes)
-          token = attributes.delete(:csrf_token)
-          return [] if token.nil?
+        def _csrf_token(values, attributes)
+          return [] if values.csrf_token.nil?
 
           return [] if EXCLUDED_CSRF_METHODS.include?(attributes[:method])
 
-          [true, token]
+          [true, values.csrf_token]
         end
 
         # Resolves all the nodes and generates the markup
@@ -509,9 +508,9 @@ module Hanami
         #   <!-- output -->
         #   <input type="checkbox" name="book[languages][]" value="italian" checked="checked">
         #   <input type="checkbox" name="book[languages][]" value="english">
-        def check_box(name, attributes = {})
+        def check_box(name, **attributes)
           _hidden_field_for_check_box(name, attributes)
-          input _attributes_for_check_box(name, attributes)
+          input(**_attributes_for_check_box(name, attributes))
         end
 
         # Color input
@@ -1679,7 +1678,7 @@ module Hanami
             type: :checkbox,
             name: _displayed_input_name(name),
             id: _input_id(name),
-            value: attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE
+            value: (attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE).to_s
           }.merge(attributes)
 
           attributes[:checked] = CHECKED if _check_box_checked?(attributes[:value], _value(name))

@@ -17,11 +17,16 @@ module Hanami
         # @api private
         GET_SEPARATOR = "."
 
+        # @api private
+        # @since 2.0.0
+        attr_reader :csrf_token
+
         # @since 0.2.0
         # @api private
-        def initialize(values, params)
+        def initialize(values = {}, params = {}, csrf_token = nil)
           @values = Utils::Hash.symbolize(values || {})
           @params = params
+          @csrf_token = csrf_token
         end
 
         # Returns the value (if present) for the given key.

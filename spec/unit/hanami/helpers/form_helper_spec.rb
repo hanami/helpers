@@ -1125,91 +1125,91 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#email_field" do
+  describe "#email_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        email_field :publisher_email
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email"
       end.to_s
 
       expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        email_field :publisher_email, id: "publisher-email"
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email", id: "publisher-email"
       end.to_s
 
       expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="publisher-email" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        email_field :publisher_email, name: "book[email]"
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email", name: "book[email]"
       end.to_s
 
       expect(actual).to include(%(<input type="email" name="book[email]" id="book-publisher-email" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        email_field :publisher_email, value: "publisher@example.org"
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email", value: "publisher@example.org"
       end.to_s
 
       expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="publisher@example.org">))
     end
 
     it "allows to specify 'multiple' attribute" do
-      actual = view.form_for(action) do
-        email_field :publisher_email, multiple: true
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email", multiple: true
       end.to_s
 
-      expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple="multiple">))
+      expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" multiple>))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        email_field :publisher_email, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.email_field "book.publisher_email", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(publisher_email: val)] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          email_field :publisher_email
+        actual = view.form_for(action, values: values) do |f|
+          f.email_field "book.publisher_email"
         end.to_s
 
         expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="maria@publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          email_field :publisher_email, value: "publisher@example.org"
+        actual = view.form_for(action, values: values) do |f|
+          f.email_field "book.publisher_email", value: "publisher@example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="publisher@example.org">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {publisher_email: val}] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          email_field :publisher_email
+        actual = view.form_for(action) do |f|
+          f.email_field "book.publisher_email"
         end.to_s
 
         expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="maria@publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          email_field :publisher_email, value: "publisher@example.org"
+        actual = view.form_for(action) do |f|
+          f.email_field "book.publisher_email", value: "publisher@example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="publisher@example.org">))
@@ -1217,112 +1217,112 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#url_field" do
+  describe "#url_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        url_field :website
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website"
       end.to_s
 
       expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        url_field :website, id: "website"
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website", id: "website"
       end.to_s
 
       expect(actual).to include(%(<input type="url" name="book[website]" id="website" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        url_field :website, name: "book[url]"
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website", name: "book[url]"
       end.to_s
 
       expect(actual).to include(%(<input type="url" name="book[url]" id="book-website" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        url_field :website, value: "http://example.org"
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website", value: "http://example.org"
       end.to_s
 
       expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="http://example.org">))
     end
 
     it "allows to specify 'multiple' attribute" do
-      actual = view.form_for(action) do
-        url_field :website, multiple: true
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website", multiple: true
       end.to_s
 
-      expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="" multiple="multiple">))
+      expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="" multiple>))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        url_field :website, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.url_field "book.website", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(website: val)] }
       let(:val)    { "http://publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          url_field :website
+        actual = view.form_for(action, values: values) do |f|
+          f.url_field "book.website"
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="http://publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          url_field :website, value: "https://www.example.org"
+        actual = view.form_for(action, values: values) do |f|
+          f.url_field "book.website", value: "https://www.example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="https://www.example.org">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {website: val}] }
       let(:val)    { "http://publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          url_field :website
+        actual = view.form_for(action) do |f|
+          f.url_field "book.website"
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="http://publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          url_field :website, value: "http://example.org"
+        actual = view.form_for(action) do |f|
+          f.url_field "book.website", value: "http://example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="http://example.org">))
       end
     end
 
-    xdescribe "with escape url" do
+    describe "with escape url" do
       let(:values) { Hash[book: Book.new(website: val)] }
       let(:val)    { %("onclick=javascript:alert('xss')) }
 
       it "renders with automatic value" do
-        actual = view.form_for(action, values: values) do
-          url_field :website
+        actual = view.form_for(action, values: values) do |f|
+          f.url_field "book.website"
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="">))
       end
 
       it "renders with explicit value" do
-        actual = view.form_for(action, values: values) do
-          url_field :website, value: val
+        actual = view.form_for(action, values: values) do |f|
+          f.url_field "book.website", value: val
         end.to_s
 
         expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="">))
@@ -1330,91 +1330,91 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#tel_field" do
+  describe "#tel_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone"
       end.to_s
 
       expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone, id: "publisher-telephone"
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone", id: "publisher-telephone"
       end.to_s
 
       expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="publisher-telephone" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone, name: "book[telephone]"
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone", name: "book[telephone]"
       end.to_s
 
       expect(actual).to include(%(<input type="tel" name="book[telephone]" id="book-publisher-telephone" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone, value: "publisher@example.org"
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone", value: "publisher@example.org"
       end.to_s
 
       expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">))
     end
 
     it "allows to specify 'multiple' attribute" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone, multiple: true
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone", multiple: true
       end.to_s
 
-      expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" multiple="multiple">))
+      expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" multiple>))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        tel_field :publisher_telephone, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.tel_field "book.publisher_telephone", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(publisher_telephone: val)] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          tel_field :publisher_telephone
+        actual = view.form_for(action, values: values) do |f|
+          f.tel_field "book.publisher_telephone"
         end.to_s
 
         expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="maria@publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          tel_field :publisher_telephone, value: "publisher@example.org"
+        actual = view.form_for(action, values: values) do |f|
+          f.tel_field "book.publisher_telephone", value: "publisher@example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {publisher_telephone: val}] }
       let(:val)    { "maria@publisher.org" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          tel_field :publisher_telephone
+        actual = view.form_for(action) do |f|
+          f.tel_field "book.publisher_telephone"
         end.to_s
 
         expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="maria@publisher.org">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          tel_field :publisher_telephone, value: "publisher@example.org"
+        actual = view.form_for(action) do |f|
+          f.tel_field "book.publisher_telephone", value: "publisher@example.org"
         end.to_s
 
         expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="publisher@example.org">))
@@ -1422,10 +1422,10 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#file_field" do
+  describe "#file_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        file_field :image_cover
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover"
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover">))
@@ -1433,8 +1433,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "sets 'enctype' attribute to the form"
     # it "sets 'enctype' attribute to the form" do
-    #   actual = view.form_for(action) do
-    #     file_field :image_cover
+    #   actual = view.form_for(action) do |f|
+    #     f.file_field "book.image_cover"
     #   end.to_s
 
     #   expect(actual).to include(%(<form action="/books" id="book-form" method="POST" enctype="multipart/form-data">))
@@ -1442,9 +1442,9 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "sets 'enctype' attribute to the form when there are nested fields"
     # it "sets 'enctype' attribute to the form when there are nested fields" do
-    #   actual = view.form_for(action) do
+    #   actual = view.form_for(action) do |f|
     #     fields_for :images do
-    #       file_field :cover
+    #       f.file_field :cover
     #     end
     #   end.to_s
 
@@ -1452,73 +1452,73 @@ RSpec.describe Hanami::Helpers::FormHelper do
     # end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, id: "book-cover"
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", id: "book-cover"
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-cover">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, name: "book[cover]"
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", name: "book[cover]"
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[cover]" id="book-image-cover">))
     end
 
     it "allows to specify 'multiple' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, multiple: true
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", multiple: true
       end.to_s
 
-      expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" multiple="multiple">))
+      expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" multiple>))
     end
 
     it "allows to specify single value for 'accept' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, accept: "application/pdf"
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", accept: "application/pdf"
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" accept="application/pdf">))
     end
 
     it "allows to specify multiple values for 'accept' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, accept: "image/png,image/jpg"
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", accept: "image/png,image/jpg"
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" accept="image/png,image/jpg">))
     end
 
     it "allows to specify multiple values (array) for 'accept' attribute" do
-      actual = view.form_for(action) do
-        file_field :image_cover, accept: ["image/png", "image/jpg"]
+      actual = view.form_for(action) do |f|
+        f.file_field "book.image_cover", accept: ["image/png", "image/jpg"]
       end.to_s
 
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" accept="image/png,image/jpg">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(image_cover: val)] }
       let(:val)    { "image" }
 
       it "ignores value" do
-        actual = view.form_for(action, values: values) do
-          file_field :image_cover
+        actual = view.form_for(action, values: values) do |f|
+          f.file_field "book.image_cover"
         end.to_s
 
         expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {image_cover: val}] }
       let(:val)    { "image" }
 
       it "ignores value" do
-        actual = view.form_for(action) do
-          file_field :image_cover
+        actual = view.form_for(action) do |f|
+          f.file_field "book.image_cover"
         end.to_s
 
         expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover">))
@@ -1526,83 +1526,83 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#hidden_field" do
+  describe "#hidden_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        hidden_field :author_id
+      actual = view.form_for(action) do |f|
+        f.hidden_field "book.author_id"
       end.to_s
 
       expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        hidden_field :author_id, id: "author-id"
+      actual = view.form_for(action) do |f|
+        f.hidden_field "book.author_id", id: "author-id"
       end.to_s
 
       expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="author-id" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        hidden_field :author_id, name: "book[author]"
+      actual = view.form_for(action) do |f|
+        f.hidden_field "book.author_id", name: "book[author]"
       end.to_s
 
       expect(actual).to include(%(<input type="hidden" name="book[author]" id="book-author-id" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        hidden_field :author_id, value: "23"
+      actual = view.form_for(action) do |f|
+        f.hidden_field "book.author_id", value: "23"
       end.to_s
 
       expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="23">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        hidden_field :author_id, class: "form-details"
+      actual = view.form_for(action) do |f|
+        f.hidden_field "book.author_id", class: "form-details"
       end.to_s
 
       expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="" class="form-details">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(author_id: val)] }
       let(:val)    { "1" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          hidden_field :author_id
+        actual = view.form_for(action, values: values) do |f|
+          f.hidden_field "book.author_id"
         end.to_s
 
         expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="1">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          hidden_field :author_id, value: "23"
+        actual = view.form_for(action, values: values) do |f|
+          f.hidden_field "book.author_id", value: "23"
         end.to_s
 
         expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="23">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {author_id: val}] }
       let(:val)    { "1" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          hidden_field :author_id
+        actual = view.form_for(action) do |f|
+          f.hidden_field "book.author_id"
         end.to_s
 
         expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="1">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          hidden_field :author_id, value: "23"
+        actual = view.form_for(action) do |f|
+          f.hidden_field "book.author_id", value: "23"
         end.to_s
 
         expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="23">))
@@ -1610,128 +1610,107 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#number_field" do
+  describe "#number_field" do
     it "renders the element" do
-      actual = view.form_for(action) do
-        number_field :percent_read
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read"
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, id: "percent-read"
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", id: "percent-read"
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="percent-read" value="">))
     end
 
     it "allows to override the 'name' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, name: "book[read]"
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", name: "book[read]"
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[read]" id="book-percent-read" value="">))
     end
 
     it "allows to override the 'value' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, value: "99"
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", value: "99"
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="99">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        number_field :percent_read, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="" class="form-control">))
     end
 
     it "allows to specify a 'min' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, min: 0
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", min: 0
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="" min="0">))
     end
 
     it "allows to specify a 'max' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, max: 100
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", max: 100
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="" max="100">))
     end
 
     it "allows to specify a 'step' attribute" do
-      actual = view.form_for(action) do
-        number_field :percent_read, step: 5
+      actual = view.form_for(action) do |f|
+        f.number_field "book.percent_read", step: 5
       end.to_s
 
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="" step="5">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(percent_read: val)] }
       let(:val)    { 95 }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          number_field :percent_read
+        actual = view.form_for(action, values: values) do |f|
+          f.number_field "book.percent_read"
         end.to_s
 
         expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="95">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          number_field :percent_read, value: 50
+        actual = view.form_for(action, values: values) do |f|
+          f.number_field "book.percent_read", value: 50
         end.to_s
 
         expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="50">))
       end
     end
 
-    xdescribe "without values" do
-      let(:book)   { Book.new(title: val) }
-      let(:val)    { '"DDD" Book' }
-
-      it "renders with value" do
-        actual = view.form_for(action) do
-          text_field :title
-        end.to_s
-
-        expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="">))
-      end
-
-      it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          text_field :title, value: book.title
-        end.to_s
-
-        expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="&quot;DDD&quot; Book">))
-      end
-    end
-
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {percent_read: val}] }
       let(:val)    { 95 }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          number_field :percent_read
+        actual = view.form_for(action) do |f|
+          f.number_field "book.percent_read"
         end.to_s
 
         expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="95">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          number_field :percent_read, value: 50
+        actual = view.form_for(action) do |f|
+          f.number_field "book.percent_read", value: 50
         end.to_s
 
         expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="50">))
@@ -1739,128 +1718,107 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#range_field" do
+  describe "#range_field" do
     it "renders the element" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage"
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, id: "discount-percentage"
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", id: "discount-percentage"
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="discount-percentage" value="">))
     end
 
     it "allows to override the 'name' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, name: "book[read]"
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", name: "book[read]"
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[read]" id="book-discount-percentage" value="">))
     end
 
     it "allows to override the 'value' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, value: "99"
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", value: "99"
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="99">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" class="form-control">))
     end
 
     it "allows to specify a 'min' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, min: 0
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", min: 0
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" min="0">))
     end
 
     it "allows to specify a 'max' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, max: 100
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", max: 100
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" max="100">))
     end
 
     it "allows to specify a 'step' attribute" do
-      actual = view.form_for(action) do
-        range_field :discount_percentage, step: 5
+      actual = view.form_for(action) do |f|
+        f.range_field "book.discount_percentage", step: 5
       end.to_s
 
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" step="5">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(discount_percentage: val)] }
       let(:val)    { 95 }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          range_field :discount_percentage
+        actual = view.form_for(action, values: values) do |f|
+          f.range_field "book.discount_percentage"
         end.to_s
 
         expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="95">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          range_field :discount_percentage, value: 50
+        actual = view.form_for(action, values: values) do |f|
+          f.range_field "book.discount_percentage", value: 50
         end.to_s
 
         expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="50">))
       end
     end
 
-    xdescribe "without values" do
-      let(:book)   { Book.new(title: val) }
-      let(:val)    { '"DDD" Book' }
-
-      it "renders with value" do
-        actual = view.form_for(action) do
-          text_field :title
-        end.to_s
-
-        expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="">))
-      end
-
-      it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          text_field :title, value: book.title
-        end.to_s
-
-        expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="&quot;DDD&quot; Book">))
-      end
-    end
-
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {discount_percentage: val}] }
       let(:val)    { 95 }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          range_field :discount_percentage
+        actual = view.form_for(action) do |f|
+          f.range_field "book.discount_percentage"
         end.to_s
 
         expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="95">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          range_field :discount_percentage, value: 50
+        actual = view.form_for(action) do |f|
+          f.range_field "book.discount_percentage", value: 50
         end.to_s
 
         expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="50">))
@@ -1868,42 +1826,42 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#text_area" do
+  describe "#text_area" do
     it "renders the element" do
-      actual = view.form_for(action) do
-        text_area :description
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description"
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[description]" id="book-description"></textarea>))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        text_area :description, nil, id: "desc"
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description", nil, id: "desc"
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[description]" id="desc"></textarea>))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        text_area :description, nil, name: "book[desc]"
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description", nil, name: "book[desc]"
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[desc]" id="book-description"></textarea>))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        text_area :description, nil, class: "form-control", cols: "5"
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description", nil, class: "form-control", cols: "5"
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>))
     end
 
     it "allows to omit content" do
-      actual = view.form_for(action) do
-        text_area :description, class: "form-control", cols: "5"
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description", class: "form-control", cols: "5"
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>))
@@ -1912,109 +1870,109 @@ RSpec.describe Hanami::Helpers::FormHelper do
     it "allows to omit content, by accepting Hash serializable options" do
       options = HashSerializable.new(class: "form-control", cols: 5)
 
-      actual = view.form_for(action) do
-        text_area :description, options
+      actual = view.form_for(action) do |f|
+        f.text_area "book.description", options
       end.to_s
 
       expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>))
     end
 
-    xdescribe "set content explicitly" do
+    describe "set content explicitly" do
       let(:content) { "A short description of the book" }
 
       it "allows to set content" do
-        actual = view.form_for(action) do
-          text_area :description, content
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description", content
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description">#{content}</textarea>))
       end
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(description: val)] }
       let(:val) { "A short description of the book" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          text_area :description
+        actual = view.form_for(action, values: values) do |f|
+          f.text_area "book.description"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description">#{val}</textarea>))
       end
 
       it "renders with value, when only attributes are specified" do
-        actual = view.form_for(action, values: values) do
-          text_area :description, class: "form-control"
+        actual = view.form_for(action, values: values) do |f|
+          f.text_area "book.description", class: "form-control"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control">#{val}</textarea>))
       end
 
       it "allows to override value" do
-        actual = view.form_for(action, values: values) do
-          text_area :description, "Just a simple description"
+        actual = view.form_for(action, values: values) do |f|
+          f.text_area "book.description", "Just a simple description"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description">Just a simple description</textarea>))
       end
 
       it "forces blank value" do
-        actual = view.form_for(action, values: values) do
-          text_area :description, ""
+        actual = view.form_for(action, values: values) do |f|
+          f.text_area "book.description", ""
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description"></textarea>))
       end
 
       it "forces blank value, when also attributes are specified" do
-        actual = view.form_for(action, values: values) do
-          text_area :description, "", class: "form-control"
+        actual = view.form_for(action, values: values) do |f|
+          f.text_area "book.description", "", class: "form-control"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control"></textarea>))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {description: val}] }
       let(:val) { "A short description of the book" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          text_area :description
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description">#{val}</textarea>))
       end
 
       it "renders with value, when only attributes are specified" do
-        actual = view.form_for(action) do
-          text_area :description, class: "form-control"
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description", class: "form-control"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control">#{val}</textarea>))
       end
 
       it "allows to override value" do
-        actual = view.form_for(action) do
-          text_area :description, "Just a simple description"
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description", "Just a simple description"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description">Just a simple description</textarea>))
       end
 
       it "forces blank value" do
-        actual = view.form_for(action) do
-          text_area :description, ""
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description", ""
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description"></textarea>))
       end
 
       it "forces blank value, when also attributes are specified" do
-        actual = view.form_for(action) do
-          text_area :description, "", class: "form-control"
+        actual = view.form_for(action) do |f|
+          f.text_area "book.description", "", class: "form-control"
         end.to_s
 
         expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control"></textarea>))
@@ -2022,83 +1980,83 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#text_field" do
+  describe "#text_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        text_field :title
+      actual = view.form_for(action) do |f|
+        f.text_field "book.title"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        text_field :title, id: "book-short-title"
+      actual = view.form_for(action) do |f|
+        f.text_field "book.title", id: "book-short-title"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[title]" id="book-short-title" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        text_field :title, name: "book[short_title]"
+      actual = view.form_for(action) do |f|
+        f.text_field "book.title", name: "book[short_title]"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[short_title]" id="book-title" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        text_field :title, value: "Refactoring"
+      actual = view.form_for(action) do |f|
+        f.text_field "book.title", value: "Refactoring"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="Refactoring">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        text_field :title, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.text_field "book.title", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(title: val)] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          text_field :title
+        actual = view.form_for(action, values: values) do |f|
+          f.text_field "book.title"
         end.to_s
 
         expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="PPoEA">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          text_field :title, value: "DDD"
+        actual = view.form_for(action, values: values) do |f|
+          f.text_field "book.title", value: "DDD"
         end.to_s
 
         expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="DDD">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {title: val}] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          text_field :title
+        actual = view.form_for(action) do |f|
+          f.text_field "book.title"
         end.to_s
 
         expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="PPoEA">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          text_field :title, value: "DDD"
+        actual = view.form_for(action) do |f|
+          f.text_field "book.title", value: "DDD"
         end.to_s
 
         expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="DDD">))
@@ -2106,83 +2064,83 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#search_field" do
+  describe "#search_field" do
     it "renders" do
-      actual = view.form_for(action) do
-        search_field :search_title
+      actual = view.form_for(action) do |f|
+        f.search_field "book.search_title"
       end.to_s
 
       expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
-        search_field :search_title, id: "book-short-title"
+      actual = view.form_for(action) do |f|
+        f.search_field "book.search_title", id: "book-short-title"
       end.to_s
 
       expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-short-title" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
-        search_field :search_title, name: "book[short_title]"
+      actual = view.form_for(action) do |f|
+        f.search_field "book.search_title", name: "book[short_title]"
       end.to_s
 
       expect(actual).to include(%(<input type="search" name="book[short_title]" id="book-search-title" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(action) do
-        search_field :search_title, value: "Refactoring"
+      actual = view.form_for(action) do |f|
+        f.search_field "book.search_title", value: "Refactoring"
       end.to_s
 
       expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="Refactoring">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
-        search_field :search_title, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.search_field "book.search_title", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(search_title: val)] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
-          search_field :search_title
+        actual = view.form_for(action, values: values) do |f|
+          f.search_field "book.search_title"
         end.to_s
 
         expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="PPoEA">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action, values: values) do
-          search_field :search_title, value: "DDD"
+        actual = view.form_for(action, values: values) do |f|
+          f.search_field "book.search_title", value: "DDD"
         end.to_s
 
         expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="DDD">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[book: {search_title: val}] }
       let(:val)    { "PPoEA" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
-          search_field :search_title
+        actual = view.form_for(action) do |f|
+          f.search_field "book.search_title"
         end.to_s
 
         expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="PPoEA">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(action) do
-          search_field :search_title, value: "DDD"
+        actual = view.form_for(action) do |f|
+          f.search_field "book.search_title", value: "DDD"
         end.to_s
 
         expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="DDD">))
@@ -2192,81 +2150,81 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
   xdescribe "#password_field" do
     it "renders" do
-      actual = view.form_for(:signup, action) do
-        password_field :password
+      actual = view.form_for(action) do |f|
+        f.password_field "signup.password"
       end.to_s
 
       expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="">))
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(:signup, action) do
-        password_field :password, id: "signup-pass"
+      actual = view.form_for(action) do |f|
+        f.password_field "signup.password", id: "signup-pass"
       end.to_s
 
       expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-pass" value="">))
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(:signup, action) do
-        password_field :password, name: "password"
+      actual = view.form_for(action) do |f|
+        f.password_field "signup.password", name: "password"
       end.to_s
 
       expect(actual).to include(%(<input type="password" name="password" id="signup-password" value="">))
     end
 
     it "allows to override 'value' attribute" do
-      actual = view.form_for(:signup, action) do
-        password_field :password, value: "topsecret"
+      actual = view.form_for(action) do |f|
+        f.password_field "signup.password", value: "topsecret"
       end.to_s
 
       expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="topsecret">))
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(:signup, action) do
-        password_field :password, class: "form-control"
+      actual = view.form_for(action) do |f|
+        f.password_field "signup.password", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="" class="form-control">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[signup: Signup.new(password: val)] }
       let(:val)    { "secret" }
 
       it "ignores value" do
-        actual = view.form_for(:signup, action, values: values) do
-          password_field :password
+        actual = view.form_for(action, values: values) do |f|
+          f.password_field "signup.password"
         end.to_s
 
         expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(:signup, action, values: values) do
-          password_field :password, value: "123"
+        actual = view.form_for(action, values: values) do |f|
+          f.password_field "signup.password", value: "123"
         end.to_s
 
         expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="123">))
       end
     end
 
-    xdescribe "with filled params" do
+    describe "with filled params" do
       let(:params) { Hash[signup: {password: val}] }
       let(:val)    { "secret" }
 
       it "ignores value" do
-        actual = view.form_for(:signup, action) do
-          password_field :password
+        actual = view.form_for(action) do |f|
+          f.password_field "signup.password"
         end.to_s
 
         expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="">))
       end
 
       it "allows to override 'value' attribute" do
-        actual = view.form_for(:signup, action) do
-          password_field :password, value: "123"
+        actual = view.form_for(action) do |f|
+          f.password_field "signup.password", value: "123"
         end.to_s
 
         expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="123">))
@@ -2276,7 +2234,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
   xdescribe "#radio_button" do
     it "renders" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         radio_button :category, "Fiction"
         radio_button :category, "Non-Fiction"
       end.to_s
@@ -2285,7 +2243,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         radio_button :category, "Fiction",     name: "category_name"
         radio_button :category, "Non-Fiction", name: "category_name"
       end.to_s
@@ -2294,7 +2252,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         radio_button :category, "Fiction",     class: "form-control"
         radio_button :category, "Non-Fiction", class: "radio-button"
       end.to_s
@@ -2307,7 +2265,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:val)    { "Non-Fiction" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
+        actual = view.form_for(action, values: values) do |f|
           radio_button :category, "Fiction"
           radio_button :category, "Non-Fiction"
         end.to_s
@@ -2322,7 +2280,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)    { "Non-Fiction" }
 
         it "renders with value" do
-          actual = view.form_for(action) do
+          actual = view.form_for(action) do |f|
             radio_button :category, "Fiction"
             radio_button :category, "Non-Fiction"
           end.to_s
@@ -2336,7 +2294,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)    { "20.0" }
 
         it "renders with value" do
-          actual = view.form_for(action) do
+          actual = view.form_for(action) do |f|
             radio_button :price, 10.0
             radio_button :price, 20.0
           end.to_s
@@ -2351,7 +2309,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     let(:option_values) { Hash["Italy" => "it", "United States" => "us"] }
 
     it "renders" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         select :store, option_values
       end.to_s
 
@@ -2359,7 +2317,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to override 'id' attribute" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         select :store, option_values, id: "store"
       end.to_s
 
@@ -2367,7 +2325,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         select :store, option_values, name: "store"
       end.to_s
 
@@ -2375,7 +2333,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         select :store, option_values, class: "form-control"
       end.to_s
 
@@ -2383,7 +2341,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes for options" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         select :store, option_values, options: {class: "form-option"}
       end.to_s
 
@@ -2392,7 +2350,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     xdescribe "with option 'multiple'" do
       it "renders" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, multiple: true
         end.to_s
 
@@ -2400,7 +2358,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       it "allows to select values" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, multiple: true, options: {selected: %w[it us]}
         end.to_s
 
@@ -2412,7 +2370,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:option_values) { [%w[Italy it], ["United States", "us"]] }
 
       it "renders" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values
         end.to_s
 
@@ -2424,7 +2382,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)    { "it" }
 
         it "renders with value" do
-          actual = view.form_for(action) do
+          actual = view.form_for(action) do |f|
             select :store, option_values
           end.to_s
 
@@ -2436,7 +2394,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:option_values) { [%w[Italy it], ["United States", "us"], %w[Italy it]] }
 
         it "renders" do
-          actual = view.form_for(action) do
+          actual = view.form_for(action) do |f|
             select :store, option_values
           end.to_s
 
@@ -2449,7 +2407,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:values) { [Store.new("it", "Italy"), Store.new("us", "United States")] }
 
       it "renders" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values
         end.to_s
 
@@ -2461,7 +2419,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)    { "it" }
 
         it "renders with value" do
-          actual = view.form_for(action) do
+          actual = view.form_for(action) do |f|
             select :store, option_values
           end.to_s
 
@@ -2475,7 +2433,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:val)    { "it" }
 
       it "renders with value" do
-        actual = view.form_for(action, values: values) do
+        actual = view.form_for(action, values: values) do |f|
           select :store, option_values
         end.to_s
 
@@ -2488,7 +2446,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:val)    { "it" }
 
       it "renders with value" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values
         end.to_s
 
@@ -2498,7 +2456,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     xdescribe "with prompt option" do
       it "allows string" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {prompt: "Select a store"}
         end.to_s
 
@@ -2506,7 +2464,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       it "allows blank string" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {prompt: ""}
         end.to_s
 
@@ -2518,7 +2476,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)    { "it" }
 
         it "renders with value" do
-          actual = view.form_for(action, values: values) do
+          actual = view.form_for(action, values: values) do |f|
             select :store, option_values, options: {prompt: "Select a store"}
           end.to_s
 
@@ -2532,7 +2490,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           let(:val)    { "it" }
 
           it "renders with value" do
-            actual = view.form_for(action) do
+            actual = view.form_for(action) do |f|
               select :store, option_values, options: {prompt: "Select a store"}
             end.to_s
 
@@ -2546,7 +2504,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
           let(:val)    { "1" }
 
           it "renders" do
-            actual = view.form_for(:bookshelf, action) do
+            actual = view.form_for(:bookshelf, action) do |f|
               select :book, values
             end.to_s
 
@@ -2561,7 +2519,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:val)    { "it" }
 
       it "sets the selected attribute" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {selected: val}
         end.to_s
 
@@ -2573,7 +2531,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:option_values) { Hash["Italy" => "it", "United States" => "us", "N/A" => nil] }
 
       it "sets nil option as selected by default" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values
         end.to_s
 
@@ -2581,7 +2539,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       it "set as selected the option with nil value" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {selected: nil}
         end.to_s
 
@@ -2589,7 +2547,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       it "set as selected the option with a value" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {selected: "it"}
         end.to_s
 
@@ -2597,7 +2555,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
 
       it "allows to force the selection of none" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           select :store, option_values, options: {selected: "none"}
         end.to_s
 
@@ -2610,7 +2568,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)           { "horror" }
 
         it "sets correct value as selected" do
-          actual = view.form_for(action, values: values) do
+          actual = view.form_for(action, values: values) do |f|
             select :category, option_values
           end.to_s
 
@@ -2624,7 +2582,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         let(:val)           { 1 }
 
         it "sets correct value as selected" do
-          actual = view.form_for(action, values: values) do
+          actual = view.form_for(action, values: values) do |f|
             select :category, option_values
           end.to_s
 
@@ -2638,7 +2596,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     let(:values) { ["Italy", "United States"] }
 
     it "renders" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books"
       end.to_s
 
@@ -2646,7 +2604,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "just allows to override 'id' attribute of the text input" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books", id: "store"
       end.to_s
 
@@ -2654,7 +2612,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to override 'name' attribute" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books", name: "store"
       end.to_s
 
@@ -2662,7 +2620,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books", class: "form-control"
       end.to_s
 
@@ -2670,7 +2628,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes for options" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books", options: {class: "form-option"}
       end.to_s
 
@@ -2678,7 +2636,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
 
     it "allows to specify HTML attributes for datalist" do
-      actual = view.form_for(action) do
+      actual = view.form_for(action) do |f|
         datalist :store, values, "books", datalist: {class: "form-option"}
       end.to_s
 
@@ -2689,7 +2647,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       let(:values) { Hash["Italy" => "it", "United States" => "us"] }
 
       it "renders" do
-        actual = view.form_for(action) do
+        actual = view.form_for(action) do |f|
           datalist :store, values, "books"
         end.to_s
 

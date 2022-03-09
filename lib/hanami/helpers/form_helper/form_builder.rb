@@ -733,8 +733,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="email" name="user[email]" id="user-email" value="" class="form-control">
-        def email_field(name, attributes = {})
-          input _attributes(:email, name, attributes)
+        def email_field(name, **attributes)
+          input(**_attributes(:email, name, attributes))
         end
 
         # URL input
@@ -761,11 +761,11 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="url" name="user[website]" id="user-website" value="" class="form-control">
-        def url_field(name, attributes = {})
+        def url_field(name, **attributes)
           attrs         = attributes.dup
           attrs[:value] = escape_url(attrs.fetch(:value) { _value(name) })
 
-          input _attributes(:url, name, attrs)
+          input(**_attributes(:url, name, attrs))
         end
 
         # Telephone input
@@ -792,8 +792,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="tel" name="user[telephone]" id="user-telephone" value="" class="form-control">
-        def tel_field(name, attributes = {})
-          input _attributes(:tel, name, attributes)
+        def tel_field(name, **attributes)
+          input(**_attributes(:tel, name, attributes))
         end
 
         # Hidden input
@@ -811,8 +811,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="hidden" name="delivery[customer_id]" id="delivery-customer-id" value="">
-        def hidden_field(name, attributes = {})
-          input _attributes(:hidden, name, attributes)
+        def hidden_field(name, **attributes)
+          input(**_attributes(:hidden, name, attributes))
         end
 
         # File input
@@ -870,11 +870,11 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
-        def file_field(name, attributes = {})
+        def file_field(name, **attributes)
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
           attributes = {type: :file, name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
 
-          input(attributes)
+          input(**attributes)
         end
 
         # Number input
@@ -902,8 +902,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="number" name="book[percent_read]" id="book-precent-read" value="" min="1" max="10" step="1">
-        def number_field(name, attributes = {})
-          input _attributes(:number, name, attributes)
+        def number_field(name, **attributes)
+          input(**_attributes(:number, name, attributes))
         end
 
         # Range input
@@ -933,8 +933,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="number" name="book[discount_percentage]" id="book-discount-percentage" value="" min="1" max="10" step="1">
-        def range_field(name, attributes = {})
-          input _attributes(:range, name, attributes)
+        def range_field(name, **attributes)
+          input(**_attributes(:range, name, attributes))
         end
 
         # Text-area input
@@ -989,14 +989,14 @@ module Hanami
         #
         #   <!-- output -->
         #   <textarea name="user[hobby]" id="user-hobby" class="form-control"></textarea>
-        def text_area(name, content = nil, attributes = {})
+        def text_area(name, content = nil, **attributes)
           if content.respond_to?(:to_hash)
             attributes = content
             content    = nil
           end
 
           attributes = {name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
-          textarea(content || _value(name), attributes)
+          html.textarea(content || _value(name), **attributes)
         end
 
         # Text input
@@ -1052,8 +1052,8 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="search" name="search[q]" id="search-q" value="" class="form-control">
-        def search_field(name, attributes = {})
-          input _attributes(:search, name, attributes)
+        def search_field(name, **attributes)
+          input(**_attributes(:search, name, attributes))
         end
 
         # Radio input
@@ -1127,8 +1127,12 @@ module Hanami
         #
         #   <!-- output -->
         #   <input type="password" name="signup[password]" id="signup-password" value="">
-        def password_field(name, attributes = {})
-          input({type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil}.merge(attributes))
+        def password_field(name, **attributes)
+          attrs = {type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil}.merge(attributes)
+          # attrs[:value] = "" if attrs[:value].nil?
+
+          input(**attrs)
+          # input(**_attributes(:password, name, attributes))
         end
 
         # Select input

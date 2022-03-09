@@ -2305,12 +2305,12 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#select" do
+  describe "#select" do
     let(:option_values) { Hash["Italy" => "it", "United States" => "us"] }
 
     it "renders" do
       actual = view.form_for(action) do |f|
-        select :store, option_values
+        f.select "book.store", option_values
       end.to_s
 
       expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option></select>))
@@ -2318,7 +2318,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'id' attribute" do
       actual = view.form_for(action) do |f|
-        select :store, option_values, id: "store"
+        f.select "book.store", option_values, id: "store"
       end.to_s
 
       expect(actual).to include(%(<select name="book[store]" id="store"><option value="it">Italy</option><option value="us">United States</option></select>))
@@ -2326,7 +2326,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'name' attribute" do
       actual = view.form_for(action) do |f|
-        select :store, option_values, name: "store"
+        f.select "book.store", option_values, name: "store"
       end.to_s
 
       expect(actual).to include(%(<select name="store" id="book-store"><option value="it">Italy</option><option value="us">United States</option></select>))
@@ -2334,7 +2334,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(action) do |f|
-        select :store, option_values, class: "form-control"
+        f.select "book.store", option_values, class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<select name="book[store]" id="book-store" class="form-control"><option value="it">Italy</option><option value="us">United States</option></select>))
@@ -2342,60 +2342,60 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for options" do
       actual = view.form_for(action) do |f|
-        select :store, option_values, options: {class: "form-option"}
+        f.select "book.store", option_values, options: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" class="form-option">Italy</option><option value="us" class="form-option">United States</option></select>))
     end
 
-    xdescribe "with option 'multiple'" do
+    context "with option 'multiple'" do
       it "renders" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, multiple: true
+          f.select "book.store", option_values, multiple: true
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple"><option value="it">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple><option value="it">Italy</option><option value="us">United States</option></select>))
       end
 
       it "allows to select values" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, multiple: true, options: {selected: %w[it us]}
+          f.select "book.store", option_values, multiple: true, options: {selected: %w[it us]}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple="multiple"><option value="it" selected="selected">Italy</option><option value="us" selected="selected">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store][]" id="book-store" multiple><option value="it" selected>Italy</option><option value="us" selected>United States</option></select>))
       end
     end
 
-    xdescribe "with values an structured Array of values" do
+    context "with values an structured Array of values" do
       let(:option_values) { [%w[Italy it], ["United States", "us"]] }
 
       it "renders" do
         actual = view.form_for(action) do |f|
-          select :store, option_values
+          f.select "book.store", option_values
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option></select>))
       end
 
-      xdescribe "and filled params" do
+      context "and filled params" do
         let(:params) { Hash[book: {store: val}] }
         let(:val)    { "it" }
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            select :store, option_values
+            f.select "book.store", option_values
           end.to_s
 
-          expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+          expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option></select>))
         end
       end
 
-      xdescribe "and repeated values" do
+      context "and repeated values" do
         let(:option_values) { [%w[Italy it], ["United States", "us"], %w[Italy it]] }
 
         it "renders" do
           actual = view.form_for(action) do |f|
-            select :store, option_values
+            f.select "book.store", option_values
           end.to_s
 
           expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option value="it">Italy</option></select>))
@@ -2403,190 +2403,190 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    xdescribe "with values an Array of objects" do
+    context "with values an Array of objects" do
       let(:values) { [Store.new("it", "Italy"), Store.new("us", "United States")] }
 
       it "renders" do
         actual = view.form_for(action) do |f|
-          select :store, option_values
+          f.select "book.store", option_values
         end.to_s
 
         expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option></select>))
       end
 
-      xdescribe "and filled params" do
+      context "and filled params" do
         let(:params) { Hash[book: {store: val}] }
         let(:val)    { "it" }
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            select :store, option_values
+            f.select "book.store", option_values
           end.to_s
 
-          expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+          expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option></select>))
         end
       end
     end
 
-    xdescribe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(store: val)] }
       let(:val)    { "it" }
 
       it "renders with value" do
         actual = view.form_for(action, values: values) do |f|
-          select :store, option_values
+          f.select "book.store", option_values
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option></select>))
       end
     end
 
-    xdescribe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {store: val}] }
       let(:val)    { "it" }
 
       it "renders with value" do
         actual = view.form_for(action) do |f|
-          select :store, option_values
+          f.select "book.store", option_values
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option></select>))
       end
     end
 
-    xdescribe "with prompt option" do
+    context "with prompt option" do
       it "allows string" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {prompt: "Select a store"}
+          f.select "book.store", option_values, options: {prompt: "Select a store"}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled="disabled">Select a store</option><option value="it">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled>Select a store</option><option value="it">Italy</option><option value="us">United States</option></select>))
       end
 
       it "allows blank string" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {prompt: ""}
+          f.select "book.store", option_values, options: {prompt: ""}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled="disabled"></option><option value="it">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled></option><option value="it">Italy</option><option value="us">United States</option></select>))
       end
 
-      xdescribe "with values" do
+      context "with values" do
         let(:values) { Hash[book: Book.new(store: val)] }
         let(:val)    { "it" }
 
         it "renders with value" do
           actual = view.form_for(action, values: values) do |f|
-            select :store, option_values, options: {prompt: "Select a store"}
+            f.select "book.store", option_values, options: {prompt: "Select a store"}
           end.to_s
 
-          expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled="disabled">Select a store</option><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+          expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled>Select a store</option><option value="it" selected>Italy</option><option value="us">United States</option></select>))
         end
       end
 
-      xdescribe "with filled params" do
-        xdescribe "string values" do
+      context "with filled params" do
+        context "string values" do
           let(:params) { Hash[book: {store: val}] }
           let(:val)    { "it" }
 
           it "renders with value" do
             actual = view.form_for(action) do |f|
-              select :store, option_values, options: {prompt: "Select a store"}
+              f.select "book.store", option_values, options: {prompt: "Select a store"}
             end.to_s
 
-            expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled="disabled">Select a store</option><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+            expect(actual).to include(%(<select name="book[store]" id="book-store"><option disabled>Select a store</option><option value="it" selected>Italy</option><option value="us">United States</option></select>))
           end
         end
 
-        xdescribe "integer values" do
+        context "integer values" do
           let(:values) { Hash["Brave new world" => 1, "Solaris" => 2] }
           let(:params) { Hash[bookshelf: {book: val}] }
           let(:val)    { "1" }
 
           it "renders" do
-            actual = view.form_for(:bookshelf, action) do |f|
-              select :book, values
+            actual = view.form_for(action) do |f|
+              f.select "bookshelf.book", values
             end.to_s
 
-            expect(actual).to include(%(<select name="bookshelf[book]" id="bookshelf-book"><option value="1" selected="selected">Brave new world</option><option value="2">Solaris</option></select>))
+            expect(actual).to include(%(<select name="bookshelf[book]" id="bookshelf-book"><option value="1" selected>Brave new world</option><option value="2">Solaris</option></select>))
           end
         end
       end
     end
 
-    xdescribe "with selected attribute" do
+    context "with selected attribute" do
       let(:params) { Hash[book: {store: val}] }
       let(:val)    { "it" }
 
       it "sets the selected attribute" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {selected: val}
+          f.select "book.store", option_values, options: {selected: val}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option></select>))
       end
     end
 
-    xdescribe "with nil as a value" do
+    context "with nil as a value" do
       let(:option_values) { Hash["Italy" => "it", "United States" => "us", "N/A" => nil] }
 
       it "sets nil option as selected by default" do
         actual = view.form_for(action) do |f|
-          select :store, option_values
+          f.select "book.store", option_values
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option value="" selected="selected">N/A</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option selected>N/A</option></select>))
       end
 
       it "set as selected the option with nil value" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {selected: nil}
+          f.select "book.store", option_values, options: {selected: nil}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option value="" selected="selected">N/A</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option selected>N/A</option></select>))
       end
 
       it "set as selected the option with a value" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {selected: "it"}
+          f.select "book.store", option_values, options: {selected: "it"}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected="selected">Italy</option><option value="us">United States</option><option value="">N/A</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it" selected>Italy</option><option value="us">United States</option><option>N/A</option></select>))
       end
 
       it "allows to force the selection of none" do
         actual = view.form_for(action) do |f|
-          select :store, option_values, options: {selected: "none"}
+          f.select "book.store", option_values, options: {selected: "none"}
         end.to_s
 
-        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option value="">N/A</option></select>))
+        expect(actual).to include(%(<select name="book[store]" id="book-store"><option value="it">Italy</option><option value="us">United States</option><option>N/A</option></select>))
       end
 
-      xdescribe "with values" do
+      context "with values" do
         let(:values)        { Hash[book: Book.new(category: val)] }
         let(:option_values) { Hash["N/A" => nil, "Horror" => "horror", "SciFy" => "scify"] }
         let(:val)           { "horror" }
 
         it "sets correct value as selected" do
           actual = view.form_for(action, values: values) do |f|
-            select :category, option_values
+            f.select "book.category", option_values
           end.to_s
 
-          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form"><select name="book[category]" id="book-category"><option value="">N/A</option><option value="horror" selected="selected">Horror</option><option value="scify">SciFy</option></select></form>))
+          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8"><select name="book[category]" id="book-category"><option>N/A</option><option value="horror" selected>Horror</option><option value="scify">SciFy</option></select></form>))
         end
       end
 
-      xdescribe "with non String values" do
+      context "with non String values" do
         let(:values)        { Hash[book: Book.new(category: val)] }
         let(:option_values) { Hash["Horror" => "1", "SciFy" => "2"] }
         let(:val)           { 1 }
 
         it "sets correct value as selected" do
           actual = view.form_for(action, values: values) do |f|
-            select :category, option_values
+            f.select "book.category", option_values
           end.to_s
 
-          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8" id="book-form"><select name="book[category]" id="book-category"><option value="1" selected="selected">Horror</option><option value="2">SciFy</option></select></form>))
+          expect(actual).to include(%(<form action="/books" method="POST" accept-charset="utf-8"><select name="book[category]" id="book-category"><option value="1" selected>Horror</option><option value="2">SciFy</option></select></form>))
         end
       end
     end

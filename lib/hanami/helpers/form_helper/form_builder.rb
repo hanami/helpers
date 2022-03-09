@@ -34,14 +34,6 @@ module Hanami
         # @see Hanami::Helpers::FormHelper::FormBuilder#radio_button
         CHECKED = "checked"
 
-        # Selected attribute value for option
-        #
-        # @since 0.2.0
-        # @api private
-        #
-        # @see Hanami::Helpers::FormHelper::FormBuilder#select
-        SELECTED = "selected"
-
         # Separator for accept attribute of file input
         #
         # @since 0.2.0
@@ -1293,7 +1285,7 @@ module Hanami
         #     ...
         #     <option value="zw">Zimbabwe</option>
         #   </select>
-        def select(name, values, attributes = {})
+        def select(name, values, **attributes)
           options     = attributes.delete(:options) { {} }
           multiple    = attributes[:multiple]
           attributes  = {name: _select_input_name(name, multiple), id: _input_id(name)}.merge(attributes)
@@ -1301,18 +1293,19 @@ module Hanami
           selected    = options.delete(:selected)
           input_value = _value(name)
 
-          super(attributes) do
-            option(prompt, disabled: true) if prompt
+          option_html = HtmlHelper::HtmlBuilder.new
 
-            already_selected = nil
-            values.each do |content, value|
-              if (multiple || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, multiple))
-                option(content, {value: value, selected: SELECTED}.merge(options))
-              else
-                option(content, {value: value}.merge(options))
-              end
+          already_selected = nil
+          option_html.option(prompt, disabled: true) if prompt
+          values.each do |content, value|
+            if (multiple || !already_selected) && (already_selected = _select_option_selected?(value, selected, input_value, multiple))
+              option_html.option(content, **{value: value, selected: true}.merge(options))
+            else
+              option_html.option(content, **{value: value}.merge(options))
             end
           end
+
+          html.select(option_html, **attributes)
         end
 
         # Datalist input

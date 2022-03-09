@@ -1114,10 +1114,10 @@ module Hanami
         #   <!-- output -->
         #   <input type="radio" name="book[category]" value="Fiction">
         #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
-        def radio_button(name, value, attributes = {})
+        def radio_button(name, value, **attributes)
           attributes = {type: :radio, name: _displayed_input_name(name), value: value}.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
-          input(attributes)
+          input(**attributes)
         end
 
         # Password input

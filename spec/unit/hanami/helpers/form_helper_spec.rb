@@ -2232,11 +2232,11 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#radio_button" do
+  describe "#radio_button" do
     it "renders" do
       actual = view.form_for(action) do |f|
-        f.radio_button :category, "Fiction"
-        f.radio_button :category, "Non-Fiction"
+        f.radio_button "book.category", "Fiction"
+        f.radio_button "book.category", "Non-Fiction"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction">))
@@ -2244,8 +2244,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'name' attribute" do
       actual = view.form_for(action) do |f|
-        f.radio_button :category, "Fiction",     name: "category_name"
-        f.radio_button :category, "Non-Fiction", name: "category_name"
+        f.radio_button "book.category", "Fiction",     name: "category_name"
+        f.radio_button "book.category", "Non-Fiction", name: "category_name"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="category_name" value="Fiction"><input type="radio" name="category_name" value="Non-Fiction">))
@@ -2253,50 +2253,50 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(action) do |f|
-        f.radio_button :category, "Fiction",     class: "form-control"
-        f.radio_button :category, "Non-Fiction", class: "radio-button"
+        f.radio_button "book.category", "Fiction",     class: "form-control"
+        f.radio_button "book.category", "Non-Fiction", class: "radio-button"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction" class="form-control"><input type="radio" name="book[category]" value="Non-Fiction" class="radio-button">))
     end
 
-    xdescribe "with values" do
+    describe "with values" do
       let(:values) { Hash[book: Book.new(category: val)] }
       let(:val)    { "Non-Fiction" }
 
       it "renders with value" do
         actual = view.form_for(action, values: values) do |f|
-          f.radio_button :category, "Fiction"
-          f.radio_button :category, "Non-Fiction"
+          f.radio_button "book.category", "Fiction"
+          f.radio_button "book.category", "Non-Fiction"
         end.to_s
 
         expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction" checked="checked">))
       end
     end
 
-    xdescribe "with filled params" do
-      xdescribe "string value" do
+    describe "with filled params" do
+      describe "string value" do
         let(:params) { Hash[book: {category: val}] }
         let(:val)    { "Non-Fiction" }
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            f.radio_button :category, "Fiction"
-            f.radio_button :category, "Non-Fiction"
+            f.radio_button "book.category", "Fiction"
+            f.radio_button "book.category", "Non-Fiction"
           end.to_s
 
           expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction" checked="checked">))
         end
       end
 
-      xdescribe "decimal value" do
+      describe "decimal value" do
         let(:params) { Hash[book: {price: val}] }
         let(:val)    { "20.0" }
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            f.radio_button :price, 10.0
-            f.radio_button :price, 20.0
+            f.radio_button "book.price", 10.0
+            f.radio_button "book.price", 20.0
           end.to_s
 
           expect(actual).to include(%(<input type="radio" name="book[price]" value="10.0"><input type="radio" name="book[price]" value="20.0" checked="checked">))

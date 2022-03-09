@@ -2235,8 +2235,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
   xdescribe "#radio_button" do
     it "renders" do
       actual = view.form_for(action) do |f|
-        radio_button :category, "Fiction"
-        radio_button :category, "Non-Fiction"
+        f.radio_button :category, "Fiction"
+        f.radio_button :category, "Non-Fiction"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction">))
@@ -2244,8 +2244,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'name' attribute" do
       actual = view.form_for(action) do |f|
-        radio_button :category, "Fiction",     name: "category_name"
-        radio_button :category, "Non-Fiction", name: "category_name"
+        f.radio_button :category, "Fiction",     name: "category_name"
+        f.radio_button :category, "Non-Fiction", name: "category_name"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="category_name" value="Fiction"><input type="radio" name="category_name" value="Non-Fiction">))
@@ -2253,8 +2253,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(action) do |f|
-        radio_button :category, "Fiction",     class: "form-control"
-        radio_button :category, "Non-Fiction", class: "radio-button"
+        f.radio_button :category, "Fiction",     class: "form-control"
+        f.radio_button :category, "Non-Fiction", class: "radio-button"
       end.to_s
 
       expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction" class="form-control"><input type="radio" name="book[category]" value="Non-Fiction" class="radio-button">))
@@ -2266,8 +2266,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
       it "renders with value" do
         actual = view.form_for(action, values: values) do |f|
-          radio_button :category, "Fiction"
-          radio_button :category, "Non-Fiction"
+          f.radio_button :category, "Fiction"
+          f.radio_button :category, "Non-Fiction"
         end.to_s
 
         expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction" checked="checked">))
@@ -2281,8 +2281,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            radio_button :category, "Fiction"
-            radio_button :category, "Non-Fiction"
+            f.radio_button :category, "Fiction"
+            f.radio_button :category, "Non-Fiction"
           end.to_s
 
           expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction"><input type="radio" name="book[category]" value="Non-Fiction" checked="checked">))
@@ -2295,8 +2295,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
         it "renders with value" do
           actual = view.form_for(action) do |f|
-            radio_button :price, 10.0
-            radio_button :price, 20.0
+            f.radio_button :price, 10.0
+            f.radio_button :price, 20.0
           end.to_s
 
           expect(actual).to include(%(<input type="radio" name="book[price]" value="10.0"><input type="radio" name="book[price]" value="20.0" checked="checked">))
@@ -2592,12 +2592,12 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#datalist" do
+  describe "#datalist" do
     let(:values) { ["Italy", "United States"] }
 
     it "renders" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books"
+        f.datalist "book.store", values, "books"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books"><datalist id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
@@ -2605,7 +2605,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "just allows to override 'id' attribute of the text input" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books", id: "store"
+        f.datalist "book.store", values, "books", id: "store"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="store" value="" list="books"><datalist id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
@@ -2613,7 +2613,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to override 'name' attribute" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books", name: "store"
+        f.datalist "book.store", values, "books", name: "store"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="store" id="book-store" value="" list="books"><datalist id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
@@ -2621,7 +2621,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books", class: "form-control"
+        f.datalist "book.store", values, "books", class: "form-control"
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" class="form-control" list="books"><datalist id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
@@ -2629,7 +2629,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for options" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books", options: {class: "form-option"}
+        f.datalist "book.store", values, "books", options: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books"><datalist id="books"><option value="Italy" class="form-option"></option><option value="United States" class="form-option"></option></datalist>))
@@ -2637,18 +2637,18 @@ RSpec.describe Hanami::Helpers::FormHelper do
 
     it "allows to specify HTML attributes for datalist" do
       actual = view.form_for(action) do |f|
-        datalist :store, values, "books", datalist: {class: "form-option"}
+        f.datalist "book.store", values, "books", datalist: {class: "form-option"}
       end.to_s
 
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books"><datalist class="form-option" id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
     end
 
-    xdescribe "with a Hash of values" do
+    describe "with a Hash of values" do
       let(:values) { Hash["Italy" => "it", "United States" => "us"] }
 
       it "renders" do
         actual = view.form_for(action) do |f|
-          datalist :store, values, "books"
+          f.datalist "book.store", values, "books"
         end.to_s
 
         expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books"><datalist id="books"><option value="Italy">it</option><option value="United States">us</option></datalist>))

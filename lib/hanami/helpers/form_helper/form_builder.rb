@@ -74,6 +74,14 @@ module Hanami
         # @see Hanami::Helpers::FormHelper::FormBuilder#check_box
         DEFAULT_CHECKED_VALUE = "1"
 
+        # Empty string
+        #
+        # @since 2.0.0
+        # @api private
+        #
+        # @see Hanami::Helpers::FormHelper::FormBuilder#password_field
+        EMPTY_STRING = ""
+
         # ENCTYPE_MULTIPART = 'multipart/form-data'.freeze
 
         include Helpers::EscapeHelper
@@ -1129,10 +1137,9 @@ module Hanami
         #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, **attributes)
           attrs = {type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil}.merge(attributes)
-          # attrs[:value] = "" if attrs[:value].nil?
+          attrs[:value] = EMPTY_STRING if attrs[:value].nil?
 
           input(**attrs)
-          # input(**_attributes(:password, name, attributes))
         end
 
         # Select input
@@ -1372,7 +1379,7 @@ module Hanami
         #     <option value="Italy" class="form-control"></option>
         #     <option value="United States" class="form-control"></option>
         #   </datalist>
-        def datalist(name, values, list, attributes = {})
+        def datalist(name, values, list, **attributes)
           attrs    = attributes.dup
           options  = attrs.delete(:options)  || {}
           datalist = attrs.delete(:datalist) || {}
@@ -1380,10 +1387,10 @@ module Hanami
           attrs[:list]  = list
           datalist[:id] = list
 
-          text_field(name, attrs)
-          super(datalist) do
+          text_field(name, **attrs)
+          html.datalist(**datalist) do
             values.each do |value, content|
-              option(content, {value: value}.merge(options))
+              option(content, **{value: value}.merge(options))
             end
           end
         end

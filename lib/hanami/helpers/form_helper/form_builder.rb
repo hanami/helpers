@@ -3,7 +3,7 @@
 require "hanami/helpers/form_helper/values"
 require "hanami/helpers/html_helper/html_builder"
 require "hanami/helpers/escape_helper"
-require "hanami/utils/string"
+require "dry-inflector"
 
 module Hanami
   module Helpers
@@ -78,11 +78,12 @@ module Hanami
 
         include Helpers::EscapeHelper
 
-        def initialize(html: Hanami::Helpers::HtmlHelper::HtmlBuilder.new, values: Values.new, **attributes, &blk)
+        def initialize(html: Hanami::Helpers::HtmlHelper::HtmlBuilder.new, values: Values.new, inflector: Dry::Inflector.new, **attributes, &blk)
           super()
 
           @html = html
           @values = values
+          @inflector = inflector
 
           method_override, original_form_method = _form_method(attributes)
           csrf_token, token = _csrf_token(values, attributes)
@@ -373,7 +374,7 @@ module Hanami
 
           attributes[:for] = _for(content, attributes[:for])
           if content && !for_attribute_given
-            content = Utils::String.capitalize(content.split(INPUT_NAME_SEPARATOR).last)
+            content = inflector.humanize(content.split(INPUT_NAME_SEPARATOR).last)
           end
 
           html.label(content, **attributes, &blk)
@@ -1541,7 +1542,7 @@ module Hanami
 
         private
 
-        attr_reader :html
+        attr_reader :html, :inflector
 
         def method_missing(method_name, *args, **kwargs, &blk)
           if html.respond_to?(method_name)

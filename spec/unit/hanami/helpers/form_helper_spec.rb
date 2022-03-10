@@ -50,7 +50,59 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to eq(%(<form class="form-horizonal" action="/books" method="POST" accept-charset="utf-8"></form>))
     end
 
-    describe "CSRF protection" do
+    context "input name" do
+      it "renders nested field names" do
+        actual = view.form_for(action) do |f|
+          f.text_field "book.author.avatar.url"
+        end.to_s
+
+        expect(actual).to include(%(<input type="text" name="book[author[avatar[url]]]" id="book-author-avatar-url" value="">))
+      end
+
+      context "with values" do
+        let(:values) { Hash[book: double("book", author: double("author", avatar: double("avatar", url: val)))] }
+        let(:val) { "https://hanami.test/avatar.png" }
+
+        it "renders with value" do
+          actual = view.form_for(action, values: values) do |f|
+            f.text_field "book.author.avatar.url"
+          end.to_s
+
+          expect(actual).to include(%(<input type="text" name="book[author[avatar[url]]]" id="book-author-avatar-url" value="#{val}">))
+        end
+
+        it "allows to override 'value' attribute" do
+          actual = view.form_for(action, values: values) do |f|
+            f.text_field "book.author.avatar.url", value: "https://hanami.test/another-avatar.jpg"
+          end.to_s
+
+          expect(actual).to include(%(<input type="text" name="book[author[avatar[url]]]" id="book-author-avatar-url" value="https://hanami.test/another-avatar.jpg">))
+        end
+      end
+
+      context "with filled params" do
+        let(:params) { Hash[book: {author: {avatar: {url: val}}}] }
+        let(:val) { "https://hanami.test/avatar.png" }
+
+        it "renders with value" do
+          actual = view.form_for(action) do |f|
+            f.text_field "book.author.avatar.url"
+          end.to_s
+
+          expect(actual).to include(%(<input type="text" name="book[author[avatar[url]]]" id="book-author-avatar-url" value="#{val}">))
+        end
+
+        it "allows to override 'value' attribute" do
+          actual = view.form_for(action) do |f|
+            f.text_field "book.author.avatar.url", value: "https://hanami.test/another-avatar.jpg"
+          end.to_s
+
+          expect(actual).to include(%(<input type="text" name="book[author[avatar[url]]]" id="book-author-avatar-url" value="https://hanami.test/another-avatar.jpg">))
+        end
+      end
+    end
+
+    context "CSRF protection" do
       let(:view)       { SessionFormHelperView.new(params, csrf_token) }
       let(:csrf_token) { "abc123" }
 
@@ -59,7 +111,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         expect(actual.to_s).to eq(%(<form action="/books" method="POST" accept-charset="utf-8"><input type="hidden" name="_csrf_token" value="#{csrf_token}"></form>))
       end
 
-      describe "with missing token" do
+      context "with missing token" do
         let(:csrf_token) { nil }
 
         it "doesn't inject hidden field" do
@@ -68,7 +120,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "with csrf_token on get verb" do
+      context "with csrf_token on get verb" do
         let(:csrf_token) { "abcd-1234-xyz" }
 
         it "doesn't inject hidden field" do
@@ -88,7 +140,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "CSRF meta tags" do
+    context "CSRF meta tags" do
       let(:view)       { SessionFormHelperView.new(params, csrf_token) }
       let(:csrf_token) { "abc123" }
 
@@ -106,7 +158,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "remote: true" do
+    context "remote: true" do
       it "adds data-remote=true to form attributes" do
         actual = view.form_for(action, "data-remote": true) {}
         expect(actual.to_s).to eq(%(<form data-remote action="/books" method="POST" accept-charset="utf-8"></form>))
@@ -468,10 +520,10 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="checkbox" name="book[languages][]" id="book-languages" value="italian"><input type="checkbox" name="book[languages][]" id="book-languages" value="english">))
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {free_shipping: val}] }
 
-      describe "when the params value equals to check box value" do
+      context "when the params value equals to check box value" do
         let(:val) { "1" }
 
         it "renders with 'checked' attribute" do
@@ -483,7 +535,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "when the params value equals to the hidden field value" do
+      context "when the params value equals to the hidden field value" do
         let(:val) { "0" }
 
         it "renders without 'checked' attribute" do
@@ -503,7 +555,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "with a boolean argument" do
+      context "with a boolean argument" do
         let(:val) { true }
 
         it "renders with 'checked' attribute" do
@@ -515,7 +567,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "when multiple params are present" do
+      context "when multiple params are present" do
         let(:params) { Hash[book: {languages: ["italian"]}] }
 
         it "handles multiple checkboxes" do
@@ -528,7 +580,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "checked_value is boolean" do
+      context "checked_value is boolean" do
         let(:params) { Hash[book: {free_shipping: "true"}] }
 
         it "renders with 'checked' attribute" do
@@ -541,9 +593,9 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "automatic values" do
-      describe "checkbox" do
-        describe "value boolean, helper boolean, values differ" do
+    context "automatic values" do
+      context "checkbox" do
+        context "value boolean, helper boolean, values differ" do
           let(:values) { Hash[book: Struct.new(:free_shipping, keyword_init: true).new(free_shipping: false)] }
 
           it "renders" do
@@ -599,7 +651,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="color" name="book[cover]" id="book-cover" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(cover: val)] }
       let(:val) { "#d3397e" }
 
@@ -620,7 +672,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {cover: val}] }
       let(:val) { "#d3397e" }
 
@@ -683,7 +735,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="date" name="book[release_date]" id="book-release-date" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(release_date: val)] }
       let(:val)    { "2014-06-23" }
 
@@ -704,7 +756,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {release_date: val}] }
       let(:val)    { "2014-06-23" }
 
@@ -767,7 +819,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="datetime" name="book[published_at]" id="book-published-at" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(published_at: val)] }
       let(:val)    { "2015-02-19T12:56:31Z" }
 
@@ -788,7 +840,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {published_at: val}] }
       let(:val)    { "2015-02-19T12:56:31Z" }
 
@@ -851,7 +903,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="datetime-local" name="book[released_at]" id="book-released-at" value="" class="form-control">))
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {released_at: val}] }
       let(:val)    { "2015-02-19T14:11:19+01:00" }
 
@@ -914,7 +966,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="time" name="book[release_hour]" id="book-release-hour" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(release_hour: val)] }
       let(:val)    { "18:30" }
 
@@ -935,7 +987,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {release_hour: val}] }
       let(:val)    { "11:30" }
 
@@ -998,7 +1050,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="month" name="book[release_month]" id="book-release-month" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(release_month: val)] }
       let(:val)    { "2017-03" }
 
@@ -1019,7 +1071,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {release_month: val}] }
       let(:val)    { "2017-10" }
 
@@ -1082,7 +1134,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="week" name="book[release_week]" id="book-release-week" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(release_week: val)] }
       let(:val)    { "2017-W10" }
 
@@ -1103,7 +1155,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {release_week: val}] }
       let(:val)    { "2017-W44" }
 
@@ -1174,7 +1226,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="email" name="book[publisher_email]" id="book-publisher-email" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(publisher_email: val)] }
       let(:val)    { "maria@publisher.org" }
 
@@ -1195,7 +1247,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {publisher_email: val}] }
       let(:val)    { "maria@publisher.org" }
 
@@ -1266,7 +1318,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="url" name="book[website]" id="book-website" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(website: val)] }
       let(:val)    { "http://publisher.org" }
 
@@ -1287,7 +1339,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {website: val}] }
       let(:val)    { "http://publisher.org" }
 
@@ -1308,7 +1360,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with escape url" do
+    context "with escape url" do
       let(:values) { Hash[book: Book.new(website: val)] }
       let(:val)    { %("onclick=javascript:alert('xss')) }
 
@@ -1379,7 +1431,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="tel" name="book[publisher_telephone]" id="book-publisher-telephone" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(publisher_telephone: val)] }
       let(:val)    { "maria@publisher.org" }
 
@@ -1400,7 +1452,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {publisher_telephone: val}] }
       let(:val)    { "maria@publisher.org" }
 
@@ -1499,7 +1551,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="file" name="book[image_cover]" id="book-image-cover" accept="image/png,image/jpg">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(image_cover: val)] }
       let(:val)    { "image" }
 
@@ -1512,7 +1564,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {image_cover: val}] }
       let(:val)    { "image" }
 
@@ -1567,7 +1619,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="hidden" name="book[author_id]" id="book-author-id" value="" class="form-details">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(author_id: val)] }
       let(:val)    { "1" }
 
@@ -1588,7 +1640,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {author_id: val}] }
       let(:val)    { "1" }
 
@@ -1675,7 +1727,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="number" name="book[percent_read]" id="book-percent-read" value="" step="5">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(percent_read: val)] }
       let(:val)    { 95 }
 
@@ -1696,7 +1748,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {percent_read: val}] }
       let(:val)    { 95 }
 
@@ -1783,7 +1835,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="range" name="book[discount_percentage]" id="book-discount-percentage" value="" step="5">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(discount_percentage: val)] }
       let(:val)    { 95 }
 
@@ -1804,7 +1856,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {discount_percentage: val}] }
       let(:val)    { 95 }
 
@@ -1877,7 +1929,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<textarea name="book[description]" id="book-description" class="form-control" cols="5"></textarea>))
     end
 
-    describe "set content explicitly" do
+    context "set content explicitly" do
       let(:content) { "A short description of the book" }
 
       it "allows to set content" do
@@ -1889,7 +1941,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(description: val)] }
       let(:val) { "A short description of the book" }
 
@@ -1934,7 +1986,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {description: val}] }
       let(:val) { "A short description of the book" }
 
@@ -2021,7 +2073,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="text" name="book[title]" id="book-title" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(title: val)] }
       let(:val)    { "PPoEA" }
 
@@ -2042,7 +2094,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {title: val}] }
       let(:val)    { "PPoEA" }
 
@@ -2105,7 +2157,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="search" name="book[search_title]" id="book-search-title" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(search_title: val)] }
       let(:val)    { "PPoEA" }
 
@@ -2126,7 +2178,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[book: {search_title: val}] }
       let(:val)    { "PPoEA" }
 
@@ -2148,7 +2200,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
     end
   end
 
-  xdescribe "#password_field" do
+  describe "#password_field" do
     it "renders" do
       actual = view.form_for(action) do |f|
         f.password_field "signup.password"
@@ -2189,7 +2241,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="password" name="signup[password]" id="signup-password" value="" class="form-control">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[signup: Signup.new(password: val)] }
       let(:val)    { "secret" }
 
@@ -2210,7 +2262,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
+    context "with filled params" do
       let(:params) { Hash[signup: {password: val}] }
       let(:val)    { "secret" }
 
@@ -2260,7 +2312,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="radio" name="book[category]" value="Fiction" class="form-control"><input type="radio" name="book[category]" value="Non-Fiction" class="radio-button">))
     end
 
-    describe "with values" do
+    context "with values" do
       let(:values) { Hash[book: Book.new(category: val)] }
       let(:val)    { "Non-Fiction" }
 
@@ -2274,8 +2326,8 @@ RSpec.describe Hanami::Helpers::FormHelper do
       end
     end
 
-    describe "with filled params" do
-      describe "string value" do
+    context "with filled params" do
+      context "string value" do
         let(:params) { Hash[book: {category: val}] }
         let(:val)    { "Non-Fiction" }
 
@@ -2289,7 +2341,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
         end
       end
 
-      describe "decimal value" do
+      context "decimal value" do
         let(:params) { Hash[book: {price: val}] }
         let(:val)    { "20.0" }
 
@@ -2643,7 +2695,7 @@ RSpec.describe Hanami::Helpers::FormHelper do
       expect(actual).to include(%(<input type="text" name="book[store]" id="book-store" value="" list="books"><datalist class="form-option" id="books"><option value="Italy"></option><option value="United States"></option></datalist>))
     end
 
-    describe "with a Hash of values" do
+    context "with a Hash of values" do
       let(:values) { Hash["Italy" => "it", "United States" => "us"] }
 
       it "renders" do

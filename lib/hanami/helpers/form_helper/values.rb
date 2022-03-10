@@ -66,8 +66,8 @@ module Hanami
         # @api private
         def _dig(base, key)
           case base
-          when Utils::Hash, ::Hash        then base[key]
-          when Array                      then base[key.to_s.to_i]
+          when ::Hash                       then base[key]
+          when Array                        then base[key.to_s.to_i]
           when ->(r) { r.respond_to?(key) } then base.public_send(key)
           end
         end

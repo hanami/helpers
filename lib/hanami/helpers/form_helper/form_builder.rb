@@ -1393,7 +1393,7 @@ module Hanami
         def _attributes(type, name, attributes)
           input_name = _input_name(name)
 
-          attrs = {type: type, name: input_name, id: _input_id(name), value: _value(name)}
+          attrs = {type: type, name: input_name, id: _input_id(name), value: _value_from_input_name(input_name)}
           attrs.merge!(attributes)
           attrs[:value] = escape_html(attrs[:value])
           attrs
@@ -1431,8 +1431,16 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _value(name)
+          _value_from_input_name(_input_name(name))
+        end
+
+        # Input <tt>value</tt> HTML attribute
+        #
+        # @api private
+        # @since 0.2.0
+        def _value_from_input_name(input_name)
           @values.get(
-            *_input_name(name).split(/[\[\]]+/).map(&:to_sym)
+            *input_name.split(/[\[\]]+/).map(&:to_sym)
           )
         end
 

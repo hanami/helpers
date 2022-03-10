@@ -692,7 +692,7 @@ module Hanami
         #   <input type="file" name="user[resume]" id="user-resume" multiple="multiple">
         def file_field(name, **attributes)
           attributes[:accept] = Array(attributes[:accept]).join(ACCEPT_SEPARATOR) if attributes.key?(:accept)
-          attributes = {type: :file, name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
+          attributes = {type: :file, name: _input_name(name), id: _input_id(name)}.merge(attributes)
 
           input(**attributes)
         end
@@ -815,7 +815,7 @@ module Hanami
             content    = nil
           end
 
-          attributes = {name: _displayed_input_name(name), id: _input_id(name)}.merge(attributes)
+          attributes = {name: _input_name(name), id: _input_id(name)}.merge(attributes)
           html.textarea(content || _value(name), **attributes)
         end
 
@@ -927,7 +927,7 @@ module Hanami
         #   <input type="radio" name="book[category]" value="Fiction">
         #   <input type="radio" name="book[category]" value="Non-Fiction" checked="checked">
         def radio_button(name, value, **attributes)
-          attributes = {type: :radio, name: _displayed_input_name(name), value: value}.merge(attributes)
+          attributes = {type: :radio, name: _input_name(name), value: value}.merge(attributes)
           attributes[:checked] = CHECKED if _value(name).to_s == value.to_s
           input(**attributes)
         end
@@ -948,7 +948,7 @@ module Hanami
         #   <!-- output -->
         #   <input type="password" name="signup[password]" id="signup-password" value="">
         def password_field(name, **attributes)
-          attrs = {type: :password, name: _displayed_input_name(name), id: _input_id(name), value: nil}.merge(attributes)
+          attrs = {type: :password, name: _input_name(name), id: _input_id(name), value: nil}.merge(attributes)
           attrs[:value] = EMPTY_STRING if attrs[:value].nil?
 
           input(**attrs)
@@ -1391,7 +1391,9 @@ module Hanami
         # @api private
         # @since 0.2.0
         def _attributes(type, name, attributes)
-          attrs = {type: type, name: _displayed_input_name(name), id: _input_id(name), value: _value(name)}
+          input_name = _input_name(name)
+
+          attrs = {type: type, name: input_name, id: _input_id(name), value: _value(name)}
           attrs.merge!(attributes)
           attrs[:value] = escape_html(attrs[:value])
           attrs
@@ -1414,14 +1416,6 @@ module Hanami
           result << ("]" * tokens.size)
 
           result
-        end
-
-        # Input <tt>name</tt> HTML attribute
-        #
-        # @api private
-        # @since 1.0.0
-        def _displayed_input_name(name)
-          _input_name(name).gsub(/\[\d+\]/, "[]")
         end
 
         # Input <tt>id</tt> HTML attribute
@@ -1461,7 +1455,7 @@ module Hanami
 
           input(
             type: :hidden,
-            name: attributes[:name] || _displayed_input_name(name),
+            name: attributes[:name] || _input_name(name),
             value: attributes.delete(:unchecked_value) || DEFAULT_UNCHECKED_VALUE
           )
         end
@@ -1475,7 +1469,7 @@ module Hanami
         def _attributes_for_check_box(name, attributes)
           attributes = {
             type: :checkbox,
-            name: _displayed_input_name(name),
+            name: _input_name(name),
             id: _input_id(name),
             value: (attributes.delete(:checked_value) || DEFAULT_CHECKED_VALUE).to_s
           }.merge(attributes)
@@ -1486,13 +1480,15 @@ module Hanami
         end
 
         # @api private
+        # @since 1.2.0
         def _select_input_name(name, multiple)
-          select_name = _displayed_input_name(name)
+          select_name = _input_name(name)
           select_name = "#{select_name}[]" if multiple
           select_name
         end
 
         # @api private
+        # @since 1.2.0
         def _select_option_selected?(value, selected, input_value, multiple)
           if input_value && selected.nil?
             value.to_s == input_value.to_s
@@ -1529,6 +1525,7 @@ module Hanami
         end
 
         # @api private
+        # @since 1.2.0
         def _check_box_checked?(value, input_value)
           !input_value.nil? &&
             (input_value.to_s == value.to_s || input_value.is_a?(TrueClass) ||

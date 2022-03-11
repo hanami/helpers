@@ -1,7 +1,7 @@
 # Hanami::Helpers
 View helpers for Ruby web applications
 
-## v2.0.0.alpha7 (unreleased)
+## v2.0.0.alpha8 (unreleased)
 ### Fixed
 - [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#format_number` to return consistent rounding. `1.0` will be formatted as `"1.00"` by default.
 
@@ -10,6 +10,75 @@ View helpers for Ruby web applications
 - [Luca Guidi] Moved `Hanami::Helpers::RoutingHelper` to `hanami` as `Hanami::Helpers::Routes`
 - [Luca Guidi] Made `Hanami::Helpers::NumberFormattingHelper#format_number` a public method
 - [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#format_number` raises a `Hanami::Helpers::CoercionError` instead of `TypeError`
+- [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#form_for` removed the first argument that used to indicate the form name prefix
+    ```ruby
+    # 1.0
+    form_for(:book, routes.books_path) {}
+
+    #   => <form action="/path" method="POST" id="book-form"></form>
+
+    # 2.0
+    form_for(routes.books_path, id: "book-form") {}
+
+    #   => <form action="/path" method="POST" id="book-form"></form>
+    ```
+- [Luca Guidi] `Hanami::Helpers::NumberFormattingHelper#form_for` yields a `Hanami::Helpers::FormHelper::FormBuilder` object that MUST be used to generate form inputs
+    ```ruby
+    # 1.0
+    form_for(:book, routes.books_path) do
+      text_field :title
+
+      submit "Create book"
+    end
+
+    # <form action="/path" method="POST" id="book-form">
+    #   <input type="text" name="book[title]" id="book-title">
+    #   <button type="submit">Create book</button>
+    # </form>
+
+    # 2.0
+    form_for(routes.books_path, id: "book-form") do |f|
+      f.text_field "book.title"
+
+      f.submit "Create book"
+    end
+
+    # <form action="/path" method="POST" id="book-form">
+    #   <input type="text" name="book[title]" id="book-title">
+    #   <button type="submit">Create book</button>
+    # </form>
+    ```
+- [Luca Guidi] Form input helpers now require full path to be always specified as a dot separated `String`
+    ```ruby
+    # 1.0
+    form_for(:book, routes.books_path) do
+      fields_for :author do
+        fields_for :avatar do
+          text_field :url
+        end
+      end
+
+      submit "Create book"
+    end
+
+    # <form action="/path" method="POST" id="book-form">
+    #   <input type="text" name="book[author][avatar][url]" id="book-author-avatar-url">
+    #   <button type="submit">Create book</button>
+    # </form>
+
+    # 2.0
+    form_for(routes.books_path, id: "book-form") do |f|
+      f.text_field "book.author.avatar.url"
+
+      f.submit "Create book"
+    end
+
+    # <form action="/path" method="POST" id="book-form">
+    #   <input type="text" name="book[author][avatar][url]" id="book-author-avatar-url">
+    #   <button type="submit">Create book</button>
+    # </form>
+    ```
+- [Luca Guidi] Removed `fields_for` form helper
 
 ## v1.3.3 - 2020-02-03
 ### Added
@@ -171,5 +240,5 @@ View helpers for Ruby web applications
 ## v0.1.0 - 2015-03-23
 ### Added
 - [Luca Guidi] Introduced `Lotus::Helpers::RoutingHelper`. It exposes `#routes` in views for compatibility with Lotus (`hanamirb` gem)
-- [Alfonso Uceda Pompa] Introduced `Lotus::Helpers::EscapeHelper`. It implements OWASP/ESAPI suggestions for HTML, HTML attribute and URL escape helpers.
+- [Alfonso Uceda Pompa] Introduced `Lotus::Helpers::EscapeHelper`. It implements O1.0P/ESAPI suggestions for HTML, HTML attribute and URL escape helpers.
 - [Luca Guidi] Introduced `Lotus::Helpers::HtmlHelper`. It allows to generate complex HTML5 markup with Ruby.

@@ -9,7 +9,7 @@ unless ENV["CI"]
   gem "benchmark-ips", require: false
 end
 
-gem "dry-core", git: "http://github.com/dry-rb/dry-core", branch: "feature/basic-object"
+gem "dry-core", git: "http://github.com/dry-rb/dry-core", branch: "main"
 gem "erbse"
 
 gem "hanami-utils",       "~> 2.0.alpha", git: "https://github.com/hanami/utils.git",       branch: "main"

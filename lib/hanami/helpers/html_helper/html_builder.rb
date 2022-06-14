@@ -394,6 +394,16 @@ module Hanami
           @buffer
         end
 
+        # Clear internal buffer
+        #
+        # @return [void]
+        #
+        # @since 2.0.0
+        # @api private
+        def clear
+          @buffer = @buffer.class.new
+        end
+
         # Generates tag metods on the fly
         #
         # @since 0.1.0
